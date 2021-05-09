@@ -1,3 +1,4 @@
+using iTechArt.SurveyCreator.Configure;
 using iTechArt.SurveyCreator.Repositories;
 using iTechArt.SurveyCreator.Services;
 using Microsoft.AspNetCore.Builder;
@@ -11,9 +12,15 @@ namespace iTechArt.SurveyCreator
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
 
@@ -27,6 +34,8 @@ namespace iTechArt.SurveyCreator
                 options.UseSqlServer(connection));
 
             services.AddControllersWithViews();
+
+            services.Configure<Settings>(Configuration.GetSection("Settings"));
 
             services.AddTransient<IAppVersionService, AppVersionService>();
         }
