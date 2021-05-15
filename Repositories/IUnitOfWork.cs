@@ -1,8 +1,9 @@
-﻿namespace iTechArt.SurveyCreator.Repositories
+﻿using System;
+
+namespace iTechArt.Repositories
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
-        public ApplicationContext ApplicationContext { get; }
-        public void Save();
+        void Commit();
     }
 }

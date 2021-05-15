@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace iTechArt.SurveyCreator.Repositories
+namespace iTechArt.Repositories
 {
     public interface IRepository<T>
     {
