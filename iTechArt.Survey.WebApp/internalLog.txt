@@ -1,0 +1,50 @@
+2021-05-18 15:32:11.6154 Info Message Template Auto Format enabled
+2021-05-18 15:32:11.6378 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 15:32:11.7031 Info Adding target FileTarget(Name=alldata)
+2021-05-18 15:32:11.7135 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 15:32:11.7508 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 15:39:23.1401 Info Message Template Auto Format enabled
+2021-05-18 15:39:23.1590 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 15:39:23.2109 Info Adding target FileTarget(Name=alldata)
+2021-05-18 15:39:23.2109 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 15:39:23.2701 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 15:56:11.7503 Info Message Template Auto Format enabled
+2021-05-18 15:56:11.7670 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 15:56:11.8289 Info Adding target FileTarget(Name=alldata)
+2021-05-18 15:56:11.8461 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 15:56:11.8912 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 15:57:20.0230 Info Message Template Auto Format enabled
+2021-05-18 15:57:20.0230 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 15:57:20.0805 Info Adding target FileTarget(Name=alldata)
+2021-05-18 15:57:20.0884 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 15:57:20.1223 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 21:43:27.9805 Info Message Template Auto Format enabled
+2021-05-18 21:43:27.9988 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 21:43:28.0518 Info Adding target FileTarget(Name=alldata)
+2021-05-18 21:43:28.0629 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 21:43:28.0998 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 21:45:52.3225 Info Message Template Auto Format enabled
+2021-05-18 21:45:52.3443 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 21:45:52.3958 Info Adding target FileTarget(Name=alldata)
+2021-05-18 21:45:52.4050 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 21:45:52.4357 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 21:47:00.6596 Info Message Template Auto Format enabled
+2021-05-18 21:47:00.6771 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 21:47:00.7301 Info Adding target FileTarget(Name=alldata)
+2021-05-18 21:47:00.7301 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 21:47:00.7771 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 21:47:40.6741 Info Message Template Auto Format enabled
+2021-05-18 21:47:40.6880 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 21:47:40.7439 Info Adding target FileTarget(Name=alldata)
+2021-05-18 21:47:40.7439 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 21:47:40.7898 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 21:47:59.5339 Info Message Template Auto Format enabled
+2021-05-18 21:47:59.5505 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 21:47:59.6122 Info Adding target FileTarget(Name=alldata)
+2021-05-18 21:47:59.6223 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 21:47:59.6601 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
+2021-05-18 22:31:27.2409 Info Message Template Auto Format enabled
+2021-05-18 22:31:27.2617 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-18 22:31:27.3271 Info Adding target FileTarget(Name=alldata)
+2021-05-18 22:31:27.3448 Info Adding target FileTarget(Name=otherFile-web)
+2021-05-18 22:31:27.3987 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=D:\iTechArt\iTechArt.Survey.WebApp\bin\Debug\net5.0\nlog.config
