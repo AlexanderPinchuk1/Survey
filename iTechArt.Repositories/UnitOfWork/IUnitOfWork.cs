@@ -1,5 +1,5 @@
 ﻿
-namespace iTechArt.Repositories
+namespace iTechArt.Repositories.UnitOfWork
 {
     public interface IUnitOfWork
     {

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using iTechArt.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace iTechArt.Survey.Repositories
+namespace iTechArt.Repositories.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {

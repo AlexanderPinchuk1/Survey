@@ -2,9 +2,9 @@
 
 namespace iTechArt.Survey.Repositories
 {
-    public sealed class ApplicationContext: DbContext
+    public sealed class SurveyDbContext : DbContext
     {
-        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+        public SurveyDbContext(DbContextOptions<SurveyDbContext> options)
             : base(options)
         {
             Database.EnsureCreated();

@@ -15,14 +15,14 @@ namespace iTechArt.Survey.WebApp.Controllers
         private Settings Settings { get; }
         
 
-        public UnitOfWork UnitOfWork { get; }
+        public SurveyUnitOfWork SurveyUnitOfWork { get; }
         
 
-        public HomeController(ILogger<HomeController> logger, IOptions<Settings> settings, UnitOfWork unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IOptions<Settings> settings, SurveyUnitOfWork surveyUnitOfWork)
         {
             _logger = logger;
             Settings = settings.Value;
-            UnitOfWork = unitOfWork;
+            SurveyUnitOfWork = surveyUnitOfWork;
         }
 
 

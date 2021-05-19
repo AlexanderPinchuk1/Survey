@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace iTechArt.Repositories
+namespace iTechArt.Repositories.Repository
 {
     public interface IRepository<T>
     {

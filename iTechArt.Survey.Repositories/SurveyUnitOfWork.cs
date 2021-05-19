@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using iTechArt.Repositories;
+using iTechArt.Repositories.Repository;
+using iTechArt.Repositories.UnitOfWork;
 
 namespace iTechArt.Survey.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class SurveyUnitOfWork : IUnitOfWork
     {
         private Dictionary<string, object> _repositories;
 
-        private readonly ApplicationContext _applicationContext;
+        private readonly SurveyDbContext _surveyDbContext;
 
 
-        public UnitOfWork(ApplicationContext applicationContext )
+        public SurveyUnitOfWork(SurveyDbContext surveyDbContext)
         {
-            _applicationContext = applicationContext;
+            _surveyDbContext = surveyDbContext;
         }
 
 
         public void Commit()
         {
-            _applicationContext.SaveChanges();
+            _surveyDbContext.SaveChanges();
         }
 
         public Repository<T> Repository<T>() where T : class
@@ -33,7 +34,7 @@ namespace iTechArt.Survey.Repositories
             }
 
             var repositoryType = typeof(Repository<>);
-            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _applicationContext);
+            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _surveyDbContext);
             _repositories.Add(type, repositoryInstance);
 
             return (Repository<T>) _repositories[type];

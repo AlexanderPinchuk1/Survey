@@ -1,4 +1,3 @@
-using iTechArt.Survey.Foundation;
 using iTechArt.Survey.Repositories;
 using iTechArt.Survey.Domain;
 using Microsoft.AspNetCore.Builder;
@@ -24,15 +23,14 @@ namespace iTechArt.Survey.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options =>
+            services.AddDbContext<SurveyDbContext>(options =>
                 options.UseSqlServer(connection));
 
             services.AddControllersWithViews();
 
             services.Configure<Settings>(Configuration.GetSection("Settings"));
 
-            services.AddTransient<IAppVersionService, AppVersionService>();
-            services.AddTransient<UnitOfWork>();
+            services.AddTransient<SurveyUnitOfWork>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
