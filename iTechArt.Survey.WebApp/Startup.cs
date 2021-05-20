@@ -1,11 +1,10 @@
-using iTechArt.Survey.Repositories;
 using iTechArt.Survey.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using iTechArt.Survey.Repositories.Extensions;
 
 namespace iTechArt.Survey.WebApp
 {
@@ -22,15 +21,11 @@ namespace iTechArt.Survey.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<SurveyDbContext>(options =>
-                options.UseSqlServer(connection));
+            services.AddSurveyDbContext(Configuration.GetConnectionString("default"));
 
             services.AddControllersWithViews();
 
             services.Configure<Settings>(Configuration.GetSection("Settings"));
-
-            services.AddTransient<SurveyUnitOfWork>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

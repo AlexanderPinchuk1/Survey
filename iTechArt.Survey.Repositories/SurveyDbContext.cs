@@ -1,13 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using iTechArt.Survey.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace iTechArt.Survey.Repositories
 {
-    public sealed class SurveyDbContext : DbContext
+    internal sealed class SurveyDbContext : DbContext
     {
+        public DbSet<User> Users { get; set; }
+
+
         public SurveyDbContext(DbContextOptions<SurveyDbContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                assembly: typeof(SurveyDbContext).Assembly);
         }
     }
 }

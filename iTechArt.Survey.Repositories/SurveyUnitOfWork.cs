@@ -5,7 +5,7 @@ using iTechArt.Repositories.UnitOfWork;
 
 namespace iTechArt.Survey.Repositories
 {
-    public class SurveyUnitOfWork : IUnitOfWork
+    internal class SurveyUnitOfWork : IUnitOfWork
     {
         private Dictionary<string, object> _repositories;
 
