@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTechArt.Survey.WebApp", "iTechArt.Survey.WebApp\iTechArt.Survey.WebApp.csproj", "{72446CB4-8264-4866-89E6-FA51B6F00D14}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTechArt.Common", "iTechArt.Common\iTechArt.Common.csproj", "{2EF74FF7-86ED-465A-8882-2E9EE5F86261}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTechArt.Repositories", "iTechArt.Repositories\iTechArt.Repositories.csproj", "{51775CC8-C865-47DE-B61B-BF8B33790387}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTechArt.Survey.Domain", "iTechArt.Survey.Domain\iTechArt.Survey.Domain.csproj", "{3292E3CE-61D4-4535-BEE7-15C173CACD8A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTechArt.Survey.Repositories", "iTechArt.Survey.Repositories\iTechArt.Survey.Repositories.csproj", "{7B9A1396-5562-47AE-B629-798F7D42F8DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTechArt.Survey.Foundation", "iTechArt.Survey.Foundation\iTechArt.Survey.Foundation.csproj", "{3B8A310C-7DC5-468E-ADA2-4246A65A5710}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72446CB4-8264-4866-89E6-FA51B6F00D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72446CB4-8264-4866-89E6-FA51B6F00D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72446CB4-8264-4866-89E6-FA51B6F00D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72446CB4-8264-4866-89E6-FA51B6F00D14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF74FF7-86ED-465A-8882-2E9EE5F86261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF74FF7-86ED-465A-8882-2E9EE5F86261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF74FF7-86ED-465A-8882-2E9EE5F86261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF74FF7-86ED-465A-8882-2E9EE5F86261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51775CC8-C865-47DE-B61B-BF8B33790387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51775CC8-C865-47DE-B61B-BF8B33790387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51775CC8-C865-47DE-B61B-BF8B33790387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51775CC8-C865-47DE-B61B-BF8B33790387}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3292E3CE-61D4-4535-BEE7-15C173CACD8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3292E3CE-61D4-4535-BEE7-15C173CACD8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3292E3CE-61D4-4535-BEE7-15C173CACD8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3292E3CE-61D4-4535-BEE7-15C173CACD8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B9A1396-5562-47AE-B629-798F7D42F8DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B9A1396-5562-47AE-B629-798F7D42F8DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B9A1396-5562-47AE-B629-798F7D42F8DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B9A1396-5562-47AE-B629-798F7D42F8DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B8A310C-7DC5-468E-ADA2-4246A65A5710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B8A310C-7DC5-468E-ADA2-4246A65A5710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B8A310C-7DC5-468E-ADA2-4246A65A5710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B8A310C-7DC5-468E-ADA2-4246A65A5710}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED94AF67-47FE-4AE9-98E4-0ED84CC28F09}
+	EndGlobalSection
+EndGlobal
