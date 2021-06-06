@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using iTechArt.Survey.Domain;
-using iTechArt.Survey.Repositories;
 using iTechArt.Survey.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace iTechArt.Survey.WebApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -37,6 +38,7 @@ namespace iTechArt.Survey.WebApp.Controllers
             return View();
         }
 
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

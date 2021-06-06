@@ -1,3 +1,4 @@
+using System;
 using iTechArt.Survey.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,16 @@ namespace iTechArt.Survey.WebApp
             services.AddSurveyDbContext(Configuration.GetConnectionString("default"));
 
             services.AddControllersWithViews();
+            services.AddRazorPages();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.SlidingExpiration = true;
+            });
 
             services.Configure<Settings>(Configuration.GetSection("Settings"));
         }
@@ -43,6 +54,8 @@ namespace iTechArt.Survey.WebApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -50,6 +63,7 @@ namespace iTechArt.Survey.WebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

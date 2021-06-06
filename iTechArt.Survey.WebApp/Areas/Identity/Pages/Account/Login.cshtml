@@ -1,0 +1,42 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="block">
+    <h1 class="login-header">@ViewData["Title"]</h1>
+    <div>
+        <section>
+            <form id="account" method="post">
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <p class="register-ref">
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registration</a>
+                    </p>
+                    <p>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                    </p>
+                </div>
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                <div class="login-button">
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

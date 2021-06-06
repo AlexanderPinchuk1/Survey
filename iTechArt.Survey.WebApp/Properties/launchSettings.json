@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "SurveyCreator": {
+    "Survey": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

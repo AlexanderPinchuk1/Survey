@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using iTechArt.Survey.Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace iTechArt.Survey.Repositories.Extensions
@@ -13,6 +14,9 @@ namespace iTechArt.Survey.Repositories.Extensions
             {
                 options.UseSqlServer(connectionString);
             });
+
+            services.AddDefaultIdentity<SurveyUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<SurveyDbContext>();
 
             return services;
         }

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace iTechArt.Survey.Repositories.Configurations
 {
-    internal class UserConfig: IEntityTypeConfiguration<User>
+    internal class UserConfig: IEntityTypeConfiguration<SurveyUser>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<SurveyUser> builder)
         {
         }
     }

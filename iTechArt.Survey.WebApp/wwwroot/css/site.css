@@ -69,3 +69,38 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+.block {
+    width: 350px;
+    height: 450px;
+    position: absolute;
+    top: 30%;
+    left: 47%;
+    margin: -125px 0 0 -125px;
+}
+
+.login-header {
+    text-align: center;
+}
+
+.register-header {
+    text-align: center
+}
+
+.login-button {
+    width: 100%;
+    text-align: center;
+    margin: 30px 0px 0px 0px;
+}
+
+.register-button {
+    width: 100%;
+    text-align: center;
+    margin: 30px 0px 0px 0px;
+}
+
+.register-ref {
+    float: left;
+    margin: 0px 95px 0px 5px;
+}
