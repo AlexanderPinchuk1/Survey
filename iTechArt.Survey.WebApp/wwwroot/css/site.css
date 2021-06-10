@@ -110,3 +110,7 @@ body {
     width: 100%;
     text-align: center;
 }
+
+.list-users-block {
+    margin: 20px 0px 60px 0px;
+}

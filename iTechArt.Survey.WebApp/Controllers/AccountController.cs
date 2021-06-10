@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using iTechArt.Survey.Domain.Identity;
 using iTechArt.Survey.WebApp.Models;
@@ -19,7 +17,7 @@ namespace iTechArt.Survey.WebApp.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
-
+        
         public AccountController(SignInManager<User> signInManager, 
                                  ILogger<AccountController> logger,
                                  UserManager<User> userManager)
@@ -77,10 +75,11 @@ namespace iTechArt.Survey.WebApp.Controllers
 
             var user = new User {DisplayName = model.DisplayName, Email = model.Email, UserName = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
-
+         
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("DisplayName", user.DisplayName));
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
                 return RedirectToAction("Index","Home");
