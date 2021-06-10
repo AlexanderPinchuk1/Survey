@@ -80,11 +80,7 @@ body {
     margin: -125px 0 0 -125px;
 }
 
-.login-header {
-    text-align: center;
-}
-
-.register-header {
+.center-header {
     text-align: center
 }
 
@@ -103,4 +99,14 @@ body {
 .register-ref {
     float: left;
     margin: 0px 95px 0px 5px;
+}
+
+.update-button-block {
+    float: left;
+    margin: 0px 20px;
+}
+
+.edit-user-buttons-block {
+    width: 100%;
+    text-align: center;
 }

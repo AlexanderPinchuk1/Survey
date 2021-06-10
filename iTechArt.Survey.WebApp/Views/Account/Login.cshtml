@@ -1,31 +1,30 @@
-﻿@page
-@model LoginModel
+﻿@model iTechArt.Survey.WebApp.Models.LoginViewModel
 
-@{
+@{ 
     ViewData["Title"] = "Log in";
 }
 
 <div class="block">
-    <h1 class="login-header">@ViewData["Title"]</h1>
+    <h1 class="center-header">@ViewData["Title"]</h1>
     <div>
         <section>
             <form id="account" method="post">
                 <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <p class="register-ref">
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registration</a>
+                        <a asp-action="Register" asp-controller="Account">Registration</a> 
                     </p>
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a id="forgot-password">Forgot your password?</a>
                     </p>
                 </div>
                 <div class="text-danger" asp-validation-summary="ModelOnly"></div>

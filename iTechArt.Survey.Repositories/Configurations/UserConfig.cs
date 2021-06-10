@@ -1,13 +1,15 @@
-﻿using iTechArt.Survey.Domain;
+﻿using iTechArt.Survey.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace iTechArt.Survey.Repositories.Configurations
 {
-    internal class UserConfig: IEntityTypeConfiguration<SurveyUser>
+    internal class UserConfig: IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<SurveyUser> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.Property(user => user.Id).HasDefaultValueSql("newsequentialid()");
+            builder.ToTable(name: "Users");
         }
     }
 }
