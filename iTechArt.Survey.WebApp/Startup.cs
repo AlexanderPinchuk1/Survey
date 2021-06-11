@@ -25,14 +25,10 @@ namespace iTechArt.Survey.WebApp
             services.AddSurveyDbContext(Configuration.GetConnectionString("default"));
 
             services.AddControllersWithViews();
-            services.AddRazorPages();
 
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-
                 options.LoginPath = "/Account/Login";
                 options.SlidingExpiration = true;
             });
@@ -64,7 +60,6 @@ namespace iTechArt.Survey.WebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }

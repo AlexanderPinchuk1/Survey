@@ -51,18 +51,16 @@ namespace iTechArt.Survey.WebApp.Controllers
 
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
 
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User logged in.");
-
-                return RedirectToAction("Index", "Home");
-            }
-            else
+            if (!result.Succeeded)
             {
                 ModelState.AddModelError(string.Empty, "User with entered email and password was not found!");
 
                 return View();
             }
+       
+            _logger.LogInformation("User logged in.");
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
