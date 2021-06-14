@@ -10,7 +10,7 @@ using iTechArt.Survey.Repositories;
 namespace iTechArt.Survey.Repositories.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20210609171943_CreateDatabase")]
+    [Migration("20210613170858_CreateDatabase")]
     partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,6 +197,9 @@ namespace iTechArt.Survey.Repositories.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("RegistrationDateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

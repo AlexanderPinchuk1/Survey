@@ -1,0 +1,60 @@
+﻿@model iTechArt.Survey.WebApp.Models.AddUserViewModel
+
+@{
+    ViewData["Title"] = "Add user";
+}
+
+<div class="block">
+    <h3 class="center-header">@ViewData["Title"]</h3>
+    <div>
+        <form method="post" asp-action="AddUser" asp-controller="Administration">
+            <div class="form-group">
+                <label asp-for="DisplayName"></label>
+                <input asp-for="DisplayName" class="form-control form-control-sm" />
+                <span asp-validation-for="DisplayName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role"></label>
+                <select asp-for="Role" class="form-select">
+                    @foreach (var role in Model.AllRoles)
+                    {
+                        <option selected value=@role>@role</option>
+                    }
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control form-control-sm" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control form-control-sm" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control form-control-sm"/>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+            <div class="form-group">
+                <div class="edit-user-buttons-block">
+                    <table width="350">
+                        <tr>
+                            <td><button type="submit" class="btn btn-primary">Add</button></td>
+                            <td><a asp-action="DisplayUsers" asp-controller="Administration" class="btn btn-secondary">Cancel</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
