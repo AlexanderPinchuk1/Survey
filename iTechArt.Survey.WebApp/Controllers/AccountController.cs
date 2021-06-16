@@ -84,7 +84,7 @@ namespace iTechArt.Survey.WebApp.Controllers
          
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.AddToRoleAsync(user, Common.Role.User);
                 await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("DisplayName", user.DisplayName));
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
