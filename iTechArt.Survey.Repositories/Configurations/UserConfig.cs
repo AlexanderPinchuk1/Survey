@@ -1,4 +1,4 @@
-﻿using iTechArt.Survey.Domain;
+﻿using iTechArt.Survey.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,8 @@ namespace iTechArt.Survey.Repositories.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.Property(user => user.Id).HasDefaultValueSql("newsequentialid()");
+            builder.ToTable(name: "Users");
         }
     }
 }

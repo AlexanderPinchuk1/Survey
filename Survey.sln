@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTechArt.Survey.Domain", "i
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTechArt.Survey.Repositories", "iTechArt.Survey.Repositories\iTechArt.Survey.Repositories.csproj", "{7B9A1396-5562-47AE-B629-798F7D42F8DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTechArt.Survey.Foundation", "iTechArt.Survey.Foundation\iTechArt.Survey.Foundation.csproj", "{3B8A310C-7DC5-468E-ADA2-4246A65A5710}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTechArt.Survey.Foundation", "iTechArt.Survey.Foundation\iTechArt.Survey.Foundation.csproj", "{3B8A310C-7DC5-468E-ADA2-4246A65A5710}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
