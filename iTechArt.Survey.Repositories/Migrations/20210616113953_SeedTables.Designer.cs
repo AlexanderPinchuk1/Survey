@@ -10,7 +10,7 @@ using iTechArt.Survey.Repositories;
 namespace iTechArt.Survey.Repositories.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20210615095306_SeedTables")]
+    [Migration("20210616113953_SeedTables")]
     partial class SeedTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace iTechArt.Survey.Repositories.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -182,14 +182,14 @@ namespace iTechArt.Survey.Repositories.Migrations
                         new
                         {
                             Id = new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
-                            ConcurrencyStamp = "b7775a3a-d6f9-48c8-bed1-bf097e951959",
+                            ConcurrencyStamp = "c7893c61-9fe2-457c-8191-3a353f72474e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
-                            ConcurrencyStamp = "50c3d1c4-7328-4612-97dc-276645b601cd",
+                            ConcurrencyStamp = "ca146645-f301-4e5e-8358-e7e0b961da0f",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -272,16 +272,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d4a7e29b-c5dd-465c-bc7b-0bc2072224eb",
+                            ConcurrencyStamp = "c32ef7b7-6553-42fe-bc94-5749006fdc28",
                             DisplayName = "Admin",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEnj/wX1TKRcIeCTN3u5qnJJ/Xa/HyW2ocF2jNUfHypf5c6qvmWu4x3JKz9CxhGT8w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDcZ4Lr0U5afXu1OSKj3TB/gGrzXXEzFrkUeOW+BGW/nzI3bxikl9otuQj7J3BLmFw==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 6, 15, 12, 53, 6, 402, DateTimeKind.Local).AddTicks(9873),
+                            RegistrationDateTime = new DateTime(2021, 6, 16, 14, 39, 53, 224, DateTimeKind.Local).AddTicks(3241),
                             SecurityStamp = "7d90869b-19c6-4cb0-8c74-790e8352fabe",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -290,16 +290,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1367b64a-4559-4a6b-bfbf-360d0ce146eb",
+                            ConcurrencyStamp = "f0c7a123-89fa-4bf8-b67e-349e59bc038b",
                             DisplayName = "User",
                             Email = "User@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECXHn6Bj902drer/7DYZuvywzIoqYUwtxZNY/iSDoSoWanpnqgDTPUKyxcIWl04CUw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMbhAw4kDJc4SMlEW+VMNCUEp8bp3PD2hvKUeYlo0N9K+AZSvHtIy8Uq4S2G7GUxnw==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 6, 15, 12, 53, 6, 403, DateTimeKind.Local).AddTicks(6971),
+                            RegistrationDateTime = new DateTime(2021, 6, 16, 14, 39, 53, 225, DateTimeKind.Local).AddTicks(127),
                             SecurityStamp = "4010b6f9-59e8-42b9-bf76-97c41907189b",
                             TwoFactorEnabled = false,
                             UserName = "User@gmail.com"

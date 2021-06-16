@@ -3,6 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using iTechArt.Survey.Repositories;
 
 namespace iTechArt.Survey.Repositories.Migrations
 {
@@ -61,6 +63,22 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserClaims");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            ClaimType = "DisplayName",
+                            ClaimValue = "Admin",
+                            UserId = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872")
+                        },
+                        new
+                        {
+                            Id = 1,
+                            ClaimType = "DisplayName",
+                            ClaimValue = "User",
+                            UserId = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
@@ -97,6 +115,18 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
+                            RoleId = new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1")
+                        },
+                        new
+                        {
+                            UserId = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
+                            RoleId = new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -145,6 +175,22 @@ namespace iTechArt.Survey.Repositories.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
+                            ConcurrencyStamp = "c7893c61-9fe2-457c-8191-3a353f72474e",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
+                            ConcurrencyStamp = "ca146645-f301-4e5e-8358-e7e0b961da0f",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("iTechArt.Survey.Domain.Identity.User", b =>
@@ -194,6 +240,9 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("RegistrationDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -215,6 +264,44 @@ namespace iTechArt.Survey.Repositories.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c32ef7b7-6553-42fe-bc94-5749006fdc28",
+                            DisplayName = "Admin",
+                            Email = "Admin@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            NormalizedUserName = "ADMIN@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDcZ4Lr0U5afXu1OSKj3TB/gGrzXXEzFrkUeOW+BGW/nzI3bxikl9otuQj7J3BLmFw==",
+                            PhoneNumberConfirmed = false,
+                            RegistrationDateTime = new DateTime(2021, 6, 16, 14, 39, 53, 224, DateTimeKind.Local).AddTicks(3241),
+                            SecurityStamp = "7d90869b-19c6-4cb0-8c74-790e8352fabe",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin@gmail.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f0c7a123-89fa-4bf8-b67e-349e59bc038b",
+                            DisplayName = "User",
+                            Email = "User@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER@GMAIL.COM",
+                            NormalizedUserName = "USER@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMbhAw4kDJc4SMlEW+VMNCUEp8bp3PD2hvKUeYlo0N9K+AZSvHtIy8Uq4S2G7GUxnw==",
+                            PhoneNumberConfirmed = false,
+                            RegistrationDateTime = new DateTime(2021, 6, 16, 14, 39, 53, 225, DateTimeKind.Local).AddTicks(127),
+                            SecurityStamp = "4010b6f9-59e8-42b9-bf76-97c41907189b",
+                            TwoFactorEnabled = false,
+                            UserName = "User@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

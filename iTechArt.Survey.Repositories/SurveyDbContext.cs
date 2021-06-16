@@ -1,6 +1,7 @@
 ﻿using System;
 using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;
+using iTechArt.Survey.Repositories.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace iTechArt.Survey.Repositories
 
             modelBuilder.ApplyConfigurationsFromAssembly(
                 assembly: typeof(SurveyDbContext).Assembly);
+
+            modelBuilder.Seed();
         }
     }
 }
