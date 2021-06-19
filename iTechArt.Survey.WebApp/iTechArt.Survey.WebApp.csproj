@@ -32,6 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\iTechArt.Common\iTechArt.Common.csproj" />
     <ProjectReference Include="..\iTechArt.Survey.Domain\iTechArt.Survey.Domain.csproj" />
+    <ProjectReference Include="..\iTechArt.Survey.Foundation\iTechArt.Survey.Foundation.csproj" />
     <ProjectReference Include="..\iTechArt.Survey.Repositories\iTechArt.Survey.Repositories.csproj" />
   </ItemGroup>
 

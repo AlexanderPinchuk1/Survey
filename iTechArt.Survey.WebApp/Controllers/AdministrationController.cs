@@ -1,38 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using iTechArt.Survey.Domain.Identity;
+using iTechArt.Survey.Foundation;
 using iTechArt.Survey.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using X.PagedList;
 
 namespace iTechArt.Survey.WebApp.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
+        private readonly IUserService _userService;
 
 
-        public AdministrationController(UserManager<User> userManager,
-                                        RoleManager<Role> roleManager)
+        public AdministrationController(IUserService userService)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+           _userService = userService;
         }
+
 
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            
+            var isGuid = Guid.TryParse(id, out _ );
+            if (!isGuid)
+            {
+                Response.StatusCode = 404;
+
+                return View("Errors/UserNotFound", id);
+            }
+
+            var user = await _userService.FindUserByIdAsyncOrReturnNull(id);
             if (user == null)
             {
-                return RedirectToAction("DisplayUsers");
+                Response.StatusCode = 404;
+
+                return View("Errors/UserNotFound", id);
             }
 
             var model = new EditUserViewModel
@@ -41,8 +46,8 @@ namespace iTechArt.Survey.WebApp.Controllers
                 Email = user.Email,
                 DisplayName = user.DisplayName,
                 PasswordHash = user.PasswordHash,
-                Role = (await _userManager.GetRolesAsync(user)).First(),
-                AllRoles = _roleManager.Roles.Select(role => role.Name).ToList()
+                Role = await _userService.GetUserRoleAsync(user),
+                AllRoles = _userService.GetAllRoles()
             };
 
             return View(model);
@@ -51,8 +56,7 @@ namespace iTechArt.Survey.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
-            var user = await _userManager.FindByIdAsync(Convert.ToString(model.Id));
-
+            var user = await _userService.FindUserByIdAsyncOrReturnNull(Convert.ToString(model.Id));
             if (user == null)
             {
                 return RedirectToAction("DisplayUsers");
@@ -61,22 +65,7 @@ namespace iTechArt.Survey.WebApp.Controllers
             user.Email = model.Email;
             user.PasswordHash = model.PasswordHash;
 
-            if (! await _userManager.IsInRoleAsync(user, model.Role))
-            {
-                await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
-                await _userManager.AddToRoleAsync(user, model.Role);
-            }
-
-            if (model.DisplayName != user.DisplayName)
-            {
-                user.DisplayName = model.DisplayName;
-
-                await _userManager.ReplaceClaimAsync(user, (await _userManager.GetClaimsAsync(user)).First(claim => claim.Type == "DisplayName"),
-                    new System.Security.Claims.Claim("DisplayName", user.DisplayName));
-            }
-
-            var result = await _userManager.UpdateAsync(user);
-
+            var result = await _userService.EditUserAsync(user, model.Role, model.DisplayName);
             if (result.Succeeded)
             {
                 return RedirectToAction("DisplayUsers");
@@ -92,15 +81,23 @@ namespace iTechArt.Survey.WebApp.Controllers
 
         public async Task<IActionResult> DeleteUser(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
+            var isGuid = Guid.TryParse(id, out _);
+            if (!isGuid)
             {
-                return RedirectToAction("DisplayUsers");
+                Response.StatusCode = 404;
+
+                return View("Errors/UserNotFound", id);
             }
 
-            var result = await _userManager.DeleteAsync(user);
+            var user = await _userService.FindUserByIdAsyncOrReturnNull(id);
+            if (user == null)
+            {
+                Response.StatusCode = 404;
 
+                return View("Errors/UserNotFound", id);
+            }
+
+            var result = await _userService.DeleteUserAsync(user);
             if (result.Succeeded)
             {
                 return RedirectToAction("DisplayUsers");
@@ -114,15 +111,19 @@ namespace iTechArt.Survey.WebApp.Controllers
             return RedirectToAction("DisplayUsers");
         }
 
-        public async Task<IActionResult> DisplayUsers(int? page)
+        public async Task<IActionResult> DisplayUsers(DisplayUsersViewModel model)
         {
-            var usersInfo = new List<UserInfoViewModel>();
-            var users = _userManager.Users.Where(user => user.UserName != User.Identity.Name).ToList();
+            var numItemsPerPage = _userService.ValidateNumberOfItemsPerPage(model.NumItemsPerPage);
 
+            var usersTotalCount =  await _userService.GetUsersTotalCountAsync();
+            var numPages = _userService.ValidateNumberOfPages(model.NumPage, numItemsPerPage, usersTotalCount);
+            
+            var users = await _userService.GetUsersPagedListAsync(numPages, numItemsPerPage);
+
+            var usersInfo = new List<UserInfoViewModel>();
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                var role = roles.First();
+                var role = await _userService.GetUserRoleAsync(user);
 
                 usersInfo.Add(new UserInfoViewModel()
                 {
@@ -135,10 +136,15 @@ namespace iTechArt.Survey.WebApp.Controllers
                 });
             }
 
-            const int pageSize = 5;
-            var pageNumber = (page ?? 1);
-
-            return View(usersInfo.ToPagedList(pageNumber,pageSize));
+            model = new DisplayUsersViewModel()
+            {
+                UsersInfo = usersInfo,
+                NumItemsPerPage = numItemsPerPage,
+                NumPage = numPages,
+                TotalCount = usersTotalCount
+            };
+            
+            return View(model);
         }
 
         [HttpGet]
@@ -146,7 +152,7 @@ namespace iTechArt.Survey.WebApp.Controllers
         {
             var model = new AddUserViewModel()
             {
-                AllRoles = _roleManager.Roles.Select(role => role.Name).ToList()
+                AllRoles = _userService.GetAllRoles()
             };
 
             return View(model);
@@ -163,12 +169,11 @@ namespace iTechArt.Survey.WebApp.Controllers
                 RegistrationDateTime = DateTime.Now
             };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
-
+            var result = await _userService.AddUserAsync(user, model.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, model.Role);
-                await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("DisplayName", user.DisplayName));
+                await _userService.AddUserToRoleAsync(user, model.Role);
+                await _userService.AddUserClaimAsync(user, new System.Security.Claims.Claim("DisplayName", user.DisplayName));
 
                 return RedirectToAction("DisplayUsers", "Administration");
             }

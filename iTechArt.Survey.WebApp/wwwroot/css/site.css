@@ -152,15 +152,17 @@ body {
 
 .total-users-block {
     float: left;
-    width: 90%;
+    width: 83%;
 }
 
 .pages-block {
-    width: 5%;
+    width: 17%;
+    margin:
 }
 
 .table-footer {
     width: 100%;
+    margin: 0 0 100px 0;
 }
 
 ul.pagination li a {
@@ -187,4 +189,20 @@ ul.pagination li a:focus {
     margin: 20px 20px 0px 260px;
     padding: 20px 0px 10px 20px;
     width: 200px
+}
+
+.num-items-per-page-block {
+    float: left;
+    width: 140px;
+}
+
+.num-items-per-page-main-block {
+    float: left;
+    width: 80%;
+}
+
+.num-items-per-page-label {
+    float: left;
+    padding: 5px 0 0 0;
+    width: 160px;
 }
