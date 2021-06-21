@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using iTechArt.Survey.Domain;
 
 namespace iTechArt.Survey.WebApp.Models
 {
     public class DisplayUsersViewModel
     {
-        public List<UserInfoViewModel> UsersInfo { get; set; }
+        public List<UserInfo> UsersInfo { get; set; }
 
-        [Display(Name = "Num items per page")]
-        public int NumItemsPerPage { get; set; }
+        [Display(Name = "Items count per page")]
+        public int ItemCountPerPage { get; set; }
 
-        public int NumPage { get; set; }
+        public int PageNumber { get; set; }
 
         public int TotalCount { get; set; }
-
-        public DisplayUsersViewModel()
-        {
-            NumPage = 1;
-            NumItemsPerPage = 5;
-        }
     }
 }

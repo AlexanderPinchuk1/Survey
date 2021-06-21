@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
+using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
-using X.PagedList;
 
 namespace iTechArt.Survey.Foundation
 {
@@ -16,22 +15,16 @@ namespace iTechArt.Survey.Foundation
         
         public Task<IdentityResult> AddUserAsync(User user, string password);
 
-        public Task<IdentityResult> AddUserClaimAsync(User user, Claim claim);
+        public Task<IdentityResult> AddUserRoleAndClaimAsync(User user, string role);
 
-        public Task<IdentityResult> AddUserToRoleAsync(User user, string role);
+        public Task<List<UserInfo>> GetUsersInfoForPageAsync(int pageNumber, int itemsCountPerPage);
 
-        public Task<IPagedList<User>> GetUsersPagedListAsync(int numPages, int numItemsPerPage);
-
-        public Task<User> FindUserByIdAsyncOrReturnNull(string id);
+        public Task<User> FindUserByIdAsyncOrReturnNull(Guid id);
 
         public Task<int> GetUsersTotalCountAsync();
 
         public Task<string> GetUserRoleAsync(User user);
 
-        public List<string> GetAllRoles();
-
-        public int ValidateNumberOfItemsPerPage(int numItemsPerPage);
-
-        public int ValidateNumberOfPages(int numPages, int numItemsPerPage, int usersTotalCount);
+        public Task<List<string>> GetAllRoles();
     }
 }

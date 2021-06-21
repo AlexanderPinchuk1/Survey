@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using X.PagedList;
 
 namespace iTechArt.Survey.Foundation
 {
@@ -24,9 +24,9 @@ namespace iTechArt.Survey.Foundation
         }
 
 
-        public async Task<User> FindUserByIdAsyncOrReturnNull(string id)
+        public async Task<User> FindUserByIdAsyncOrReturnNull(Guid id)
         {
-            return await _userManager.FindByIdAsync(id);
+            return await _userManager.FindByIdAsync(Convert.ToString(id));
         }
 
         public async Task<IdentityResult> EditUserAsync(User user, string role, string displayName)
@@ -37,16 +37,11 @@ namespace iTechArt.Survey.Foundation
                 await _userManager.AddToRoleAsync(user, role);
             }
 
-            if (displayName == user.DisplayName)
-            {
-                return await _userManager.UpdateAsync(user);
-            }
-
             user.DisplayName = displayName;
 
             await _userManager.ReplaceClaimAsync(user, (await _userManager.GetClaimsAsync(user)).First(claim => claim.Type == "DisplayName"),
-                    new Claim("DisplayName", user.DisplayName));
-
+                new Claim("DisplayName", user.DisplayName));
+    
             return await _userManager.UpdateAsync(user);
         }
 
@@ -60,9 +55,9 @@ namespace iTechArt.Survey.Foundation
             return (await _userManager.GetRolesAsync(user)).First();
         }
 
-        public List<string> GetAllRoles()
+        public async Task<List<string>> GetAllRoles()
         {
-            return _roleManager.Roles.Select(role => role.Name).ToList();
+            return await _roleManager.Roles.Select(role => role.Name).ToListAsync();
         }
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
@@ -70,14 +65,11 @@ namespace iTechArt.Survey.Foundation
             return await _userManager.CreateAsync(user, password);
         }
 
-        public async Task<IdentityResult> AddUserToRoleAsync(User user, string role)
+        public async Task<IdentityResult> AddUserRoleAndClaimAsync(User user, string role)
         {
-            return await _userManager.AddToRoleAsync(user, role);
-        }
-
-        public async Task<IdentityResult> AddUserClaimAsync(User user, Claim claim)
-        {
-            return await _userManager.AddClaimAsync(user, claim);
+            await _userManager.AddToRoleAsync(user, role);
+            
+            return await _userManager.AddClaimAsync(user, new Claim("DisplayName", user.DisplayName));
         }
 
         public async Task<int> GetUsersTotalCountAsync()
@@ -85,12 +77,34 @@ namespace iTechArt.Survey.Foundation
            return await _userManager.Users.CountAsync();
         }
 
-        public async Task<IPagedList<User>> GetUsersPagedListAsync(int numPages, int numItemsPerPage)
+        public async Task<List<UserInfo>> GetUsersInfoForPageAsync(int pageNumber, int itemsCountPerPage)
         {
-           return await _userManager.Users.ToPagedListAsync(numPages, numItemsPerPage);
+            itemsCountPerPage = ValidateNumberOfItemsPerPage(itemsCountPerPage);
+            var usersTotalCount = await GetUsersTotalCountAsync();
+            pageNumber = ValidateNumberOfPages(pageNumber, itemsCountPerPage, usersTotalCount);
+
+            var users = await _userManager.Users.Skip(itemsCountPerPage * pageNumber).Take(itemsCountPerPage).ToListAsync();
+
+            var usersInfo = new List<UserInfo>();
+            foreach (var user in users)
+            {
+                var role = await GetUserRoleAsync(user);
+
+                usersInfo.Add(new UserInfo()
+                {
+                    Id = user.Id,
+                    Role = role,
+                    DisplayName = user.DisplayName,
+                    RegistrationDateTime = user.RegistrationDateTime,
+                    CreatedSurveys = 0,
+                    CompletedSurveys = 0,
+                });
+            }
+
+            return usersInfo;
         }
 
-        public int ValidateNumberOfItemsPerPage(int numItemsPerPage)
+        private static int ValidateNumberOfItemsPerPage(int numItemsPerPage)
         {
             numItemsPerPage = numItemsPerPage switch
             {
@@ -102,11 +116,11 @@ namespace iTechArt.Survey.Foundation
             return numItemsPerPage;
         }
 
-        public int ValidateNumberOfPages(int numPages,int numItemsPerPage, int usersTotalCount)
+        private static int ValidateNumberOfPages(int numPages,int numItemsPerPage, int usersTotalCount)
         {
-            if (numPages < 1)
+            if (numPages < 0)
             {
-                numPages = 1;
+                numPages = 0;
             }
             else if (numPages > Math.Ceiling((double)usersTotalCount / numItemsPerPage))
             {
