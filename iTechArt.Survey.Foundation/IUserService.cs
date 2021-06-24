@@ -17,14 +17,12 @@ namespace iTechArt.Survey.Foundation
 
         public Task<IdentityResult> AddUserRoleAndClaimAsync(User user, string role);
 
-        public Task<List<UserInfo>> GetUsersInfoForPageAsync(int pageNumber, int itemsCountPerPage);
+        public Task<List<UserInfo>> GetUsersInfoForPageAsync(Pagination pagination);
 
         public Task<User> FindUserByIdAsyncOrReturnNull(Guid id);
 
-        public Task<int> GetUsersTotalCountAsync();
-
         public Task<string> GetUserRoleAsync(User user);
 
-        public Task<List<string>> GetAllRoles();
+        public Task<Pagination> GetEditedPagination(Pagination pagination);
     }
 }

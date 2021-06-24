@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;
 using iTechArt.Survey.Foundation;
 using iTechArt.Survey.WebApp.Models;
@@ -41,7 +42,6 @@ namespace iTechArt.Survey.WebApp.Controllers
                 DisplayName = user.DisplayName,
                 PasswordHash = user.PasswordHash,
                 Role = await _userService.GetUserRoleAsync(user),
-                AllRoles = await _userService.GetAllRoles()
             };
 
             return View(model);
@@ -106,35 +106,18 @@ namespace iTechArt.Survey.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DisplayUsers(int? pageNumber, int? itemCountPerPage)
+        public async Task<IActionResult> DisplayUsers(Pagination pagination)
         {
-            var itemCount = itemCountPerPage ?? 5;
-            var page = pageNumber ?? 0;
-
-            itemCount = itemCount switch
+            if (!ModelState.IsValid)
             {
-                < 1 => 1,
-                > 100 => 100,
-                _ => itemCount
-            };
-
-            var usersTotalCount = await _userService.GetUsersTotalCountAsync();
-
-            if (page < 0)
-            {
-                page = 0;
-            }
-            else if (page > Math.Ceiling((double)usersTotalCount / itemCount) - 1)
-            {
-                page = (int)Math.Ceiling((double)usersTotalCount / itemCount) - 1;
+                return BadRequest();
             }
 
+            pagination = await _userService.GetEditedPagination(pagination);
             var model = new DisplayUsersViewModel()
             {
-                ItemCountPerPage = itemCount,
-                PageNumber = page,
-                TotalCount = await _userService.GetUsersTotalCountAsync(),
-                UsersInfo = await _userService.GetUsersInfoForPageAsync(page, itemCount)
+                Pagination = pagination,
+                UsersInfo = await _userService.GetUsersInfoForPageAsync(pagination)
             };
 
             return View(model);
@@ -143,18 +126,13 @@ namespace iTechArt.Survey.WebApp.Controllers
         [HttpPost]
         public IActionResult DisplayUsers(DisplayUsersViewModel model)
         {
-            return RedirectToAction("DisplayUsers",new {pageNumber = model.PageNumber, itemCountPerPage = model.ItemCountPerPage});
+            return RedirectToAction("DisplayUsers", model.Pagination);
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddUser()
+        public IActionResult AddUser()
         {
-            var model = new AddUserViewModel()
-            {
-                AllRoles = await _userService.GetAllRoles()
-            };
-
-            return View(model);
+            return View();
         }
 
         [HttpPost]
@@ -182,6 +160,11 @@ namespace iTechArt.Survey.WebApp.Controllers
             }
 
             return View();
+        }
+
+        public IActionResult CheckRole(string role)
+        {
+            return Json(role is Common.Role.User or Common.Role.Admin);
         }
     }
 }

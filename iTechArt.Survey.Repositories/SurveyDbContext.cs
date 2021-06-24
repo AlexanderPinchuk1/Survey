@@ -1,14 +1,12 @@
 ﻿using System;
-using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;
 using iTechArt.Survey.Repositories.Extensions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace iTechArt.Survey.Repositories
 {
-    internal class SurveyDbContext : IdentityDbContext<User, Role, Guid>
+    public class SurveyDbContext : IdentityDbContext<User, Role, Guid>
     {
         public SurveyDbContext(DbContextOptions<SurveyDbContext> options)
             : base(options)

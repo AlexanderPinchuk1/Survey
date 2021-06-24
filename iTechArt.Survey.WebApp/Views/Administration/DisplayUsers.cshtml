@@ -47,27 +47,27 @@
         }
     </table>
     <div class="table-footer">
-        <p>Showing @(((Model.PageNumber) * Model.ItemCountPerPage) + 1) to @if ((Model.PageNumber + 1) * Model.ItemCountPerPage < Model.TotalCount)
+        <p>Showing @(((Model.Pagination.PageNumber) * Model.Pagination.ItemCountPerPage) + 1) to @if ((Model.Pagination.PageNumber + 1) * Model.Pagination.ItemCountPerPage < Model.Pagination.TotalCount)
                                                                            {
-                                                                               @((Model.PageNumber + 1) * Model.ItemCountPerPage)
+                                                                               @((Model.Pagination.PageNumber + 1) * Model.Pagination.ItemCountPerPage)
                                                                            }
                                                                            else
                                                                            {
-                                                                               @Model.TotalCount   
+                                                                               @Model.Pagination.TotalCount   
                                                                            }
-            of @Model.TotalCount users</p>
-        <p>Page @(Model.PageNumber + 1) of @(Math.Ceiling((double) Model.TotalCount/ Model.ItemCountPerPage))</p>
+            of @Model.Pagination.TotalCount users</p>
+        <p>Page @(Model.Pagination.PageNumber + 1) of @(Math.Ceiling((double) Model.Pagination.TotalCount / Model.Pagination.ItemCountPerPage))</p>
         <form asp-action="DisplayUsers" asp-controller="Administration">
             <div class="num-items-per-page-main-block">
-                <label class="num-items-per-page-label" asp-for="ItemCountPerPage"></label>
+                <label class="num-items-per-page-label" asp-for="Pagination.ItemCountPerPage"></label>
                 <div class="num-items-per-page-block">
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" min="1" max="100" asp-for="ItemCountPerPage" />
+                        <input type="number" class="form-control" min="1" max="100" asp-for="Pagination.ItemCountPerPage" />
                     </div>
                 </div>
             </div>
             <div class="pages-block">
-                <input asp-for="PageNumber" id="NumPage" type="hidden" value="@Model.PageNumber"/>
+                <input asp-for="Pagination.PageNumber" id="NumPage" type="hidden" value="@Model.Pagination.PageNumber"/>
                 <ul class="pagination">
                     <li class="page-item">
                         <button class="page-link" onclick="changePage(-2)"><<</button>

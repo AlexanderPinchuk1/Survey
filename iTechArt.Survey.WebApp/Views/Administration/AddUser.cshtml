@@ -1,4 +1,6 @@
-﻿@model iTechArt.Survey.WebApp.Models.AddUserViewModel
+﻿@using static iTechArt.Common.Role
+
+@model iTechArt.Survey.WebApp.Models.AddUserViewModel
 
 @{
     ViewData["Title"] = "Add user";
@@ -16,10 +18,8 @@
             <div class="form-group">
                 <label asp-for="Role"></label>
                 <select asp-for="Role" class="form-select">
-                    @foreach (var role in Model.AllRoles)
-                    {
-                        <option selected value=@role>@role</option>
-                    }
+                    <option  value=@Role.User>@Role.User</option>
+                    <option selected value=@Role.Admin>@Role.Admin</option>
                 </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>

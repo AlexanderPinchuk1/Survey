@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace iTechArt.Survey.WebApp.Models
 {
@@ -25,9 +26,7 @@ namespace iTechArt.Survey.WebApp.Models
 
         [Required]
         [Display(Name = "Role")]
+        [Remote(action: "CheckRole", controller: "Administration", ErrorMessage = "Wrong role")]
         public string Role { get; set; }
-
-        [Required]
-        public List<string> AllRoles { get; set; }
     }
 }
