@@ -336,9 +336,9 @@ ul.pagination li a:focus {
     margin: 25px 150px 0 150px;
 }
 
-.delete-page-block {
+.edit-page-block {
     margin: 15px 15px 15px 0;
-    padding: 0 0 0 600px;
+    height: 50px;
 }
 
 .question-checkbox-block {
@@ -358,4 +358,26 @@ ul.pagination li a:focus {
 .edit-question-description {
     float: left;
     width: 538px;
+}
+
+.pages-near-progress-bar {
+    float: left;
+    margin: 6px 20px 0 0;
+}
+
+.progress-block {
+    float: left;
+    margin-top: 10px;
+    width: 250px
+}
+
+.edit-name-page {
+    float: left;
+    margin: 0 220px 20px 20px;
+    width: 350px;
+}
+
+.edit-page-icon {
+    float: left;
+    margin: 3px 0 15px 0;
 }

@@ -1,4 +1,5 @@
 ﻿using iTechArt.Survey.Domain.Question;
+using iTechArt.Survey.Domain.Survey;
 
 namespace iTechArt.Survey.WebApp.Models
 {
@@ -6,7 +7,7 @@ namespace iTechArt.Survey.WebApp.Models
     {
         public Question Question { get; set; }
 
-        public bool IsQuestionHaveNumber { get; set; }
+        public SurveyTypes SurveyTypes { get; set; }
 
         public int Number { get; set; }
     }

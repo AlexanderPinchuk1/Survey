@@ -103,5 +103,12 @@ namespace iTechArt.Survey.WebApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult ChangePageName(Guid pageId, string pageName)
+        {
+            _pagesService.ChangePageName(pageId, pageName);
+
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -7,7 +7,7 @@
     <div class="card" style="width: 37.5rem;" id="@Model.QuestionWithAnswers.Id">
         <div class="card-body">
             <form>
-                <partial name="Questions/Shared/HeaderEditingQuestionPartial"  model="@(new QuestionViewModel() { IsQuestionHaveNumber = Model.IsQuestionHaveNumber, Number = Model.Number, Question = Model.QuestionWithAnswers}) " />
+                <partial name="Questions/Shared/HeaderEditingQuestionPartial"  model="@(new QuestionViewModel() { SurveyTypes = Model.SurveyTypes, Number = Model.Number, Question = Model.QuestionWithAnswers}) " />
 
                 @foreach (var answer in Model.QuestionWithAnswers.Answers)
                 {
@@ -19,7 +19,7 @@
                     </div>
                 }
 
-                <partial name="Questions/Shared/FooterEditingQuestionPartial"  model="@(new QuestionViewModel() { IsQuestionHaveNumber = Model.IsQuestionHaveNumber, Number = Model.Number, Question = Model.QuestionWithAnswers}) " />
+                <partial name="Questions/Shared/FooterEditingQuestionPartial"  model="@(new QuestionViewModel() { SurveyTypes = Model.SurveyTypes, Number = Model.Number, Question = Model.QuestionWithAnswers}) " />
             </form>
         </div>
     </div>
@@ -28,7 +28,7 @@ else
 {
     <div class="card" style="width: 37.5rem; border: 0;" id="@Model.QuestionWithAnswers.Id">
         <div class="card-body">
-            <partial name="Questions/Shared/HeaderQuestionPartial"  model="@(new QuestionViewModel() { IsQuestionHaveNumber = Model.IsQuestionHaveNumber, Number = Model.Number, Question = Model.QuestionWithAnswers}) " />
+            <partial name="Questions/Shared/HeaderQuestionPartial"  model="@(new QuestionViewModel() { SurveyTypes = Model.SurveyTypes, Number = Model.Number, Question = Model.QuestionWithAnswers}) " />
 
             @foreach (var answer in Model.QuestionWithAnswers.Answers)
             {

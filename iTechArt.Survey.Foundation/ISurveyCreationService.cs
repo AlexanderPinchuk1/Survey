@@ -35,5 +35,7 @@ namespace iTechArt.Survey.Foundation
         void DeletePage(Guid pageId);
 
         void ChangeQuestionPosition(Guid questionId ,bool up);
+
+        void ChangePageName(Guid pageId, string pageName);
     }
 }

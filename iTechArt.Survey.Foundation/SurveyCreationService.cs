@@ -40,7 +40,7 @@ namespace iTechArt.Survey.Foundation
                     Questions = new List<Question>(),
                 }
             };
-            _activePage = Guid.Empty;
+            _activePage = _pages[0].Id;
             _activeQuestion = Guid.Empty;
         }
 
@@ -240,6 +240,17 @@ namespace iTechArt.Survey.Foundation
             var tmp = list[indexA];
             list[indexA] = list[indexB];
             list[indexB] = tmp;
+        }
+
+        public void ChangePageName(Guid pageId, string pageName)
+        {
+            var pages = _pages.Where(page => page.Id == pageId).ToList();
+            foreach (var page in pages)
+            {
+                page.Name = pageName;
+            }
+
+            _activePage = pageId;
         }
 
         public void SetEditQuestion(Guid questionId)

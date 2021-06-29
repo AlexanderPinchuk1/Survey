@@ -1,4 +1,5 @@
 ﻿using iTechArt.Survey.Domain;
+using iTechArt.Survey.Domain.Survey;
 
 namespace iTechArt.Survey.WebApp.Models
 {
@@ -6,6 +7,6 @@ namespace iTechArt.Survey.WebApp.Models
     {
         public Page Page { get; set; }
 
-        public bool IsQuestionsHaveNumber { get; set; }
+        public SurveyTypes SurveyTypes { get; set; }
     }
 }

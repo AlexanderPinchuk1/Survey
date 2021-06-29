@@ -1,9 +1,9 @@
 ﻿@model iTechArt.Survey.WebApp.Models.QuestionViewModel
 
 <div class="question-block">
-    @if (Model.Question.IsRequired)
+    @if (Model.Question.IsRequired && Model.SurveyTypes.IsRequiredFieldsAsterisks)
     {
-        if (Model.IsQuestionHaveNumber)
+        if (Model.SurveyTypes.IsQuestionHaveNumber)
         {
             <h5>@Model.Number. *@Model.Question.Description</h5>
 
@@ -15,7 +15,7 @@
     }
     else
     {
-        if (Model.IsQuestionHaveNumber)
+        if (Model.SurveyTypes.IsQuestionHaveNumber)
         {
             <h5>@Model.Number. @Model.Question.Description</h5>
 
