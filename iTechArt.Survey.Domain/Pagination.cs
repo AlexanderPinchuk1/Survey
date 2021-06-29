@@ -10,17 +10,12 @@ namespace iTechArt.Survey.Domain
         public int ItemCountPerPage { get; set; }
 
         [Required]
-        public int PageNumber { get; set; }
-
-        [Required]
-        public int TotalCount { get; set; }
-
+        public int PageIndex { get; set; }
 
         public Pagination()
         {
             ItemCountPerPage = 5;
-            PageNumber = 0;
-            TotalCount = 0;
+            PageIndex = 0;
         }
     }
 }

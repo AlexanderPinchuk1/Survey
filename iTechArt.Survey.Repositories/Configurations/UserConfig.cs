@@ -9,6 +9,7 @@ namespace iTechArt.Survey.Repositories.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(user => user.Id).HasDefaultValueSql("newsequentialid()");
+            builder.HasIndex(user => user.Email).IsUnique();
             builder.ToTable(name: "Users");
         }
     }

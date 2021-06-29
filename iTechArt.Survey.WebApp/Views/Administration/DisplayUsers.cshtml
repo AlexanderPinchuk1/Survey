@@ -1,4 +1,4 @@
-﻿@model iTechArt.Survey.WebApp.Models.DisplayUsersViewModel
+﻿@model iTechArt.Survey.Domain.PagedEntities<iTechArt.Survey.Domain.UserInfo>
 
 <partial name="_MenuPartial" />
 <div class="add-user-block">
@@ -15,7 +15,7 @@
             <th scope="col">Actions</th>
         </tr>
         </thead>
-        @foreach (var user in Model.UsersInfo)
+        @foreach (var user in Model.Entities)
         {
             <tr class="users-columns">
                 <td style="width: 35%">
@@ -47,27 +47,27 @@
         }
     </table>
     <div class="table-footer">
-        <p>Showing @(((Model.Pagination.PageNumber) * Model.Pagination.ItemCountPerPage) + 1) to @if ((Model.Pagination.PageNumber + 1) * Model.Pagination.ItemCountPerPage < Model.Pagination.TotalCount)
+        <p>Showing @(((Model.PageIndex) * Model.ItemCountPerPage) + 1) to @if ((Model.PageIndex + 1) * Model.ItemCountPerPage < Model.TotalCount)
                                                                            {
-                                                                               @((Model.Pagination.PageNumber + 1) * Model.Pagination.ItemCountPerPage)
+                                                                               @((Model.PageIndex + 1) * Model.ItemCountPerPage)
                                                                            }
                                                                            else
                                                                            {
-                                                                               @Model.Pagination.TotalCount   
+                                                                               @Model.TotalCount   
                                                                            }
-            of @Model.Pagination.TotalCount users</p>
-        <p>Page @(Model.Pagination.PageNumber + 1) of @(Math.Ceiling((double) Model.Pagination.TotalCount / Model.Pagination.ItemCountPerPage))</p>
+            of @Model.TotalCount users</p>
+        <p>Page @(Model.PageIndex + 1) of @(Math.Ceiling((double) Model.TotalCount / Model.ItemCountPerPage))</p>
         <form asp-action="DisplayUsers" asp-controller="Administration">
             <div class="num-items-per-page-main-block">
-                <label class="num-items-per-page-label" asp-for="Pagination.ItemCountPerPage"></label>
+                <label class="num-items-per-page-label" asp-for="ItemCountPerPage"></label>
                 <div class="num-items-per-page-block">
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" min="1" max="100" asp-for="Pagination.ItemCountPerPage" />
+                        <input type="number" name="itemCountPerPage" class="form-control" min="1" max="100" asp-for="ItemCountPerPage" />
                     </div>
                 </div>
             </div>
             <div class="pages-block">
-                <input asp-for="Pagination.PageNumber" id="NumPage" type="hidden" value="@Model.Pagination.PageNumber"/>
+                <input asp-for="PageIndex" name="pageIndex" id="NumPage" type="hidden" value="@Model.PageIndex"/>
                 <ul class="pagination">
                     <li class="page-item">
                         <button class="page-link" onclick="changePage(-2)"><<</button>

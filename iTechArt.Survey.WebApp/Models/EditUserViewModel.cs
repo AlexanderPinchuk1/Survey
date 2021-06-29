@@ -21,10 +21,6 @@ namespace iTechArt.Survey.WebApp.Models
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Password Hash")]
-        public string PasswordHash { get; set; }
-
-        [Required]
         [Display(Name = "Role")]
         [Remote(action: "CheckRole", controller: "Administration", ErrorMessage = "Wrong role")]
         public string Role { get; set; }

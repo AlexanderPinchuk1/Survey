@@ -14,10 +14,6 @@ namespace iTechArt.Survey.WebApp.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<AccountController> _logger;
-      
-        [TempData]
-        public string ErrorMessage { get; set; }
-
         
         public AccountController(SignInManager<User> signInManager, 
                                  ILogger<AccountController> logger,
@@ -32,11 +28,6 @@ namespace iTechArt.Survey.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
-            if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
-            }
-
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             return View();

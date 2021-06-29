@@ -17,12 +17,12 @@ namespace iTechArt.Survey.Foundation
 
         public Task<IdentityResult> AddUserRoleAndClaimAsync(User user, string role);
 
-        public Task<List<UserInfo>> GetUsersInfoForPageAsync(Pagination pagination);
+        public Task<PagedEntities<UserInfo>> GetUsersInfoForPageAsync(int pageIndex, int itemCountPerPage);
 
         public Task<User> FindUserByIdAsyncOrReturnNull(Guid id);
 
         public Task<string> GetUserRoleAsync(User user);
 
-        public Task<Pagination> GetEditedPagination(Pagination pagination);
+        public Task<bool> IsEmailUniqueAsync(Guid userId, string email);
     }
 }

@@ -58,13 +58,9 @@ namespace iTechArt.Survey.Foundation
             return (await _userManager.GetRolesAsync(user)).First();
         }
 
-        public async Task<Pagination> GetEditedPagination(Pagination pagination)
+        public async Task<bool> IsEmailUniqueAsync(Guid userId, string email)
         {
-            pagination.ItemCountPerPage = ValidateNumberOfItemsPerPage(pagination.ItemCountPerPage);
-            pagination.TotalCount = await GetUsersTotalCountAsync();
-            pagination.PageNumber = ValidateNumberOfPages(pagination);
-
-            return pagination;
+            return !await _userManager.Users.Where(user => user.Id != userId && user.Email == email).AnyAsync();
         }
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
@@ -84,11 +80,15 @@ namespace iTechArt.Survey.Foundation
            return await _userManager.Users.CountAsync();
         }
 
-        public async Task<List<UserInfo>> GetUsersInfoForPageAsync(Pagination pagination)
+        public async Task<PagedEntities<UserInfo>> GetUsersInfoForPageAsync(int pageIndex, int itemCountPerPage)
         {
+            itemCountPerPage = ValidateNumberOfItemsPerPage(itemCountPerPage);
+            var totalCount = await GetUsersTotalCountAsync();
+            pageIndex = ValidateNumberOfPages(pageIndex,  itemCountPerPage,  totalCount);
+
             var users = await _surveyDbContext.Users
-                .Skip(pagination.ItemCountPerPage * pagination.PageNumber)
-                .Take(pagination.ItemCountPerPage)
+                .Skip(itemCountPerPage * pageIndex)
+                .Take(itemCountPerPage)
                 .Join(_surveyDbContext.UserRoles, user => user.Id,
                     userRole => userRole.UserId,
                     (user, userRole) => new
@@ -107,15 +107,15 @@ namespace iTechArt.Survey.Foundation
                         Role = role.Name
                     }).ToListAsync();
 
-            return users.Select(user => new UserInfo()
-                {
-                    Id = user.Id,
-                    Role = user.Role,
-                    DisplayName = user.DisplayName,
-                    RegistrationDateTime = user.RegistrationDateTime,
-                    CreatedSurveys = 0,
-                    CompletedSurveys = 0,
-                }).ToList();
+            return new PagedEntities<UserInfo>(pageIndex, itemCountPerPage, totalCount, users.Select(user => new UserInfo()
+            {
+                Id = user.Id,
+                Role = user.Role,
+                DisplayName = user.DisplayName,
+                RegistrationDateTime = user.RegistrationDateTime,
+                CreatedSurveys = 0,
+                CompletedSurveys = 0,
+            }).ToList());
         }
 
         private static int ValidateNumberOfItemsPerPage(int numItemsPerPage)
@@ -130,18 +130,18 @@ namespace iTechArt.Survey.Foundation
             return numItemsPerPage;
         }
 
-        private static int ValidateNumberOfPages(Pagination pagination)
+        private static int ValidateNumberOfPages(int pageIndex, int itemCountPerPage, int totalCount)
         {
-            if (pagination.PageNumber < 0)
+            if (pageIndex < 0)
             {
-                pagination.PageNumber = 0;
+                pageIndex = 0;
             }
-            else if (pagination.PageNumber > Math.Ceiling((double)pagination.TotalCount / pagination.ItemCountPerPage) - 1)
+            else if (pageIndex > Math.Ceiling((double)totalCount / itemCountPerPage) - 1)
             {
-                pagination.PageNumber = (int)Math.Ceiling((double)pagination.TotalCount / pagination.ItemCountPerPage) - 1;
+                pageIndex = (int)Math.Ceiling((double)totalCount / itemCountPerPage) - 1;
             }
 
-            return pagination.PageNumber;
+            return pageIndex;
         }
     }
 }

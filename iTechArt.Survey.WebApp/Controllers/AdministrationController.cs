@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;
 using iTechArt.Survey.Foundation;
 using iTechArt.Survey.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Internal.Account.Manage;
 
 namespace iTechArt.Survey.WebApp.Controllers
 {
@@ -40,7 +42,6 @@ namespace iTechArt.Survey.WebApp.Controllers
                 Id = user.Id,
                 Email = user.Email,
                 DisplayName = user.DisplayName,
-                PasswordHash = user.PasswordHash,
                 Role = await _userService.GetUserRoleAsync(user),
             };
 
@@ -50,6 +51,11 @@ namespace iTechArt.Survey.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             if (model.Id == Guid.Empty)
             {
                 return BadRequest();
@@ -60,10 +66,16 @@ namespace iTechArt.Survey.WebApp.Controllers
             {
                 return NotFound();
             }
-            
-            user.Email = model.Email;
-            user.PasswordHash = model.PasswordHash;
 
+            if (!await _userService.IsEmailUniqueAsync(model.Id, model.Email))
+            {
+                ModelState.AddModelError(string.Empty, "Email not unique!");
+
+                return View(model);
+            }
+
+            user.Email = model.Email;
+            
             var result = await _userService.EditUserAsync(user, model.Role, model.DisplayName);
             if (result.Succeeded)
             {
@@ -113,20 +125,19 @@ namespace iTechArt.Survey.WebApp.Controllers
                 return BadRequest();
             }
 
-            pagination = await _userService.GetEditedPagination(pagination);
-            var model = new DisplayUsersViewModel()
-            {
-                Pagination = pagination,
-                UsersInfo = await _userService.GetUsersInfoForPageAsync(pagination)
-            };
+            var model = await _userService.GetUsersInfoForPageAsync(pagination.PageIndex, pagination.ItemCountPerPage);
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult DisplayUsers(DisplayUsersViewModel model)
+        public IActionResult DisplayUsers(int pageIndex, int itemCountPerPage)
         {
-            return RedirectToAction("DisplayUsers", model.Pagination);
+            return RedirectToAction("DisplayUsers", new Pagination()
+            {
+                PageIndex = pageIndex,
+                ItemCountPerPage = itemCountPerPage
+            });
         }
 
         [HttpGet]
@@ -138,6 +149,11 @@ namespace iTechArt.Survey.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(AddUserViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var user = new User
             {
                 DisplayName = model.DisplayName, 
