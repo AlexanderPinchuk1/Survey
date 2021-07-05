@@ -1,5 +1,4 @@
-﻿
-namespace iTechArt.Survey.Domain
+﻿namespace iTechArt.Survey.Domain
 {
     public class Settings
     {

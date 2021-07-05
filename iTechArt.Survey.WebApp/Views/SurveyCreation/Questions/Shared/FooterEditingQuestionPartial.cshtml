@@ -1,0 +1,9 @@
+﻿@model iTechArt.Survey.WebApp.Models.QuestionViewModel
+
+<div class="question-buttons-block">
+    <div class="question-button-save">
+        <input type="hidden" asp-for="Question.Id">
+        <button type="submit" class="btn btn-primary" asp-action="EditQuestionWithAnswers" asp-controller="SurveyCreation">Save</button>
+    </div>
+    <a class="btn btn-secondary" asp-action="CancelEditQuestion" asp-controller="SurveyCreation" asp-route-questionId="@Model.Question.Id">Cancel</a>
+</div>

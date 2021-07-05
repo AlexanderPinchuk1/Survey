@@ -1,0 +1,44 @@
+﻿@using iTechArt.Survey.WebApp.Models
+@using iTechArt.Survey.Domain.Question
+
+@model iTechArt.Survey.WebApp.Models.OutputQuestionsViewModel
+
+@foreach (var questionInList in Model.Page.Questions)
+{
+    <div class="main-question-card">
+    @switch (questionInList)
+    {
+        case QuestionWithAnswers questionWithAnswers when questionWithAnswers.Type == QuestionType.WithOneAnswer:
+            {
+                <partial name="Questions/QuestionWithOneAnswer" model="@(new QuestionWithAnswersViewModel() {IsQuestionHaveNumber = Model.IsQuestionsHaveNumber, Number = Model.Page.Questions.IndexOf(questionInList) + 1, QuestionWithAnswers = questionWithAnswers})" />
+                break;
+            }
+        case QuestionWithAnswers questionWithAnswers when questionWithAnswers.Type == QuestionType.WithManyAnswers:
+            {
+                <partial name="Questions/QuestionWithManyAnswers" model="@(new QuestionWithAnswersViewModel() {IsQuestionHaveNumber = Model.IsQuestionsHaveNumber, Number = Model.Page.Questions.IndexOf(questionInList) + 1, QuestionWithAnswers = questionWithAnswers})" />
+                break;
+            }
+        case Question question when question.Type == QuestionType.WithTextAreaEditor:
+            {
+                <partial name="Questions/QuestionWithTextAreaEditor" model="@(new QuestionViewModel() {IsQuestionHaveNumber = Model.IsQuestionsHaveNumber, Number = Model.Page.Questions.IndexOf(questionInList) + 1, Question = question})" />
+                break;
+            }
+        case Question question when question.Type == QuestionType.WithFileInput:
+            {
+                <partial name="Questions/QuestionWithFileInput" model="@(new QuestionViewModel() {IsQuestionHaveNumber = Model.IsQuestionsHaveNumber, Number = Model.Page.Questions.IndexOf(questionInList) + 1, Question = question})" />
+                break;
+            }
+        case Question question when question.Type == QuestionType.WithRating:
+            {
+                <partial name="Questions/QuestionWithRating" model="@(new QuestionViewModel() {IsQuestionHaveNumber = Model.IsQuestionsHaveNumber, Number = Model.Page.Questions.IndexOf(questionInList) + 1, Question = question})" />
+                break;
+            }
+        case Question question when question.Type == QuestionType.WithScale:
+            {
+                <partial name="Questions/QuestionWithScale" model="@(new QuestionViewModel() {IsQuestionHaveNumber = Model.IsQuestionsHaveNumber, Number = Model.Page.Questions.IndexOf(questionInList) + 1, Question = question})" />
+                break;
+            }
+    }
+    </div>
+}
+

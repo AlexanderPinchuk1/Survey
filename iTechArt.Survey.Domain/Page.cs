@@ -19,7 +19,7 @@ namespace iTechArt.Survey.Domain
         public List<Question> Questions { get; set; }
     }
 
-    public class PageConfig: IEntityTypeConfiguration<Page>
+    public class PageConfig : IEntityTypeConfiguration<Page>
     {
         public void Configure(EntityTypeBuilder<Page> builder)
         {
