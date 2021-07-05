@@ -10,7 +10,7 @@ using iTechArt.Survey.Repositories;
 namespace iTechArt.Survey.Repositories.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20210616113432_CreateDatabase")]
+    [Migration("20210613170858_CreateDatabase")]
     partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

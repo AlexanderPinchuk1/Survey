@@ -1,5 +1,6 @@
 using System;
 using iTechArt.Survey.Domain;
+using iTechArt.Survey.Foundation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,8 @@ namespace iTechArt.Survey.WebApp
             });
 
             services.Configure<Settings>(Configuration.GetSection("Settings"));
+
+            services.AddTransient<IUserService, UserService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

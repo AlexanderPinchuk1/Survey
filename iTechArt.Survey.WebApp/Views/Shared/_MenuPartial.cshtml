@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using iTechArt.Survey.Domain.Identity
+
+<div class="widget">
+    <ul>
+        @if (User.IsInRole("Admin"))
+        {
+            <li><a asp-controller="Administration" asp-action="DisplayUsers" class="btn btn-secondary btn-block">Users</a></li>
+        }
+    </ul>
+</div>
