@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using iTechArt.Survey.Domain.Identity;
+using iTechArt.Survey.Domain.Questions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -70,6 +72,40 @@ namespace iTechArt.Survey.Repositories.Extensions
                 new IdentityUserRole<Guid>() { RoleId = userRole.Id, UserId = user.Id },
                 new IdentityUserRole<Guid>() { RoleId = adminRole.Id, UserId = admin.Id }
             );
+
+            modelBuilder.Entity<QuestionType>().HasData(new List<QuestionType>()
+            {
+                new()
+                {
+                    Id = 1,
+                    Name = "Text"
+                },
+                new()
+                {
+                    Id = 2,
+                    Name = "File"
+                },
+                new()
+                {
+                    Id = 3,
+                    Name = "OneAnswer"
+                },
+                new()
+                {
+                    Id = 4,
+                    Name = "ManyAnswers"
+                },
+                new()
+                {
+                    Id = 5,
+                    Name = "Scale"
+                },
+                new()
+                {
+                    Id = 6,
+                    Name = "Rating"
+                }
+            });
         }
     }
 }
