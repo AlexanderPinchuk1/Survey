@@ -19,9 +19,9 @@ namespace iTechArt.Survey.Repositories
 
         public DbSet<Question> Questions { get; set; }
 
-        public DbSet<QuestionType> QuestionTypes { get; set; }
+        public DbSet<QuestionTypeLookup> QuestionTypeLookups { get; set; }
 
-        public DbSet<UsersAnswer> UsersAnswers { get; set; }
+        public DbSet<UserAnswer> UserAnswers { get; set; }
 
 
         public SurveyDbContext(DbContextOptions<SurveyDbContext> options)
@@ -36,6 +36,8 @@ namespace iTechArt.Survey.Repositories
 
             modelBuilder.ApplyConfigurationsFromAssembly(
                 assembly: typeof(SurveyDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                assembly: typeof(Domain.Surveys.Survey).Assembly);
 
             modelBuilder.Seed();
         }

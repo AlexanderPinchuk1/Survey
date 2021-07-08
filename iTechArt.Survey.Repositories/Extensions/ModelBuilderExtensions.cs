@@ -73,36 +73,36 @@ namespace iTechArt.Survey.Repositories.Extensions
                 new IdentityUserRole<Guid>() { RoleId = adminRole.Id, UserId = admin.Id }
             );
 
-            modelBuilder.Entity<QuestionType>().HasData(new List<QuestionType>()
+            modelBuilder.Entity<QuestionTypeLookup>().HasData(new List<QuestionTypeLookup>()
             {
                 new()
                 {
-                    Id = 1,
+                    Id = QuestionType.Text,
                     Name = "Text"
                 },
                 new()
                 {
-                    Id = 2,
+                    Id = QuestionType.File,
                     Name = "File"
                 },
                 new()
                 {
-                    Id = 3,
+                    Id = QuestionType.OneAnswer,
                     Name = "OneAnswer"
                 },
                 new()
                 {
-                    Id = 4,
+                    Id = QuestionType.ManyAnswers,
                     Name = "ManyAnswers"
                 },
                 new()
                 {
-                    Id = 5,
+                    Id = QuestionType.Scale,
                     Name = "Scale"
                 },
                 new()
                 {
-                    Id = 6,
+                    Id = QuestionType.Rating,
                     Name = "Rating"
                 }
             });

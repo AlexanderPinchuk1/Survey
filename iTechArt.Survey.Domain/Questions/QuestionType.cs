@@ -1,10 +1,12 @@
-﻿
-namespace iTechArt.Survey.Domain.Questions
+﻿namespace iTechArt.Survey.Domain.Questions
 {
-    public class QuestionType
+    public enum QuestionType
     {
-        public byte Id { get; set; }
-
-        public string Name { get; set; }
+        OneAnswer,
+        ManyAnswers,
+        Text,
+        File,
+        Rating,
+        Scale,
     }
 }

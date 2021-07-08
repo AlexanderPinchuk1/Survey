@@ -16,7 +16,7 @@ namespace iTechArt.Survey.Repositories.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -180,14 +180,14 @@ namespace iTechArt.Survey.Repositories.Migrations
                         new
                         {
                             Id = new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
-                            ConcurrencyStamp = "1ab35110-4954-4c57-8f24-f303eb438ba8",
+                            ConcurrencyStamp = "7897c104-5c91-414e-8847-0ca78aa2d1ec",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
-                            ConcurrencyStamp = "32208f27-ad96-4a59-a7ca-a2d2c81b61ca",
+                            ConcurrencyStamp = "406b38f6-ee27-415e-8c57-506a2033d103",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -274,16 +274,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fb8a4db1-5525-49e9-806b-f21c486ce42c",
+                            ConcurrencyStamp = "b59e3669-a0d9-45b9-8b95-975031552341",
                             DisplayName = "Admin",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEE6tA/nQXRG7V8DrfhYwmN6xjFT8+7ME0xyBz0cqiMYNIPEwfgQozBYBMABNJfTaEQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMIW5e3S4kc5ef8KcbndjsZJqYXl1/Hm04QWoRptEFTrkk54HDtnSX+2qSowegORdw==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 7, 6, 19, 37, 21, 385, DateTimeKind.Local).AddTicks(1385),
+                            RegistrationDateTime = new DateTime(2021, 7, 8, 17, 9, 21, 599, DateTimeKind.Local).AddTicks(3711),
                             SecurityStamp = "7d90869b-19c6-4cb0-8c74-790e8352fabe",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -292,16 +292,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "448ef47a-dbff-497b-a9a5-9552504d9734",
+                            ConcurrencyStamp = "7b3e0d83-efe8-4ce8-8e94-9a8dc823c2ce",
                             DisplayName = "User",
                             Email = "User@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEA02lMpUeQ3FLPDFhDwiNUdT5Ty+k2ZT5MDmZoJvIw656nzbVLMVWv1M/F8t0o17ww==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECIsvpMdXaKeuVoo+JWkXmsLQO7JuovaHN88I0xzgs7OAgjeK56JP556dCpnh+5Qeg==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 7, 6, 19, 37, 21, 385, DateTimeKind.Local).AddTicks(8157),
+                            RegistrationDateTime = new DateTime(2021, 7, 8, 17, 9, 21, 600, DateTimeKind.Local).AddTicks(337),
                             SecurityStamp = "4010b6f9-59e8-42b9-bf76-97c41907189b",
                             TwoFactorEnabled = false,
                             UserName = "User@gmail.com"
@@ -349,14 +349,14 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.Property<bool>("IsRequired")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Missed")
-                        .HasColumnType("int");
-
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
                     b.Property<Guid>("PageId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("QuestionType")
+                        .HasColumnType("int");
 
                     b.Property<byte>("QuestionTypeId")
                         .HasColumnType("tinyint");
@@ -365,17 +365,13 @@ namespace iTechArt.Survey.Repositories.Migrations
 
                     b.HasIndex("PageId");
 
-                    b.HasIndex("QuestionTypeId");
-
                     b.ToTable("Question");
                 });
 
-            modelBuilder.Entity("iTechArt.Survey.Domain.Questions.QuestionType", b =>
+            modelBuilder.Entity("iTechArt.Survey.Domain.Questions.QuestionTypeLookup", b =>
                 {
-                    b.Property<byte>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -387,37 +383,37 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("QuestionType");
+                    b.ToTable("QuestionTypeLookup");
 
                     b.HasData(
                         new
                         {
-                            Id = (byte)1,
+                            Id = 2,
                             Name = "Text"
                         },
                         new
                         {
-                            Id = (byte)2,
+                            Id = 3,
                             Name = "File"
                         },
                         new
                         {
-                            Id = (byte)3,
+                            Id = 0,
                             Name = "OneAnswer"
                         },
                         new
                         {
-                            Id = (byte)4,
+                            Id = 1,
                             Name = "ManyAnswers"
                         },
                         new
                         {
-                            Id = (byte)5,
+                            Id = 5,
                             Name = "Scale"
                         },
                         new
                         {
-                            Id = (byte)6,
+                            Id = 4,
                             Name = "Rating"
                         });
                 });
@@ -468,7 +464,7 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.ToTable("SurveyResult");
                 });
 
-            modelBuilder.Entity("iTechArt.Survey.Domain.UsersAnswer", b =>
+            modelBuilder.Entity("iTechArt.Survey.Domain.UserAnswer", b =>
                 {
                     b.Property<Guid>("SurveyId")
                         .HasColumnType("uniqueidentifier");
@@ -566,15 +562,7 @@ namespace iTechArt.Survey.Repositories.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("iTechArt.Survey.Domain.Questions.QuestionType", "QuestionType")
-                        .WithMany()
-                        .HasForeignKey("QuestionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Page");
-
-                    b.Navigation("QuestionType");
                 });
 
             modelBuilder.Entity("iTechArt.Survey.Domain.Surveys.Survey", b =>
@@ -605,23 +593,23 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("iTechArt.Survey.Domain.UsersAnswer", b =>
+            modelBuilder.Entity("iTechArt.Survey.Domain.UserAnswer", b =>
                 {
                     b.HasOne("iTechArt.Survey.Domain.Questions.Question", "Question")
                         .WithOne()
-                        .HasForeignKey("iTechArt.Survey.Domain.UsersAnswer", "QuestionId")
+                        .HasForeignKey("iTechArt.Survey.Domain.UserAnswer", "QuestionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("iTechArt.Survey.Domain.Surveys.Survey", "Survey")
                         .WithOne()
-                        .HasForeignKey("iTechArt.Survey.Domain.UsersAnswer", "SurveyId")
+                        .HasForeignKey("iTechArt.Survey.Domain.UserAnswer", "SurveyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("iTechArt.Survey.Domain.Identity.User", "User")
                         .WithOne()
-                        .HasForeignKey("iTechArt.Survey.Domain.UsersAnswer", "UserId")
+                        .HasForeignKey("iTechArt.Survey.Domain.UserAnswer", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

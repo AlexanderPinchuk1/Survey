@@ -8,16 +8,15 @@ namespace iTechArt.Survey.Repositories.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "QuestionType",
+                name: "QuestionTypeLookup",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(type: "tinyint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestionType", x => x.Id);
+                    table.PrimaryKey("PK_QuestionTypeLookup", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,10 +93,10 @@ namespace iTechArt.Survey.Repositories.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
                     IsRequired = table.Column<bool>(type: "bit", nullable: false),
-                    Missed = table.Column<int>(type: "int", nullable: false),
                     AvailableAnswers = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QuestionTypeId = table.Column<byte>(type: "tinyint", nullable: false),
-                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    QuestionType = table.Column<int>(type: "int", nullable: false),
+                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuestionTypeId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,12 +105,6 @@ namespace iTechArt.Survey.Repositories.Migrations
                         name: "FK_Question_Page_PageId",
                         column: x => x.PageId,
                         principalTable: "Page",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Question_QuestionType_QuestionTypeId",
-                        column: x => x.QuestionTypeId,
-                        principalTable: "QuestionType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -149,16 +142,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "QuestionType",
+                table: "QuestionTypeLookup",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { (byte)1, "Text" },
-                    { (byte)2, "File" },
-                    { (byte)3, "OneAnswer" },
-                    { (byte)4, "ManyAnswers" },
-                    { (byte)5, "Scale" },
-                    { (byte)6, "Rating" }
+                    { 2, "Text" },
+                    { 3, "File" },
+                    { 0, "OneAnswer" },
+                    { 1, "ManyAnswers" },
+                    { 5, "Scale" },
+                    { 4, "Rating" }
                 });
 
             migrationBuilder.UpdateData(
@@ -166,28 +159,28 @@ namespace iTechArt.Survey.Repositories.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
                 column: "ConcurrencyStamp",
-                value: "1ab35110-4954-4c57-8f24-f303eb438ba8");
+                value: "7897c104-5c91-414e-8847-0ca78aa2d1ec");
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
                 column: "ConcurrencyStamp",
-                value: "32208f27-ad96-4a59-a7ca-a2d2c81b61ca");
+                value: "406b38f6-ee27-415e-8c57-506a2033d103");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "RegistrationDateTime" },
-                values: new object[] { "fb8a4db1-5525-49e9-806b-f21c486ce42c", "AQAAAAEAACcQAAAAEE6tA/nQXRG7V8DrfhYwmN6xjFT8+7ME0xyBz0cqiMYNIPEwfgQozBYBMABNJfTaEQ==", new DateTime(2021, 7, 6, 19, 37, 21, 385, DateTimeKind.Local).AddTicks(1385) });
+                values: new object[] { "b59e3669-a0d9-45b9-8b95-975031552341", "AQAAAAEAACcQAAAAEMIW5e3S4kc5ef8KcbndjsZJqYXl1/Hm04QWoRptEFTrkk54HDtnSX+2qSowegORdw==", new DateTime(2021, 7, 8, 17, 9, 21, 599, DateTimeKind.Local).AddTicks(3711) });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "RegistrationDateTime" },
-                values: new object[] { "448ef47a-dbff-497b-a9a5-9552504d9734", "AQAAAAEAACcQAAAAEA02lMpUeQ3FLPDFhDwiNUdT5Ty+k2ZT5MDmZoJvIw656nzbVLMVWv1M/F8t0o17ww==", new DateTime(2021, 7, 6, 19, 37, 21, 385, DateTimeKind.Local).AddTicks(8157) });
+                values: new object[] { "7b3e0d83-efe8-4ce8-8e94-9a8dc823c2ce", "AQAAAAEAACcQAAAAECIsvpMdXaKeuVoo+JWkXmsLQO7JuovaHN88I0xzgs7OAgjeK56JP556dCpnh+5Qeg==", new DateTime(2021, 7, 8, 17, 9, 21, 600, DateTimeKind.Local).AddTicks(337) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Page_SurveyId",
@@ -200,13 +193,8 @@ namespace iTechArt.Survey.Repositories.Migrations
                 column: "PageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Question_QuestionTypeId",
-                table: "Question",
-                column: "QuestionTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QuestionType_Name",
-                table: "QuestionType",
+                name: "IX_QuestionTypeLookup_Name",
+                table: "QuestionTypeLookup",
                 column: "Name",
                 unique: true);
 
@@ -242,6 +230,9 @@ namespace iTechArt.Survey.Repositories.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "QuestionTypeLookup");
+
+            migrationBuilder.DropTable(
                 name: "SurveyResult");
 
             migrationBuilder.DropTable(
@@ -252,9 +243,6 @@ namespace iTechArt.Survey.Repositories.Migrations
 
             migrationBuilder.DropTable(
                 name: "Page");
-
-            migrationBuilder.DropTable(
-                name: "QuestionType");
 
             migrationBuilder.DropTable(
                 name: "Survey");
