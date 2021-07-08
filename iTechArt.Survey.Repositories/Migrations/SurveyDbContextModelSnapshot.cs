@@ -180,14 +180,14 @@ namespace iTechArt.Survey.Repositories.Migrations
                         new
                         {
                             Id = new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
-                            ConcurrencyStamp = "7897c104-5c91-414e-8847-0ca78aa2d1ec",
+                            ConcurrencyStamp = "11969974-e6bb-42d0-ae5f-3436620015ff",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
-                            ConcurrencyStamp = "406b38f6-ee27-415e-8c57-506a2033d103",
+                            ConcurrencyStamp = "91ed9838-8e31-4712-b8e1-84249a85c222",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -274,16 +274,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b59e3669-a0d9-45b9-8b95-975031552341",
+                            ConcurrencyStamp = "2c339da7-6489-457e-9bba-58197fae6066",
                             DisplayName = "Admin",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMIW5e3S4kc5ef8KcbndjsZJqYXl1/Hm04QWoRptEFTrkk54HDtnSX+2qSowegORdw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOTRuvUV3Byhw253dKA9zuaaYVspjDPQ//RSX7xG2ZlHozJ3mrlifWpD74IMLRDVPw==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 7, 8, 17, 9, 21, 599, DateTimeKind.Local).AddTicks(3711),
+                            RegistrationDateTime = new DateTime(2021, 7, 8, 22, 34, 39, 117, DateTimeKind.Local).AddTicks(5906),
                             SecurityStamp = "7d90869b-19c6-4cb0-8c74-790e8352fabe",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -292,16 +292,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7b3e0d83-efe8-4ce8-8e94-9a8dc823c2ce",
+                            ConcurrencyStamp = "4eec8f36-da6b-4002-8107-5ea994f618ee",
                             DisplayName = "User",
                             Email = "User@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECIsvpMdXaKeuVoo+JWkXmsLQO7JuovaHN88I0xzgs7OAgjeK56JP556dCpnh+5Qeg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKW1Q7IiL+GmnEVvMZybyhcYAfNhh4NztbsfNZTrpHKZ+nlFVqI14Af6DOz+7YoLSg==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 7, 8, 17, 9, 21, 600, DateTimeKind.Local).AddTicks(337),
+                            RegistrationDateTime = new DateTime(2021, 7, 8, 22, 34, 39, 118, DateTimeKind.Local).AddTicks(3472),
                             SecurityStamp = "4010b6f9-59e8-42b9-bf76-97c41907189b",
                             TwoFactorEnabled = false,
                             UserName = "User@gmail.com"
@@ -340,6 +340,7 @@ namespace iTechArt.Survey.Repositories.Migrations
                         .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("AvailableAnswers")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
@@ -355,15 +356,14 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.Property<Guid>("PageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("QuestionType")
+                    b.Property<int>("QuestionTypeLookupId")
                         .HasColumnType("int");
-
-                    b.Property<byte>("QuestionTypeId")
-                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PageId");
+
+                    b.HasIndex("QuestionTypeLookupId");
 
                     b.ToTable("Question");
                 });
@@ -388,32 +388,32 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 2,
+                            Id = 3,
                             Name = "Text"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 4,
                             Name = "File"
                         },
                         new
                         {
-                            Id = 0,
+                            Id = 1,
                             Name = "OneAnswer"
                         },
                         new
                         {
-                            Id = 1,
+                            Id = 2,
                             Name = "ManyAnswers"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 6,
                             Name = "Scale"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 5,
                             Name = "Rating"
                         });
                 });
@@ -559,6 +559,12 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.HasOne("iTechArt.Survey.Domain.Page", "Page")
                         .WithMany("Questions")
                         .HasForeignKey("PageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("iTechArt.Survey.Domain.Questions.QuestionTypeLookup", null)
+                        .WithMany()
+                        .HasForeignKey("QuestionTypeLookupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

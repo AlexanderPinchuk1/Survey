@@ -2,11 +2,11 @@
 {
     public enum QuestionType
     {
-        OneAnswer,
-        ManyAnswers,
-        Text,
-        File,
-        Rating,
-        Scale,
+        OneAnswer = 1,
+        ManyAnswers = 2,
+        Text = 3,
+        File = 4,
+        Rating = 5,
+        Scale = 6,
     }
 }

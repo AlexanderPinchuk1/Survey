@@ -18,7 +18,7 @@ namespace iTechArt.Survey.Domain.Questions
 
         public List<string> AvailableAnswers { get; set; }
 
-        public QuestionType QuestionType { get; set; }
+        public QuestionType QuestionTypeLookupId { get; set; }
 
         public Page Page { get; set; }
     }
@@ -33,11 +33,11 @@ namespace iTechArt.Survey.Domain.Questions
             builder.Property(question => question.Description).IsRequired();
             builder.Property(question => question.IsRequired).IsRequired();
             builder.Property(question => question.Number).IsRequired();
-            builder.Property(question => question.QuestionType).IsRequired();
+            builder.Property(question => question.QuestionTypeLookupId).IsRequired();
             builder.Property(question => question.AvailableAnswers)
-                .HasConversion(availableAnswers => JsonConvert.SerializeObject(availableAnswers),
-                availableAnswers => JsonConvert.DeserializeObject<List<string>>(availableAnswers));
-            builder.Property<byte>("QuestionTypeId").IsRequired();
+                .HasConversion(availableAnswers => availableAnswers == null ? null :  JsonConvert.SerializeObject(availableAnswers),
+                    availableAnswers => availableAnswers == null ? null : JsonConvert.DeserializeObject<List<string>>(availableAnswers));
+            builder.HasOne(typeof(QuestionTypeLookup));
             builder.HasOne(question => question.Page).WithMany(page => page.Questions).IsRequired();
         }
     }
