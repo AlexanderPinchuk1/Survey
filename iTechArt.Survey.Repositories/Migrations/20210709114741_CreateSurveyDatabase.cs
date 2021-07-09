@@ -95,7 +95,7 @@ namespace iTechArt.Survey.Repositories.Migrations
                     IsRequired = table.Column<bool>(type: "bit", nullable: false),
                     AvailableAnswers = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     QuestionType = table.Column<int>(type: "int", nullable: false),
-                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,7 +105,7 @@ namespace iTechArt.Survey.Repositories.Migrations
                         column: x => x.PageId,
                         principalTable: "Page",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Question_QuestionTypeLookup_QuestionType",
                         column: x => x.QuestionType,
@@ -164,28 +164,28 @@ namespace iTechArt.Survey.Repositories.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
                 column: "ConcurrencyStamp",
-                value: "4d095560-c922-423d-9e72-292fe78f2679");
+                value: "c9f2d69b-bd9b-4838-abec-ee9b78029431");
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
                 column: "ConcurrencyStamp",
-                value: "71b4c520-25bc-4901-b02b-75216986fd15");
+                value: "a2bd8fca-886a-4f3c-87dd-ff76fb6b04f1");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "RegistrationDateTime" },
-                values: new object[] { "a77dced7-8fb9-4581-8de1-ab8f4f160006", "AQAAAAEAACcQAAAAEEVwpZaOZRCxW/z+Bum2cCoVOQN0kLmxmQ9IIPBuv9P52MFdfk7999z90PxjHAYBTg==", new DateTime(2021, 7, 9, 12, 20, 30, 544, DateTimeKind.Local).AddTicks(8180) });
+                values: new object[] { "be2e9682-ceb4-4ab7-9bb0-8d75ae7934e9", "AQAAAAEAACcQAAAAEBic5pf7refnwLyapk4lvQMwwyRe1jDRn5qTXJCLo0QhShFGJFFphAb/l1RHpdgHtQ==", new DateTime(2021, 7, 9, 14, 47, 40, 978, DateTimeKind.Local).AddTicks(1380) });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "RegistrationDateTime" },
-                values: new object[] { "daf85892-5b35-49af-a182-f04e06b4120b", "AQAAAAEAACcQAAAAEG1RkwUPzyYKsO42rkQjj5mP6Wl/6Uc2O4ZHiMjzbvdvtyaPGifZZWG1ufnusZIRYA==", new DateTime(2021, 7, 9, 12, 20, 30, 545, DateTimeKind.Local).AddTicks(4414) });
+                values: new object[] { "c6c94d94-f225-4204-985f-88a3463cc576", "AQAAAAEAACcQAAAAEIkIriOiFXHJNrkW+hG0cwCwE+pTT/mRo4zMZpm6qWp0A+XcAPijFJPxXZEvTIfeAw==", new DateTime(2021, 7, 9, 14, 47, 40, 978, DateTimeKind.Local).AddTicks(7958) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Page_SurveyId",

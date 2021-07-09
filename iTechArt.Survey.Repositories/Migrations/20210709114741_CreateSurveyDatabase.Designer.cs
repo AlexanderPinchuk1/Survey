@@ -10,7 +10,7 @@ using iTechArt.Survey.Repositories;
 namespace iTechArt.Survey.Repositories.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20210709092031_CreateSurveyDatabase")]
+    [Migration("20210709114741_CreateSurveyDatabase")]
     partial class CreateSurveyDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,14 +182,14 @@ namespace iTechArt.Survey.Repositories.Migrations
                         new
                         {
                             Id = new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
-                            ConcurrencyStamp = "4d095560-c922-423d-9e72-292fe78f2679",
+                            ConcurrencyStamp = "c9f2d69b-bd9b-4838-abec-ee9b78029431",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
-                            ConcurrencyStamp = "71b4c520-25bc-4901-b02b-75216986fd15",
+                            ConcurrencyStamp = "a2bd8fca-886a-4f3c-87dd-ff76fb6b04f1",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -276,16 +276,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a77dced7-8fb9-4581-8de1-ab8f4f160006",
+                            ConcurrencyStamp = "be2e9682-ceb4-4ab7-9bb0-8d75ae7934e9",
                             DisplayName = "Admin",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEVwpZaOZRCxW/z+Bum2cCoVOQN0kLmxmQ9IIPBuv9P52MFdfk7999z90PxjHAYBTg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBic5pf7refnwLyapk4lvQMwwyRe1jDRn5qTXJCLo0QhShFGJFFphAb/l1RHpdgHtQ==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 7, 9, 12, 20, 30, 544, DateTimeKind.Local).AddTicks(8180),
+                            RegistrationDateTime = new DateTime(2021, 7, 9, 14, 47, 40, 978, DateTimeKind.Local).AddTicks(1380),
                             SecurityStamp = "7d90869b-19c6-4cb0-8c74-790e8352fabe",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -294,16 +294,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "daf85892-5b35-49af-a182-f04e06b4120b",
+                            ConcurrencyStamp = "c6c94d94-f225-4204-985f-88a3463cc576",
                             DisplayName = "User",
                             Email = "User@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG1RkwUPzyYKsO42rkQjj5mP6Wl/6Uc2O4ZHiMjzbvdvtyaPGifZZWG1ufnusZIRYA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIkIriOiFXHJNrkW+hG0cwCwE+pTT/mRo4zMZpm6qWp0A+XcAPijFJPxXZEvTIfeAw==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 7, 9, 12, 20, 30, 545, DateTimeKind.Local).AddTicks(4414),
+                            RegistrationDateTime = new DateTime(2021, 7, 9, 14, 47, 40, 978, DateTimeKind.Local).AddTicks(7958),
                             SecurityStamp = "4010b6f9-59e8-42b9-bf76-97c41907189b",
                             TwoFactorEnabled = false,
                             UserName = "User@gmail.com"
@@ -354,7 +354,7 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PageId")
+                    b.Property<Guid>("PageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("QuestionType")
@@ -559,7 +559,9 @@ namespace iTechArt.Survey.Repositories.Migrations
                 {
                     b.HasOne("iTechArt.Survey.Domain.Page", "Page")
                         .WithMany("Questions")
-                        .HasForeignKey("PageId");
+                        .HasForeignKey("PageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("iTechArt.Survey.Domain.Questions.QuestionTypeLookup", null)
                         .WithMany()

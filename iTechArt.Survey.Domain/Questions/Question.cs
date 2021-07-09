@@ -37,7 +37,7 @@ namespace iTechArt.Survey.Domain.Questions
             builder.Property(question => question.AvailableAnswers)
                 .HasConversion(availableAnswers => availableAnswers == null ? null :  JsonConvert.SerializeObject(availableAnswers),
                     availableAnswers => availableAnswers == null ? null : JsonConvert.DeserializeObject<List<string>>(availableAnswers));
-            builder.HasOne(typeof(QuestionTypeLookup)).WithMany().HasForeignKey("QuestionType");
+            builder.HasOne<QuestionTypeLookup>().WithMany().HasForeignKey(q => q.QuestionType);
             builder.HasOne(question => question.Page).WithMany(page => page.Questions).IsRequired();
         }
     }
