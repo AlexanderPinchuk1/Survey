@@ -93,9 +93,9 @@ namespace iTechArt.Survey.Repositories.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
                     IsRequired = table.Column<bool>(type: "bit", nullable: false),
-                    AvailableAnswers = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    QuestionTypeLookupId = table.Column<int>(type: "int", nullable: false),
-                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AvailableAnswers = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QuestionType = table.Column<int>(type: "int", nullable: false),
+                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,10 +105,10 @@ namespace iTechArt.Survey.Repositories.Migrations
                         column: x => x.PageId,
                         principalTable: "Page",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Question_QuestionTypeLookup_QuestionTypeLookupId",
-                        column: x => x.QuestionTypeLookupId,
+                        name: "FK_Question_QuestionTypeLookup_QuestionType",
+                        column: x => x.QuestionType,
                         principalTable: "QuestionTypeLookup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -164,28 +164,28 @@ namespace iTechArt.Survey.Repositories.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
                 column: "ConcurrencyStamp",
-                value: "11969974-e6bb-42d0-ae5f-3436620015ff");
+                value: "4d095560-c922-423d-9e72-292fe78f2679");
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
                 column: "ConcurrencyStamp",
-                value: "91ed9838-8e31-4712-b8e1-84249a85c222");
+                value: "71b4c520-25bc-4901-b02b-75216986fd15");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "RegistrationDateTime" },
-                values: new object[] { "2c339da7-6489-457e-9bba-58197fae6066", "AQAAAAEAACcQAAAAEOTRuvUV3Byhw253dKA9zuaaYVspjDPQ//RSX7xG2ZlHozJ3mrlifWpD74IMLRDVPw==", new DateTime(2021, 7, 8, 22, 34, 39, 117, DateTimeKind.Local).AddTicks(5906) });
+                values: new object[] { "a77dced7-8fb9-4581-8de1-ab8f4f160006", "AQAAAAEAACcQAAAAEEVwpZaOZRCxW/z+Bum2cCoVOQN0kLmxmQ9IIPBuv9P52MFdfk7999z90PxjHAYBTg==", new DateTime(2021, 7, 9, 12, 20, 30, 544, DateTimeKind.Local).AddTicks(8180) });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "RegistrationDateTime" },
-                values: new object[] { "4eec8f36-da6b-4002-8107-5ea994f618ee", "AQAAAAEAACcQAAAAEKW1Q7IiL+GmnEVvMZybyhcYAfNhh4NztbsfNZTrpHKZ+nlFVqI14Af6DOz+7YoLSg==", new DateTime(2021, 7, 8, 22, 34, 39, 118, DateTimeKind.Local).AddTicks(3472) });
+                values: new object[] { "daf85892-5b35-49af-a182-f04e06b4120b", "AQAAAAEAACcQAAAAEG1RkwUPzyYKsO42rkQjj5mP6Wl/6Uc2O4ZHiMjzbvdvtyaPGifZZWG1ufnusZIRYA==", new DateTime(2021, 7, 9, 12, 20, 30, 545, DateTimeKind.Local).AddTicks(4414) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Page_SurveyId",
@@ -198,9 +198,9 @@ namespace iTechArt.Survey.Repositories.Migrations
                 column: "PageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Question_QuestionTypeLookupId",
+                name: "IX_Question_QuestionType",
                 table: "Question",
-                column: "QuestionTypeLookupId");
+                column: "QuestionType");
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionTypeLookup_Name",

@@ -10,7 +10,7 @@ using iTechArt.Survey.Repositories;
 namespace iTechArt.Survey.Repositories.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20210708193439_CreateSurveyDatabase")]
+    [Migration("20210709092031_CreateSurveyDatabase")]
     partial class CreateSurveyDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,14 +182,14 @@ namespace iTechArt.Survey.Repositories.Migrations
                         new
                         {
                             Id = new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
-                            ConcurrencyStamp = "11969974-e6bb-42d0-ae5f-3436620015ff",
+                            ConcurrencyStamp = "4d095560-c922-423d-9e72-292fe78f2679",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
-                            ConcurrencyStamp = "91ed9838-8e31-4712-b8e1-84249a85c222",
+                            ConcurrencyStamp = "71b4c520-25bc-4901-b02b-75216986fd15",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -276,16 +276,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2c339da7-6489-457e-9bba-58197fae6066",
+                            ConcurrencyStamp = "a77dced7-8fb9-4581-8de1-ab8f4f160006",
                             DisplayName = "Admin",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOTRuvUV3Byhw253dKA9zuaaYVspjDPQ//RSX7xG2ZlHozJ3mrlifWpD74IMLRDVPw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEVwpZaOZRCxW/z+Bum2cCoVOQN0kLmxmQ9IIPBuv9P52MFdfk7999z90PxjHAYBTg==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 7, 8, 22, 34, 39, 117, DateTimeKind.Local).AddTicks(5906),
+                            RegistrationDateTime = new DateTime(2021, 7, 9, 12, 20, 30, 544, DateTimeKind.Local).AddTicks(8180),
                             SecurityStamp = "7d90869b-19c6-4cb0-8c74-790e8352fabe",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -294,16 +294,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4eec8f36-da6b-4002-8107-5ea994f618ee",
+                            ConcurrencyStamp = "daf85892-5b35-49af-a182-f04e06b4120b",
                             DisplayName = "User",
                             Email = "User@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKW1Q7IiL+GmnEVvMZybyhcYAfNhh4NztbsfNZTrpHKZ+nlFVqI14Af6DOz+7YoLSg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEG1RkwUPzyYKsO42rkQjj5mP6Wl/6Uc2O4ZHiMjzbvdvtyaPGifZZWG1ufnusZIRYA==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 7, 8, 22, 34, 39, 118, DateTimeKind.Local).AddTicks(3472),
+                            RegistrationDateTime = new DateTime(2021, 7, 9, 12, 20, 30, 545, DateTimeKind.Local).AddTicks(4414),
                             SecurityStamp = "4010b6f9-59e8-42b9-bf76-97c41907189b",
                             TwoFactorEnabled = false,
                             UserName = "User@gmail.com"
@@ -342,7 +342,6 @@ namespace iTechArt.Survey.Repositories.Migrations
                         .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("AvailableAnswers")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
@@ -355,17 +354,17 @@ namespace iTechArt.Survey.Repositories.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("PageId")
+                    b.Property<Guid?>("PageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("QuestionTypeLookupId")
+                    b.Property<int>("QuestionType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PageId");
 
-                    b.HasIndex("QuestionTypeLookupId");
+                    b.HasIndex("QuestionType");
 
                     b.ToTable("Question");
                 });
@@ -560,13 +559,11 @@ namespace iTechArt.Survey.Repositories.Migrations
                 {
                     b.HasOne("iTechArt.Survey.Domain.Page", "Page")
                         .WithMany("Questions")
-                        .HasForeignKey("PageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PageId");
 
                     b.HasOne("iTechArt.Survey.Domain.Questions.QuestionTypeLookup", null)
                         .WithMany()
-                        .HasForeignKey("QuestionTypeLookupId")
+                        .HasForeignKey("QuestionType")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
