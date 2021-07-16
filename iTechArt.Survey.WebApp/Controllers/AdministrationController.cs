@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;
 using iTechArt.Survey.Foundation;
 using iTechArt.Survey.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Internal.Account.Manage;
 
 namespace iTechArt.Survey.WebApp.Controllers
 {

@@ -1,9 +1,8 @@
-﻿@model iTechArt.Survey.WebApp.Models.NewSurveyViewModel
-
-@using iTechArt.Survey.Domain.Question
-@using iTechArt.Survey.Domain.Survey
-@using iTechArt.Survey.WebApp.Models
-@using Microsoft.CodeAnalysis
+﻿
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/surveyCreation.css" />
+}
 
 <partial name="_MenuPartial" />
 
@@ -19,82 +18,22 @@
 </div>
 
 <div class="survey-description-block"> 
-    <p>Questions: @Model.Pages.SelectMany(page => page.Questions).Count() Pages: @Model.Pages.Count</p>
+    <p>Questions: 0 Pages: 1</p>
 </div>
 
 <div class="survey-controllers-block">
-    <form>
         <div class="survey-main-controllers-block">
             <button type="button" class="btn btn-primary">Save</button>
             <button type="button" class="btn btn-secondary">Save as template</button>
             <button type="button" class="btn btn-secondary">Cancel</button>
         </div>
-        <button class="btn btn-secondary" type="submit" asp-controller="SurveyCreation" asp-action="AddNewPage">New page</button>
-    </form>
+     <button class="btn btn-secondary" type="button" onclick="addPage()">New page</button>
 </div>
 
 <div class="new-survey-block">
-    @if (Model.Pages.Count != 0)
-    {
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-           
-            @foreach (var pageInList in Model.Pages)
-            {
-                if ((pageInList == Model.Pages[^1] && Model.ActivePage == Guid.Empty) || (pageInList.Id == Model.ActivePage))
-                {
-                    <li class="nav-item">
-                        <a href=@("#View" + pageInList.Id) id="@pageInList.Id" class="nav-link active" data-toggle="tab" role="tab" aria-selected="true">@pageInList.Name</a>
-                    </li>
-                }
-                else
-                {
-                 
-                    <li class="nav-item">
-                        <a href=@("#View" + pageInList.Id) id="@pageInList.Id" class="nav-link" data-toggle="tab" role="tab" aria-selected="False">@pageInList.Name</a>
-                    </li>   
-                }
-            }
-        </ul>
-        <div class="tab-content" style="border: 1px solid #dfe3e7;">
-            
-            @foreach (var pageInList in Model.Pages)
-            {
-                if ((pageInList == Model.Pages[^1] && Model.ActivePage == Guid.Empty) || (Model.ActivePage == pageInList.Id))
-                {
-
-                    <div class="tab-pane fade show active" role="tabpanel" id=@("View" + pageInList.Id)>
-                        <partial name="Shared/_EditPagePartial" model="@pageInList" />
-                        <partial name="Shared/_QuestionOutputPartial" model="@(new OutputQuestionsViewModel() {Page = pageInList, SurveyTypes = Model.SurveyTypes})"/>
+    <ul class="nav nav-tabs" id="pageTabs" role="tablist"></ul>
+    <div class="tab-content" style="border: 1px solid #dfe3e7;"></div>
                     </div>
-                }
-                else
-                {
-                    <div class="tab-pane fade" role="tabpanel" id=@("View" + pageInList.Id)>
-                        <partial name="Shared/_EditPagePartial" model="@pageInList" />
-                        <partial name="Shared/_QuestionOutputPartial" model="@(new OutputQuestionsViewModel() {Page = pageInList, SurveyTypes = Model.SurveyTypes})" />
-                    </div>
-                }
-            }
-
-        </div>
-        @if (Model.SurveyTypes.IsProgressBarExist)
-        {
-            <div class="progress-bar-block">
-                @if (Model.SurveyTypes.IsPageHaveNumber)
-                {
-                    <div class="pages-near-progress-bar">
-                        0/@Model.Pages.Count
-                    </div>
-                }
-                <div class="progress-block">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                    </div>
-                </div>
-            </div>
-        }
-    }
-</div>
 
 <div class="survey-settings-block">
     <div class="card" style="width: 18rem;">
@@ -103,88 +42,52 @@
         </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <form>
-                        <input name="activePageId" type="hidden"/>
-                        <input type="hidden" name="questionType" value="@QuestionType.WithOneAnswer">
-                        <button type="submit" asp-action="AddQuestion" asp-controller="SurveyCreation" asp-route-type="@QuestionType.WithOneAnswer" onclick="setPageId()" class="btn btn-light" style="background-color: white; border: 1px solid white">
+                <button type="button" onclick="addQuestionWithAnswers('radio')" class="btn btn-light" style="background-color: white; border: 1px solid white">
                             <div class="icon-in-survey-settings-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                                </svg>
+                        <i class="bi bi-list-ul"></i>
                             </div>
                             Possible answers(One)
                         </button>
-                    </form>
                 </li>
                 <li class="list-group-item">
-                    <form>
-                        <input name="activePageId" type="hidden"/>
-                        <input type="hidden" name="questionType" value="@QuestionType.WithManyAnswers">
-                        <button type="submit" asp-action="AddQuestion" asp-controller="SurveyCreation" onclick="setPageId()" class="btn btn-light" style="background-color: white; border: 1px solid white">
+                <button type="button" onclick="addQuestionWithAnswers('checkbox')" class="btn btn-light" style="background-color: white; border: 1px solid white">
                             <div class="icon-in-survey-settings-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-check" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
-                                </svg>
+                        <i class="bi bi-list-check"></i>
                             </div>
                             Possible answers(Many)
                         </button>
-                    </form>
                 </li>
                 <li class="list-group-item">
-                    <form>
-                        <input name="activePageId" type="hidden"/>
-                        <input type="hidden" name="questionType" value="@QuestionType.WithTextAreaEditor">
-                        <button type="submit" asp-action="AddQuestion" asp-controller="SurveyCreation" onclick="setPageId()" class="btn btn-light" style="background-color: white; border: 1px solid white">
+                <button type="button" onclick="addQuestionWithTextEditor()" class="btn btn-light" style="background-color: white; border: 1px solid white">
                             <div class="icon-in-survey-settings-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-type" viewBox="0 0 16 16">
-                                    <path d="m2.244 13.081.943-2.803H6.66l.944 2.803H8.86L5.54 3.75H4.322L1 13.081h1.244zm2.7-7.923L6.34 9.314H3.51l1.4-4.156h.034zm9.146 7.027h.035v.896h1.128V8.125c0-1.51-1.114-2.345-2.646-2.345-1.736 0-2.59.916-2.666 2.174h1.108c.068-.718.595-1.19 1.517-1.19.971 0 1.518.52 1.518 1.464v.731H12.19c-1.647.007-2.522.8-2.522 2.058 0 1.319.957 2.18 2.345 2.18 1.06 0 1.716-.43 2.078-1.011zm-1.763.035c-.752 0-1.456-.397-1.456-1.244 0-.65.424-1.115 1.408-1.115h1.805v.834c0 .896-.752 1.525-1.757 1.525z"/>
-                                </svg>
+                        <i class="bi bi-type"></i>
                             </div>
                             Text
                         </button>
-                    </form>
                 </li>
                 <li class="list-group-item">
-                    <form>
-                        <input name="activePageId" type="hidden" />
-                        <input type="hidden" name="questionType" value="@QuestionType.WithFileInput">
-                        <button type="submit" asp-action="AddQuestion" asp-controller="SurveyCreation" onclick="setPageId()" class="btn btn-light" style="background-color: white; border: 1px solid white">
+                <button type="button" onclick="addQuestionWithFileInput()" class="btn btn-light" style="background-color: white; border: 1px solid white">
                             <div class="icon-in-survey-settings-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
-                                    <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3z" />
-                                </svg>
+                        <i class="bi bi-file-earmark-fill"></i>
                             </div>
                             File
                         </button>
-                    </form>
                 </li>
                 <li class="list-group-item">
-                    <form>
-                        <input name="activePageId" type="hidden" />
-                        <input type="hidden" name="questionType" value="@QuestionType.WithRating">
-                        <button type="submit" asp-action="AddQuestion" asp-controller="SurveyCreation" onclick="setPageId()" class="btn btn-light" style="background-color: white; border: 1px solid white">
+                <button type="button" onclick="addQuestionWithRating()" class="btn btn-light" style="background-color: white; border: 1px solid white">
                             <div class="icon-in-survey-settings-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                                </svg>
+                        <i class="bi bi-star"></i>
                             </div>
                             Rating
                         </button>
-                    </form>
                 </li>
                 <li class="list-group-item">
-                    <form>
-                        <input name="activePageId" type="hidden" />
-                        <input type="hidden" name="questionType" value="@QuestionType.WithScale">
-                        <button type="submit" asp-action="AddQuestion" asp-controller="SurveyCreation" onclick="setPageId()" class="btn btn-light" style="background-color: white; border: 1px solid white">
+                <button type="button" onclick="addQuestionWithScale()" class="btn btn-light" style="background-color: white; border: 1px solid white">
                             <div class="icon-in-survey-settings-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-segmented-nav" viewBox="0 0 16 16">
-                                    <path d="M0 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6zm6 3h4V5H6v4zm9-1V6a1 1 0 0 0-1-1h-3v4h3a1 1 0 0 0 1-1z"/>
-                                </svg>
+                        <i class="bi bi-segmented-nav"></i>
                             </div>
                             Scale
                         </button>
-                    </form>
                 </li>
             </ul>
     </div>
@@ -198,7 +101,7 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" asp-for="SurveyTypes.IsAnonymous" id="anonymousSurvey"  onchange="location.href = '@Url.Action("ChangeSurveyType","SurveyCreation", new { type = SurveyType.Anonymous})'">
+                    <input class="form-check-input" type="checkbox"  id="anonymousSurvey">
                     <label class="form-check-label" for="anonymousSurvey">
                         Anonymous survey
                     </label>
@@ -206,7 +109,7 @@
             </li>
             <li class="list-group-item">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" asp-for="SurveyTypes.IsQuestionHaveNumber" id="questionNumbers"  onchange="location.href = '@Url.Action("ChangeSurveyType","SurveyCreation", new { type = SurveyType.QuestionHaveNumber})'">
+                    <input class="form-check-input" type="checkbox"  id="questionNumbers" onchange="updateQuestionsDescription()">
                     <label class="form-check-label" for="questionNumbers">
                         Question have number
                     </label>
@@ -214,7 +117,7 @@
             </li>
             <li class="list-group-item">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" asp-for="SurveyTypes.IsPageHaveNumber" id="pageNumbers"  onchange="location.href = '@Url.Action("ChangeSurveyType","SurveyCreation", new { type = SurveyType.PageHaveNumber})'">
+                    <input class="form-check-input" type="checkbox"  id="pageNumbers" onchange="updatePageNumbersBlock()">
                     <label class="form-check-label" for="pageNumbers">
                         Page have number
                     </label>
@@ -222,7 +125,7 @@
             </li>
             <li class="list-group-item">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" asp-for="SurveyTypes.IsRandomOrderOfQuestions" id="randomOrderOfQuestions" onchange="location.href = '@Url.Action("ChangeSurveyType","SurveyCreation", new { type = SurveyType.RandomOrderOfQuestions})'">
+                    <input class="form-check-input" type="checkbox" id="randomOrderOfQuestions">
                     <label class="form-check-label" for="randomOrderOfQuestions">
                         Random order of questions
                     </label>
@@ -230,7 +133,7 @@
             </li>
             <li class="list-group-item">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox"asp-for="SurveyTypes.IsRequiredFieldsAsterisks" id="requiredFieldsAsterisks" onchange="location.href = '@Url.Action("ChangeSurveyType","SurveyCreation", new { type = SurveyType.RequiredFieldsAsterisks })'">
+                    <input class="form-check-input" type="checkbox"  id="requiredFieldsAsterisks"  onchange="updateQuestionsDescription()">
                     <label class="form-check-label" for="requiredFieldsAsterisks">
                         Required fields asterisks
                     </label>
@@ -238,7 +141,7 @@
             </li>
             <li class="list-group-item">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" asp-for="SurveyTypes.IsProgressBarExist"  id="fieldProgressBar" onchange="location.href = '@Url.Action("ChangeSurveyType","SurveyCreation", new { type = SurveyType.ProgressBarExist})'">
+                    <input class="form-check-input" type="checkbox"  id="fieldProgressBar" onchange="updateProgressBarBlock()">
                     <label class="form-check-label" for="fieldProgressBar">
                         Field progress bar
                     </label>
@@ -248,19 +151,5 @@
     </div>
 </div>
 
-<script>
-    function setPageId() {
-        var id = document.getElementsByClassName('nav-link active')[0].id;
-
-        $('input[name="activePageId"]').val(id);
-    }
-
-    function changePageName() {
-        var id = document.getElementsByClassName('nav-link active')[0].id;
-        var pageName = document.getElementById("pageName" + id).value;
-        location.href = '@Url.Action("ChangePageName", "SurveyCreation")?pageId=' + id + '&pageName=' + pageName;;
-    }
-
-    var element = document.getElementById("@Model.ActiveQuestion");
-    element.scrollIntoView({ block: "center", behavior: "smooth" });
-</script>
+<script src="https://cdn.ckeditor.com/ckeditor5/28.0.0/classic/ckeditor.js"></script>
+<script src="js/surveyCreation.js"></script>

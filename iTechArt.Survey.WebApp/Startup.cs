@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using iTechArt.Survey.Domain;
 using iTechArt.Survey.Foundation;
 using Microsoft.AspNetCore.Builder;
@@ -8,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using iTechArt.Survey.Repositories.Extensions;
-using Microsoft.Extensions.FileProviders;
 
 namespace iTechArt.Survey.WebApp
 {
@@ -38,7 +35,6 @@ namespace iTechArt.Survey.WebApp
 
             services.Configure<Settings>(Configuration.GetSection("Settings"));
 
-            services.AddSingleton<ISurveyCreationService, SurveyCreationService>();
             services.AddTransient<IUserService, UserService>();
         }
 
