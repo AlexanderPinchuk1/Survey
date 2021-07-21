@@ -1,10 +1,11 @@
-﻿using iTechArt.Repositories.Repository;
+﻿using System.Threading.Tasks;
+using iTechArt.Repositories.Repository;
 
 namespace iTechArt.Repositories.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        void Commit();
+        Task CommitAsync();
         Repository<T> GetRepository<T>() where T : class;
     }
 }

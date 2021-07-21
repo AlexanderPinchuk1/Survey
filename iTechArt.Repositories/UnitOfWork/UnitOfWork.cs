@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using iTechArt.Repositories.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +18,9 @@ namespace iTechArt.Repositories.UnitOfWork
             _dbContext = dbContext;
         }
 
-        public void Commit()
+        public async Task CommitAsync()
         {
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
         public Repository<T> GetRepository<T>() where T : class
