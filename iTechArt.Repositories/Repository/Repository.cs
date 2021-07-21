@@ -29,13 +29,11 @@ namespace iTechArt.Repositories.Repository
         public void Create(T item)
         {
             _dbSet.Add(item);
-            _context.SaveChanges();
         }
 
         public void Update(T item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -47,7 +45,6 @@ namespace iTechArt.Repositories.Repository
             }
 
             _dbSet.Remove(item);
-            _context.SaveChanges();
         }
     }
 }
