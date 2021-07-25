@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using iTechArt.Survey.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,22 +9,26 @@ namespace iTechArt.Survey.Domain.Surveys
 {
     public class Survey
     {
+        [Required]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = "The survey must have a name.")]
         public string Name { get; set; }
 
+        [Required]
         public bool IsTemplate { get; set; }
 
         public SurveyOptions Options { get; set; }
 
         public User CreatedBy { get; set; }
 
+        [Required(ErrorMessage = "The survey must contain at least one page.")]
         public List<Page> Pages { get; set; }
     }
 
-    public class SurveyConfig : IEntityTypeConfiguration<Domain.Surveys.Survey>
+    public class SurveyConfig : IEntityTypeConfiguration<Survey>
     {
-        public void Configure(EntityTypeBuilder<Domain.Surveys.Survey> builder)
+        public void Configure(EntityTypeBuilder<Survey> builder)
         {
             builder.ToTable("Survey");
             builder.HasKey(survey => survey.Id);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using iTechArt.Survey.Domain.Questions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,14 +9,18 @@ namespace iTechArt.Survey.Domain
 {
     public class Page
     {
+        [Required]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = "The page must have a name.")]
         public string Name { get; set; }
 
+        [Required]
         public int Number { get; set; }
 
         public Surveys.Survey Survey { get; set; }
 
+        [Required(ErrorMessage = "The page must contain at least one question.")]
         public List<Question> Questions { get; set; }
     }
 

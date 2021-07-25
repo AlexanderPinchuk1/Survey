@@ -7,10 +7,10 @@ function getActivePageContent() {
     return document.getElementsByClassName('tab-pane fade show active')[0];
 }
 
-function createTextEditor(id) {
+function createTextEditor(id, isReadOnly) {
     const element = document.getElementById("editor" + id);
 
-    ClassicEditor
+    const editor = ClassicEditor
         .create(element,
             {
                 toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
@@ -23,6 +23,9 @@ function createTextEditor(id) {
                     ]
                 }
             })
+        .then(editor => {
+            editor.isReadOnly = isReadOnly;
+        })
         .catch(error => {
             console.log(error);
         });
@@ -175,8 +178,7 @@ function setNotActivePageContentActive() {
     }
 }
 
-
-function addQuestionWithTextEditor() {
+function addQuestionWithTextEditor(isDisabled) {
     addPageIfNotExist();
 
     const page = getActivePageContent();
@@ -184,11 +186,11 @@ function addQuestionWithTextEditor() {
     const id = uuidv4();
     const description = "Question with text editor?";
 
-    const question = createQuestionCard(id, false, createQuestionWithTextEditor(id, description, false, false));
+    const question = createQuestionCard(id, false, createQuestionWithTextEditor(id, description, false, false, isDisabled));
 
     page.append(question);
 
-    createTextEditor(id);
+    createTextEditor(id, isDisabled);
     updateQuestionDescription(id);
     updateQuestionsAndPagesCount();
 }
@@ -206,16 +208,16 @@ function uuidv4() {
     );
 }
 
-function createQuestionWithTextEditor(id, description, isRequired, isEditing) {
+function createQuestionWithTextEditor(id, description, isRequired, isEditing, isDisabled) {
     const questionBlock = createCardBodyBlock();
 
     if (isEditing) {
         questionBlock.append(createHeaderEditingQuestion(id, description, isRequired));
         questionBlock.append(createTextArea(id));
-        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, "text"));
+        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, "text", isDisabled));
     } else {
-        questionBlock.append(createQuestionDescription(id, description, isRequired));
-        questionBlock.append(createQuestionEditLink(id, description, isRequired, "text"));
+        questionBlock.append(createQuestionDescription(id, "text", description, isRequired));
+        questionBlock.append(createQuestionEditLink(id, description, isRequired, "text", isDisabled));
         questionBlock.append(createTextArea(id));
     }
 
@@ -236,45 +238,45 @@ function createTextArea(id) {
     const textarea = document.createElement("textarea");
     textarea.setAttribute("name", "editor");
     textarea.setAttribute("id", "editor" + id);
-
+    
     textAreaBlock.append(textarea);
 
     return textAreaBlock;
 }
 
-function addQuestionWithScale() {
+function addQuestionWithScale(isDisabled) {
     addPageIfNotExist();
     const page = getActivePageContent();
 
     const id = uuidv4();
     const description = "Question with scale?";
 
-    const question = createQuestionCard(id, false, createQuestionWithScale(id, description, false, false));
+    const question = createQuestionCard(id, false, createQuestionWithScale(id, description, false, false, isDisabled));
 
     page.append(question);
     updateQuestionDescription(id);
     updateQuestionsAndPagesCount();
 }
 
-function createQuestionWithScale(id, description, isRequired, isEditing) {
+function createQuestionWithScale(id, description, isRequired, isEditing, isDisabled) {
     const questionBlock = createCardBodyBlock();
 
     if (isEditing) {
         questionBlock.append(createHeaderEditingQuestion(id, description, isRequired));
-        questionBlock.append(createScaleInputBlock());
+        questionBlock.append(createScaleInputBlock(isDisabled));
         questionBlock.append(createScaleOutputBlock());
-        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, "scale"));
+        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, "scale", isDisabled));
     } else {
-        questionBlock.append(createQuestionDescription(id, description, isRequired));
-        questionBlock.append(createQuestionEditLink(id, description, isRequired, "scale"));
-        questionBlock.append(createScaleInputBlock());
+        questionBlock.append(createQuestionDescription(id, "scale", description, isRequired));
+        questionBlock.append(createQuestionEditLink(id, description, isRequired, "scale", isDisabled));
+        questionBlock.append(createScaleInputBlock(isDisabled));
         questionBlock.append(createScaleOutputBlock());
     }
 
     return questionBlock;
 }
 
-function createScaleInputBlock() {
+function createScaleInputBlock(isDisabled) {
     const input = document.createElement("input");
     input.setAttribute("type", "range");
     input.setAttribute("value", "50");
@@ -282,6 +284,7 @@ function createScaleInputBlock() {
     input.setAttribute("max", "100");
     input.setAttribute("class", "scale-block");
     input.setAttribute("oninput", "this.nextElementSibling.value = this.value");
+    input.disabled = isDisabled;
 
     return input;
 }
@@ -293,40 +296,44 @@ function createScaleOutputBlock(parameters) {
     return output;
 }
 
-function addQuestionWithRating() {
+function addQuestionWithRating(isDisabled) {
     addPageIfNotExist();
     const page = getActivePageContent();
 
     const id = uuidv4();
     const description = "Question with rating ?";
 
-    const question = createQuestionCard(id, false, createQuestionWithRating(id, description, false, false));
+    const question = createQuestionCard(id, false, createQuestionWithRating(id, description, false, false, isDisabled));
 
     page.append(question);
     updateQuestionDescription(id);
     updateQuestionsAndPagesCount();
 }
 
-function createQuestionWithRating(id, description, isRequired, isEditing) {
+function createQuestionWithRating(id, description, isRequired, isEditing, isDisabled) {
     const questionBlock = createCardBodyBlock();
 
     if (isEditing) {
         questionBlock.append(createHeaderEditingQuestion(id, description, isRequired));
-        questionBlock.append(createRatingBlock(id));
-        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, "rating"));
+        questionBlock.append(createRatingBlock(id, isDisabled));
+        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, "rating", isDisabled));
 
     } else {
-        questionBlock.append(createQuestionDescription(id, description, isRequired));
-        questionBlock.append(createQuestionEditLink(id, description, isRequired, "rating"));
-        questionBlock.append(createRatingBlock(id));
+        questionBlock.append(createQuestionDescription(id, "rating", description, isRequired));
+        questionBlock.append(createQuestionEditLink(id, description, isRequired, "rating", isDisabled));
+        questionBlock.append(createRatingBlock(id, isDisabled));
     }
 
     return questionBlock;
 }
 
-function createRatingBlock(id) {
+function createRatingBlock(id, isDisabled) {
     const ratingBlock = document.createElement("div");
-    ratingBlock.setAttribute("class", "rating");
+    if (isDisabled) {
+        ratingBlock.setAttribute("class", "disabledRating");
+    } else {
+        ratingBlock.setAttribute("class", "rating");
+    }
 
     for (let i = 5; i >= 0; i--) {
         const input = document.createElement("input");
@@ -334,6 +341,7 @@ function createRatingBlock(id) {
         input.setAttribute("name", "rating " + id);
         input.setAttribute("value", i);
         input.setAttribute("id", id + i);
+        input.disabled = isDisabled;
 
         const label = document.createElement("label");
         label.setAttribute("for", id + i);
@@ -347,37 +355,37 @@ function createRatingBlock(id) {
     return ratingBlock;
 }
 
-function addQuestionWithFileInput() {
+function addQuestionWithFileInput(isDisabled) {
     addPageIfNotExist();
     const page = getActivePageContent();
 
     const id = uuidv4();
     const description = "Question with file input ?";
 
-    const question = createQuestionCard(id, false, createQuestionWithFileInput(id, description, false, false));
+    const question = createQuestionCard(id, false, createQuestionWithFileInput(id, description, false, false, isDisabled));
 
     page.append(question);
     updateQuestionDescription(id);
     updateQuestionsAndPagesCount();
 }
 
-function createQuestionWithFileInput(id, description, isRequired, isEditing) {
+function createQuestionWithFileInput(id, description, isRequired, isEditing, isDisabled) {
     const questionBlock = createCardBodyBlock();
 
     if (isEditing) {
         questionBlock.append(createHeaderEditingQuestion(id, description, isRequired));
-        questionBlock.append(createFileInputBlock(id));
-        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, "file"));
+        questionBlock.append(createFileInputBlock(id, isDisabled));
+        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, "file", isDisabled));
     } else {
-        questionBlock.append(createQuestionDescription(id, description, isRequired));
-        questionBlock.append(createQuestionEditLink(id, description, isRequired, "file"));
-        questionBlock.append(createFileInputBlock(id));
+        questionBlock.append(createQuestionDescription(id, "file", description, isRequired));
+        questionBlock.append(createQuestionEditLink(id, description, isRequired, "file", isDisabled));
+        questionBlock.append(createFileInputBlock(id, isDisabled));
     }
 
     return questionBlock;
 }
 
-function createFileInputBlock(id) {
+function createFileInputBlock(id, isDisabled) {
     const inputBlock = document.createElement("div");
     inputBlock.setAttribute("class", "form-group");
 
@@ -385,13 +393,14 @@ function createFileInputBlock(id) {
     input.setAttribute("type", "file");
     input.setAttribute("class", "form-control-file");
     input.setAttribute("id", "formControlFile" + id);
+    input.disabled = isDisabled;
 
     inputBlock.append(input);
 
     return inputBlock;
 }
 
-function addQuestionWithAnswers(type) {
+function addQuestionWithAnswers(type, isDisabled) {
     addPageIfNotExist();
     const page = getActivePageContent();
 
@@ -399,45 +408,56 @@ function addQuestionWithAnswers(type) {
     const description = "Question with many answers ?";
     const answers = ["first", "second", "third"];
 
-    const question = createQuestionCard(id, false, createQuestionWithAnswers(id, description, false, answers, type, false));
+    const question = createQuestionCard(id, false, createQuestionWithAnswers(id, description, false, answers, type, false, isDisabled));
 
     page.append(question);
     updateQuestionDescription(id);
     updateQuestionsAndPagesCount();
 }
 
-function createQuestionWithAnswers(id, description, isRequired, answers, type, isEditing) {
+function createQuestionWithAnswers(id, description, isRequired, answers, type, isEditing, isDisabled) {
     const questionBlock = createCardBodyBlock();
 
     if (isEditing) {
         questionBlock.append(createHeaderEditingQuestion(id, description, isRequired));
-        questionBlock.append(createAnswersBlock(id, answers, type, true));
-        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, type, answers));
+        questionBlock.append(createAnswersBlock(id, answers, type, true, isDisabled));
+        questionBlock.append(createFooterEditingQuestion(id, description, isRequired, type, isDisabled, answers));
     } else {
-        questionBlock.append(createQuestionDescription(id, description, isRequired));
-        questionBlock.append(createQuestionEditLink(id, description, isRequired, type, answers));
-        questionBlock.append(createAnswersBlock(id, answers, type, false));
+        questionBlock.append(createQuestionDescription(id,type, description, isRequired));
+        questionBlock.append(createQuestionEditLink(id, description, isRequired, type, isDisabled, answers));
+        questionBlock.append(createAnswersBlock(id, answers, type, false, isDisabled));
     }
 
     return questionBlock;
 }
 
-function createAnswersBlock(id, answers, type, isEditing) {
+function createAnswersBlock(id, answers, type, isEditing, isDisabled) {
     const mainBlock = document.createElement("div");
 
     answers.forEach(function (answer) {
         const answerBlock = document.createElement("div");
         answerBlock.setAttribute("class", "form-check");
 
+        const inputBlock = document.createElement("div");
+        if (isEditing) {
+
+            inputBlock.setAttribute("class", "answer-editing-block");
+        } else {
+            inputBlock.setAttribute("class", "answer-block");
+        }
+
         const input = document.createElement("input");
         input.setAttribute("class", "form-check-input");
         input.setAttribute("type", type);
         input.setAttribute("id", id + answer);
+        input.disabled = isDisabled;
+
+        inputBlock.append(input);
 
         const label = document.createElement("label");
         label.setAttribute("class", "form-check-label");
-        label.setAttribute("for", id + answer);
-
+        label.setAttribute("name", "labelAnswer" + id);
+        
         if (isEditing) {
             const inputInLabel = document.createElement("input");
             inputInLabel.setAttribute("class", "form-control");
@@ -447,9 +467,9 @@ function createAnswersBlock(id, answers, type, isEditing) {
             label.append(inputInLabel);
         } else {
             label.append(answer);
-        }
 
-        answerBlock.append(input);
+        }
+        answerBlock.append(inputBlock);
         answerBlock.append(label);
 
         mainBlock.append(answerBlock);
@@ -458,10 +478,11 @@ function createAnswersBlock(id, answers, type, isEditing) {
     return mainBlock;
 }
 
-function createQuestionDescription(id, description, isRequired) {
+function createQuestionDescription(id,type, description, isRequired) {
     const descriptionBlock = document.createElement("div");
     descriptionBlock.setAttribute("class", "question-block");
 
+    descriptionBlock.append(createHiddenQuestionTypeInput(id , type));
     descriptionBlock.append(createHiddenDescriptionInput(id, description));
     descriptionBlock.append(createHiddenIsRequiredValueInput(id, isRequired));
 
@@ -472,6 +493,16 @@ function createQuestionDescription(id, description, isRequired) {
     descriptionBlock.append(text);
 
     return descriptionBlock;
+}
+
+function createHiddenQuestionTypeInput(id, type)
+{
+    const hiddenInput = document.createElement("input");
+    hiddenInput.setAttribute("type", "hidden");
+    hiddenInput.setAttribute("value", type);
+    hiddenInput.setAttribute("id", "questionType" + id);
+
+    return hiddenInput;
 }
 
 function createHiddenDescriptionInput(id, description) {
@@ -492,7 +523,7 @@ function createHiddenIsRequiredValueInput(id, isRequired) {
     return hiddenInput;
 }
 
-function createQuestionEditLink(id, description, isRequired, type, answers) {
+function createQuestionEditLink(id, description, isRequired, type, isDisabled, answers) {
     const editBlock = document.createElement("div");
     editBlock.setAttribute("class", "edit-question-icon");
 
@@ -501,7 +532,7 @@ function createQuestionEditLink(id, description, isRequired, type, answers) {
     editLink.setAttribute("type", "button");
     editLink.addEventListener("click", e => {
         e.preventDefault();
-        changeQuestionMode(id, description, isRequired, true, type, answers);
+        changeQuestionMode(id, description, isRequired, true, type, isDisabled, answers);
         updateQuestionDescription(id);
     });
 
@@ -673,7 +704,7 @@ function createLinkForQuestionNavigation() {
     return arrowLink;
 }
 
-function createFooterEditingQuestion(id, description, isRequired, type, answers) {
+function createFooterEditingQuestion(id, description, isRequired, type, isDisabled, answers) {
     const footer = document.createElement("div");
     footer.setAttribute("class", "question-buttons-block");
 
@@ -685,7 +716,7 @@ function createFooterEditingQuestion(id, description, isRequired, type, answers)
     saveButton.append("Save");
     saveButton.addEventListener("click", e => {
         e.preventDefault();
-        changeQuestionMode(id, getNewDescription(id), getNewIsRequiredValue(id), false, type, answers == undefined ? undefined : getNewAnswers(id));
+        changeQuestionMode(id, getNewDescription(id), getNewIsRequiredValue(id), false, type, isDisabled, answers == undefined ? undefined : getNewAnswers(id));
         updateQuestionDescription(id);
     });
 
@@ -693,10 +724,11 @@ function createFooterEditingQuestion(id, description, isRequired, type, answers)
 
     const cancelButton = document.createElement("button");
     cancelButton.setAttribute("class", "btn btn-secondary");
+    cancelButton.setAttribute("id", "cancelEditingQuestion" + id);
     cancelButton.append("Cancel");
     cancelButton.addEventListener("click", e => {
         e.preventDefault();
-        changeQuestionMode(id, description, isRequired, false, type, answers);
+        changeQuestionMode(id, description, isRequired, false, type, isDisabled, answers);
         updateQuestionDescription(id);
     });
 
@@ -706,39 +738,39 @@ function createFooterEditingQuestion(id, description, isRequired, type, answers)
     return footer;
 }
 
-function changeQuestionMode(id, description, isRequired, isEditing, type, answers) {
+function changeQuestionMode(id, description, isRequired, isEditing, type, isDisabled, answers) {
     const question = document.getElementById(id);
     let editQuestion = question;
 
     switch (type) {
         case "radio":
             {
-                editQuestion = createQuestionWithAnswers(id, description, isRequired, answers, type, isEditing);
+                editQuestion = createQuestionWithAnswers(id, description, isRequired, answers, type, isEditing, isDisabled);
                 break;
             }
         case "checkbox":
             {
-                editQuestion = createQuestionWithAnswers(id, description, isRequired, answers, type, isEditing);
+                editQuestion = createQuestionWithAnswers(id, description, isRequired, answers, type, isEditing, isDisabled);
                 break;
             }
         case "file":
             {
-                editQuestion = createQuestionWithFileInput(id, description, isRequired, isEditing);
+                editQuestion = createQuestionWithFileInput(id, description, isRequired, isEditing, isDisabled);
                 break;
             }
         case "scale":
             {
-                editQuestion = createQuestionWithScale(id, description, isRequired, isEditing);
+                editQuestion = createQuestionWithScale(id, description, isRequired, isEditing, isDisabled);
                 break;
             }
         case "rating":
             {
-                editQuestion = createQuestionWithRating(id, description, isRequired, isEditing);
+                editQuestion = createQuestionWithRating(id, description, isRequired, isEditing, isDisabled);
                 break;
             }
         case "text":
             {
-                editQuestion = createQuestionWithTextEditor(id, description, isRequired, isEditing);
+                editQuestion = createQuestionWithTextEditor(id, description, isRequired, isEditing, isDisabled);
                 break;
             }
     }
@@ -748,7 +780,7 @@ function changeQuestionMode(id, description, isRequired, isEditing, type, answer
         question.remove();
 
         if (type === "text") {
-            createTextEditor(id);
+            createTextEditor(id, isDisabled);
         }
     }
 }
@@ -971,6 +1003,139 @@ function getPageCount() {
     return count;
 }
 
+function addSurvey(isTemplate) {
+    $.post('/SurveyCreation/AddSurvey',
+        getSurveyInfo(isTemplate),
+        function (data) {
+            if (data.success === false) {
+                const list = document.getElementById("errorsList");
+                list.innerHTML = "";
+
+                data.errors.forEach(function(error) {
+                    const li = document.createElement("li");
+                    li.innerHTML = error;
+                    list.append(li);
+                });
+
+            } else if (data.success === true) {
+                window.location.href = "/";
+            }
+        });
+}
+
+function removeEditingFromQuestion(questions) {
+    for (let i = 1; i < questions.length; i++) {
+        const button = document.getElementById("cancelEditingQuestion" + questions[i].id);
+        if (button) {
+            button.click();
+        }
+    }
+}
+
+function getSurveyInfo(isTemplate) {
+    const options = getSurveyOptions();
+
+    if (options === 0) {
+        return {
+            "Id": uuidv4,
+            "Name": document.getElementById("surveyName").value,
+            "IsTemplate": isTemplate,
+            "Pages": getPagesInfo()
+        }
+    }
+
+    return {
+        "Id": uuidv4,
+        "Name": document.getElementById("surveyName").value,
+        "IsTemplate": isTemplate,
+        "Options": options,
+        "Pages": getPagesInfo()
+    }
+}
+
+function getSurveyOptions() {
+    let options = 0;
+
+    if (document.getElementById("anonymousSurvey").checked) {
+        options += 1;
+    }
+    if (document.getElementById("randomOrderOfQuestions").checked) {
+        options += 2;
+    }
+    if (document.getElementById("questionNumbers").checked) {
+        options += 4;
+    }
+    if (document.getElementById("pageNumbers").checked) {
+        options += 8;
+    }
+    if (document.getElementById("requiredFieldsAsterisks").checked) {
+        options += 16;
+    }
+    if (document.getElementById("fieldProgressBar").checked) {
+        options += 32;
+    }
+
+    return options;
+}
+
+function getPagesInfo() {
+    const pageNodes = document.getElementById("pageTabs").childNodes;
+    const pagesInfo = [];
+
+    pageNodes.forEach(function (item, index) {
+        const pageId = item.childNodes[0].id;
+
+        pagesInfo.push({
+            "Id": pageId,
+            "Number": index,
+            "Questions": getQuestionsInfo(pageId),
+            "Name": document.getElementById(pageId).innerHTML
+        });
+    });
+
+    return pagesInfo;
+}
+
+function getQuestionsInfo(pageId) {
+    const questions = document.getElementById("View" + pageId).childNodes;
+    removeEditingFromQuestion(questions);
+    const questionsInfo = [];
+
+    for (let i = 1; i < questions.length; i++) {
+        const id = questions[i].id;
+        const answers = [];
+
+        const answersValues = document.getElementsByName("labelAnswer" + id);
+        answersValues.forEach(element => answers.push(element.innerHTML));
+
+        questionsInfo.push({
+            "Id": id,
+            "Description": document.getElementById("initDescription" + id).value,
+            "Number": i - 1,
+            "IsRequired": document.getElementById("isRequiredValue" + id).checked,
+            "QuestionType": getQuestionType(id),
+            "AvailableAnswers": answers
+        });
+    }
+
+    return questionsInfo;
+}
+
+function getQuestionType(id) {
+    let type = document.getElementById("questionType" + id).value;
+
+    if (type === "radio") {
+        type = "OneAnswer";
+    } else if (type === "checkbox") {
+        type = "ManyAnswers";
+    }
+
+    return type;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     addPage();
 });
+
+export { addSurvey, addPage, addQuestionWithAnswers, addQuestionWithTextEditor, addQuestionWithFileInput,
+    addQuestionWithRating, addQuestionWithScale, updatePageNumbersBlock, updateQuestionsDescription, updateProgressBarBlock};

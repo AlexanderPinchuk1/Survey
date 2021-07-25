@@ -16,8 +16,8 @@ namespace iTechArt.Survey.WebApp.Controllers
 
 
         public AdministrationController(IUserService userService)
-        {
-           _userService = userService;
+        { 
+            _userService = userService;
         }
 
 
@@ -73,7 +73,7 @@ namespace iTechArt.Survey.WebApp.Controllers
             }
 
             user.Email = model.Email;
-            
+
             var result = await _userService.EditUserAsync(user, model.Role, model.DisplayName);
             if (result.Succeeded)
             {
@@ -154,8 +154,8 @@ namespace iTechArt.Survey.WebApp.Controllers
 
             var user = new User
             {
-                DisplayName = model.DisplayName, 
-                Email = model.Email, 
+                DisplayName = model.DisplayName,
+                Email = model.Email,
                 UserName = model.Email,
                 RegistrationDateTime = DateTime.Now
             };

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;

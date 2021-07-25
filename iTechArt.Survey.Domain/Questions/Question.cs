@@ -1,23 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
+
 
 namespace iTechArt.Survey.Domain.Questions
 {
     public class Question
     {
+        [Required]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = "The question must have a description.")]
         public string Description { get; set; }
 
+        [Required]
         public int Number { get; set; }
 
+        [Required]
         public bool IsRequired { get; set; }
 
+        [AvailableAnswers]
         public List<string> AvailableAnswers { get; set; }
 
+        [Required]
         public QuestionType QuestionType { get; set; }
 
         public Page Page { get; set; }
