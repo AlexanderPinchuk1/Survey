@@ -10,22 +10,21 @@ namespace iTechArt.Survey.Domain.Questions
 {
     public class Question
     {
-        [Required]
+        [GuidId]
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "The question must have a description.")]
         public string Description { get; set; }
 
-        [Required]
+        [Range(0, int.MaxValue)]
         public int Number { get; set; }
 
-        [Required]
         public bool IsRequired { get; set; }
 
         [AvailableAnswers]
         public List<string> AvailableAnswers { get; set; }
 
-        [Required]
+        [Range(1, 6)]
         public QuestionType QuestionType { get; set; }
 
         public Page Page { get; set; }

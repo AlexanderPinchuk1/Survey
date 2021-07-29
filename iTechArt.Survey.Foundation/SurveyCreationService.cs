@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using iTechArt.Repositories.UnitOfWork;
 using iTechArt.Survey.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace iTechArt.Survey.Foundation
 {
@@ -23,7 +25,10 @@ namespace iTechArt.Survey.Foundation
 
         public async Task AddSurvey(Domain.Surveys.Survey survey)
         {
-            survey.CreatedBy = await _userManager.GetUserAsync(_signInManager.Context.User);
+            survey.CreatedById = await _userManager.Users
+                .Where( user => user.UserName == _signInManager.Context.User.Identity.Name)
+                .Select(user => user.Id)
+                .FirstAsync();
 
             _unitOfWork.GetRepository<Domain.Surveys.Survey>().Create(survey);
 

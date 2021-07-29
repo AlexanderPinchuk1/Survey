@@ -9,16 +9,18 @@ namespace iTechArt.Survey.Domain.Surveys
 {
     public class Survey
     {
-        [Required]
+        [GuidId]
         public Guid Id { get; set; }
-
+        
         [Required(ErrorMessage = "The survey must have a name.")]
         public string Name { get; set; }
 
-        [Required]
         public bool IsTemplate { get; set; }
 
+        [Range(0, 63)]
         public SurveyOptions Options { get; set; }
+
+        public Guid CreatedById { get; set; }
 
         public User CreatedBy { get; set; }
 

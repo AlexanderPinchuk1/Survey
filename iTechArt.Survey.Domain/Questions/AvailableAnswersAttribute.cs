@@ -6,8 +6,6 @@ namespace iTechArt.Survey.Domain.Questions
 {
     public class AvailableAnswersAttribute: ValidationAttribute
     {
-        private static string GetErrorMessage() => "The available answer to the question must not be empty.";
-
         protected override ValidationResult IsValid(object value,
             ValidationContext validationContext)
         {
@@ -18,7 +16,13 @@ namespace iTechArt.Survey.Domain.Questions
                 return ValidationResult.Success;
             }
 
-            return availableAnswers.Any(availableAnswer => availableAnswer == null) ? new ValidationResult(GetErrorMessage()) : ValidationResult.Success;
+            if (availableAnswers.Count == 0)
+            {
+                return new ValidationResult("The question does not have available answers.");
+            }
+
+            return availableAnswers.Any(availableAnswer => availableAnswer == null) 
+                ? new ValidationResult("The available answer to the question must not be empty.") : ValidationResult.Success;
         }
     }
 }

@@ -9,13 +9,13 @@ namespace iTechArt.Survey.Domain
 {
     public class Page
     {
-        [Required]
+        [GuidId]
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "The page must have a name.")]
         public string Name { get; set; }
 
-        [Required]
+        [Range(0, int.MaxValue)]
         public int Number { get; set; }
 
         public Surveys.Survey Survey { get; set; }
