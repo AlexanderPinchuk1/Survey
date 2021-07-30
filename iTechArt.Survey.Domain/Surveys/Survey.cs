@@ -13,6 +13,7 @@ namespace iTechArt.Survey.Domain.Surveys
         public Guid Id { get; set; }
         
         [Required(ErrorMessage = "The survey must have a name.")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "The name of the survey must contain from 1 to 100 characters.")]
         public string Name { get; set; }
 
         public bool IsTemplate { get; set; }

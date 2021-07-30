@@ -14,6 +14,7 @@ namespace iTechArt.Survey.Domain.Questions
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "The question must have a description.")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "The description of the question must contain from 1 to 100 characters.")]
         public string Description { get; set; }
 
         [Range(0, int.MaxValue)]

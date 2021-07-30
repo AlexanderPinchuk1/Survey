@@ -13,6 +13,7 @@ namespace iTechArt.Survey.Domain
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "The page must have a name.")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "The name of the page must contain from 1 to 100 characters.")]
         public string Name { get; set; }
 
         [Range(0, int.MaxValue)]
