@@ -1004,23 +1004,37 @@ function getPageCount() {
 }
 
 function addSurvey(isTemplate) {
-    $.post('/SurveyCreation/AddSurvey',
-        getSurveyInfo(isTemplate),
-        function (data) {
-            if (data.success === false) {
-                const list = document.getElementById("errorsList");
-                list.innerHTML = "";
+    $.ajax({
+        url: '/SurveyCreation/AddSurvey',
+        type: "POST",
+        dataType: "json",
+        data: getSurveyInfo(isTemplate),
+        async: true,
+        error: function (response) {
+            let errors = [];
+            const responseErrors = Object.values(response.responseJSON);
 
-                data.errors.forEach(function(error) {
-                    const li = document.createElement("li");
-                    li.innerHTML = error;
-                    list.append(li);
-                });
-
-            } else if (data.success === true) {
-                window.location.href = "/";
+            for (let i = 0; i < responseErrors.length; i++) {
+                for (let j = 0; j < responseErrors[i].length; j++) {
+                    errors.push((responseErrors[i][j]));
+                }
             }
-        });
+
+            errors = errors.filter((x, i, a) => a.indexOf(x) === i);
+
+            const list = document.getElementById("errorsList");
+            list.innerHTML = "";
+
+            errors.forEach(function(error) {
+                const li = document.createElement("li");
+                li.innerHTML = error;
+                list.append(li);
+            });
+        },
+        success: function() {
+            window.location.href = "/";
+        } 
+    });
 }
 
 function removeEditingFromQuestion(questions) {

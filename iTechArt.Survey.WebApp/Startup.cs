@@ -38,7 +38,8 @@ namespace iTechArt.Survey.WebApp
             services.Configure<Settings>(Configuration.GetSection("Settings"));
 
             services.AddTransient<IUserService, UserService>();
-            
+
+            services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
             services.AddScoped<IUnitOfWork, SurveyUnitOfWork>();
             services.AddScoped<ISurveyCreationService, SurveyCreationService>();
         }

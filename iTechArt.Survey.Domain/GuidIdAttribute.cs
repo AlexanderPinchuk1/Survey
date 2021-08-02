@@ -3,13 +3,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace iTechArt.Survey.Domain
 {
-    public class GuidIdAttribute: ValidationAttribute
+    public class GuidIdAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
-            var id = (Guid)value;
+            if (value == null)
+            {
+                return true;
+            }
 
-            return id != Guid.Empty;
+            return value switch
+            {
+                Guid guid => guid != Guid.Empty,
+                _ => false
+            };
         }
     }
 }

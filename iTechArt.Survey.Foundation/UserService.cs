@@ -106,7 +106,7 @@ namespace iTechArt.Survey.Foundation
                         user.RegistrationDateTime,
                         Role = role.Name
                     }).ToListAsync();
-            
+
             return new PagedEntities<UserInfo>(pageIndex, itemCountPerPage, totalCount, users.Select(user => new UserInfo()
             {
                 Id = user.Id,

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using iTechArt.Survey.Foundation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,12 +25,7 @@ namespace iTechArt.Survey.WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Json(new
-                {
-                    success = false,
-                    errors = ModelState.Keys.SelectMany(k => ModelState[k].Errors)
-                        .Select(m => m.ErrorMessage).Distinct().ToArray()
-                });
+                return BadRequest(ModelState);
             }
 
             await _surveyCreationService.AddSurvey(survey);

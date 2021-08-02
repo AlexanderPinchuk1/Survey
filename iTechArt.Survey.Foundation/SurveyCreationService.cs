@@ -1,34 +1,25 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using iTechArt.Repositories.UnitOfWork;
-using iTechArt.Survey.Domain.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace iTechArt.Survey.Foundation
 {
-    public class SurveyCreationService: ISurveyCreationService
+    public class SurveyCreationService : ISurveyCreationService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
 
-        public SurveyCreationService(UserManager<User> userManager,
-                                     SignInManager<User> signInManager,
-                                     IUnitOfWork unitOfWork)
+        public SurveyCreationService(IUnitOfWork unitOfWork,
+                                     ICurrentUserProvider currentUserProvider)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _unitOfWork = unitOfWork;
+            _currentUserProvider = currentUserProvider;
         }
+
 
         public async Task AddSurvey(Domain.Surveys.Survey survey)
         {
-            survey.CreatedById = await _userManager.Users
-                .Where( user => user.UserName == _signInManager.Context.User.Identity.Name)
-                .Select(user => user.Id)
-                .FirstAsync();
+            survey.CreatedById = _currentUserProvider.GetUserId();
 
             _unitOfWork.GetRepository<Domain.Surveys.Survey>().Create(survey);
 
