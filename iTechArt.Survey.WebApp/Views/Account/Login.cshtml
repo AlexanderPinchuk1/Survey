@@ -8,20 +8,20 @@
     <h1 class="center-header">@ViewData["Title"]</h1>
     <div>
         <section>
-            <form id="account" method="post">
+            <form id="account" method="post" asp-route-returnUrl="@Model.ReturnUrl">
                 <div class="form-group">
                     <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" class="form-control"/>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
+                    <input asp-for="Password" class="form-control"/>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <p class="register-ref">
-                        <a asp-action="Register" asp-controller="Account">Registration</a> 
+                        <a asp-action="Register" asp-controller="Account">Registration</a>
                     </p>
                     <p>
                         <a id="forgot-password">Forgot your password?</a>

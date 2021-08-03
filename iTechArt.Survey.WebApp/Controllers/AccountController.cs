@@ -26,11 +26,14 @@ namespace iTechArt.Survey.WebApp.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            return View();
+            return View(new LoginViewModel()
+            {
+                ReturnUrl = returnUrl
+            });
         }
 
         [HttpPost]
@@ -51,6 +54,11 @@ namespace iTechArt.Survey.WebApp.Controllers
             }
        
             _logger.LogInformation("User logged in.");
+
+            if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+            {
+                return Redirect(model.ReturnUrl);
+            }
 
             return RedirectToAction("Index", "Home");
         }

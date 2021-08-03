@@ -1,0 +1,29 @@
+﻿@using iTechArt.Survey.Domain.Surveys
+@model iTechArt.Survey.WebApp.Models.QuestionViewModel
+
+
+<div class="question-block">
+    @if ((Model.SurveyOptions & SurveyOptions.MarksRequiredQuestionsWithAnAsterisk) != 0 && Model.Question.IsRequired)
+    {
+        if ((Model.SurveyOptions & SurveyOptions.NumberedQuestions) != 0)
+        {
+            <h5>@(Model.Question.Number + 1). *@Model.Question.Description</h5>
+        }
+        else
+        {
+            <h5>*@Model.Question.Description</h5>
+        }
+    }
+    else
+    {
+        if ((Model.SurveyOptions & SurveyOptions.NumberedQuestions) != 0)
+        {
+            <h5>@(Model.Question.Number + 1). @Model.Question.Description</h5>
+        }
+        else
+        {
+            <h5>@Model.Question.Description</h5>
+        }
+
+    }
+</div>

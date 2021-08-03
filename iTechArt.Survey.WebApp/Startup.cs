@@ -1,13 +1,13 @@
 using iTechArt.Repositories.UnitOfWork;
 using iTechArt.Survey.Domain;
 using iTechArt.Survey.Foundation;
+using iTechArt.Survey.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using iTechArt.Survey.Repositories.Extensions;
-using iTechArt.Survey.Repositories;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
@@ -46,7 +46,9 @@ namespace iTechArt.Survey.WebApp
 
             services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
             services.AddScoped<IUnitOfWork, SurveyUnitOfWork>();
+            services.AddScoped<ISurveyUnitOfWork, SurveyUnitOfWork>();
             services.AddScoped<ISurveyCreationService, SurveyCreationService>();
+            services.AddScoped<ISurveyPassingService, SurveyPassingService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
