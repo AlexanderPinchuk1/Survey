@@ -15,12 +15,12 @@ namespace iTechArt.Survey.Foundation
         }
 
 
-        public Guid GetUserId()
+        public Guid? GetUserId()
         {
             var stringGuid = _httpContextAccessor.HttpContext?.User.Claims
                 .FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
 
-            return Guid.TryParse(stringGuid, out var guid) ? guid : Guid.Empty;
+            return Guid.TryParse(stringGuid, out var guid) ? guid : null;
         }
     }
 }

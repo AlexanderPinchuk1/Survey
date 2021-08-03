@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using iTechArt.Repositories.UnitOfWork;
 
 namespace iTechArt.Survey.Foundation
@@ -19,7 +20,13 @@ namespace iTechArt.Survey.Foundation
 
         public async Task AddSurvey(Domain.Surveys.Survey survey)
         {
-            survey.CreatedById = _currentUserProvider.GetUserId();
+            var userId = _currentUserProvider.GetUserId();
+            if (userId == null || userId == Guid.Empty)
+            {
+                throw new InvalidOperationException();
+            }
+
+            survey.CreatedById = (Guid)userId;
 
             _unitOfWork.GetRepository<Domain.Surveys.Survey>().Create(survey);
 

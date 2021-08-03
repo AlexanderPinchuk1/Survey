@@ -1003,14 +1003,13 @@ function getPageCount() {
     return count;
 }
 
-function addSurvey(isTemplate) {
-    $.ajax({
-        url: '/SurveyCreation/AddSurvey',
-        type: "POST",
-        dataType: "json",
-        data: getSurveyInfo(isTemplate),
-        async: true,
-        error: function (response) {
+async function addSurvey(isTemplate) {
+
+    await $.post("/SurveyCreation/AddSurvey", $.param(getSurveyInfo(isTemplate)))
+        .then(function () {
+            window.location.href = "/";
+        })
+        .catch(function (response) {
             let errors = [];
             const responseErrors = Object.values(response.responseJSON);
 
@@ -1030,11 +1029,7 @@ function addSurvey(isTemplate) {
                 li.innerHTML = error;
                 list.append(li);
             });
-        },
-        success: function() {
-            window.location.href = "/";
-        } 
-    });
+        });
 }
 
 function removeEditingFromQuestion(questions) {

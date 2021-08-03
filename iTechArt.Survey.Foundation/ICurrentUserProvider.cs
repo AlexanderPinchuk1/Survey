@@ -4,6 +4,6 @@ namespace iTechArt.Survey.Foundation
 {
     public interface ICurrentUserProvider
     {
-        Guid GetUserId();
+        public Guid? GetUserId();
     }
 }
