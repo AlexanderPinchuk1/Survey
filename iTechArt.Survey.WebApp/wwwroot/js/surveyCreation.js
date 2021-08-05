@@ -1004,32 +1004,31 @@ function getPageCount() {
 }
 
 async function addSurvey(isTemplate) {
+    try {
+        await $.post("/SurveyCreation/AddSurvey", $.param(getSurveyInfo(isTemplate)));
 
-    await $.post("/SurveyCreation/AddSurvey", $.param(getSurveyInfo(isTemplate)))
-        .then(function () {
-            window.location.href = "/";
-        })
-        .catch(function (response) {
-            let errors = [];
-            const responseErrors = Object.values(response.responseJSON);
+        window.location.href = "/";
+    } catch (e) {
+        let errors = [];
+        const responseErrors = Object.values(e.responseJSON);
 
-            for (let i = 0; i < responseErrors.length; i++) {
-                for (let j = 0; j < responseErrors[i].length; j++) {
-                    errors.push((responseErrors[i][j]));
-                }
+        for (let i = 0; i < responseErrors.length; i++) {
+            for (let j = 0; j < responseErrors[i].length; j++) {
+                errors.push((responseErrors[i][j]));
             }
+        }
 
-            errors = errors.filter((x, i, a) => a.indexOf(x) === i);
+        errors = errors.filter((x, i, a) => a.indexOf(x) === i);
 
-            const list = document.getElementById("errorsList");
-            list.innerHTML = "";
+        const list = document.getElementById("errorsList");
+        list.innerHTML = "";
 
-            errors.forEach(function(error) {
-                const li = document.createElement("li");
-                li.innerHTML = error;
-                list.append(li);
-            });
+        errors.forEach(function(error) {
+            const li = document.createElement("li");
+            li.innerHTML = error;
+            list.append(li);
         });
+    }
 }
 
 function removeEditingFromQuestion(questions) {

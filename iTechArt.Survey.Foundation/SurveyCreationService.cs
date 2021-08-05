@@ -23,7 +23,7 @@ namespace iTechArt.Survey.Foundation
             var userId = _currentUserProvider.GetUserId();
             if (userId == null || userId == Guid.Empty)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Error getting user id!");
             }
 
             survey.CreatedById = (Guid)userId;
