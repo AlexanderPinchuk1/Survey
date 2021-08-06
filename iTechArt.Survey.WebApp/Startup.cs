@@ -1,4 +1,4 @@
-using System;
+using iTechArt.Repositories.UnitOfWork;
 using iTechArt.Survey.Domain;
 using iTechArt.Survey.Foundation;
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using iTechArt.Survey.Repositories.Extensions;
+using iTechArt.Survey.Repositories;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace iTechArt.Survey.WebApp
 {
@@ -25,7 +28,10 @@ namespace iTechArt.Survey.WebApp
         {
             services.AddSurveyDbContext(Configuration.GetConnectionString("default"));
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
+            });
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -37,6 +43,10 @@ namespace iTechArt.Survey.WebApp
             services.Configure<Settings>(Configuration.GetSection("Settings"));
 
             services.AddTransient<IUserService, UserService>();
+
+            services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+            services.AddScoped<IUnitOfWork, SurveyUnitOfWork>();
+            services.AddScoped<ISurveyCreationService, SurveyCreationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

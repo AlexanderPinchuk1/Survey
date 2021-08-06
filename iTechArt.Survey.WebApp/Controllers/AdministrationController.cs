@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Identity;
 using iTechArt.Survey.Foundation;
 using iTechArt.Survey.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Internal.Account.Manage;
 
 namespace iTechArt.Survey.WebApp.Controllers
 {
@@ -18,8 +16,8 @@ namespace iTechArt.Survey.WebApp.Controllers
 
 
         public AdministrationController(IUserService userService)
-        {
-           _userService = userService;
+        { 
+            _userService = userService;
         }
 
 
@@ -75,7 +73,7 @@ namespace iTechArt.Survey.WebApp.Controllers
             }
 
             user.Email = model.Email;
-            
+
             var result = await _userService.EditUserAsync(user, model.Role, model.DisplayName);
             if (result.Succeeded)
             {
@@ -156,8 +154,8 @@ namespace iTechArt.Survey.WebApp.Controllers
 
             var user = new User
             {
-                DisplayName = model.DisplayName, 
-                Email = model.Email, 
+                DisplayName = model.DisplayName,
+                Email = model.Email,
                 UserName = model.Email,
                 RegistrationDateTime = DateTime.Now
             };
