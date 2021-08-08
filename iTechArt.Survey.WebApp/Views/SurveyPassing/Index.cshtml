@@ -2,6 +2,11 @@
 @using iTechArt.Survey.WebApp.Models
 @model SurveyViewModel
 
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/surveyPassing.css" />
+}
+
 <div class="passing-survey-block" id="@Model.Id">
     <div class="passing-survey-name-block">
         <h4>@Model.Name</h4>
@@ -13,17 +18,17 @@
             if (Model.Pages[0] == page)
             {
                 <div class="tab-pane fade show active" role="tabpanel" id=@("Page" + page.Id)>
-                    <partial name="Questions/Shared/_PageNameBlockPartial" model="page.Name"/>
+                    <partial name="Questions/Shared/_PageNameBlockPartial" model="page.Name" />
 
-                    <partial name="_QuestionsSelectionPartial" model="page"/>
+                    <partial name="_QuestionsSelectionPartial" model="page" />
                 </div>
             }
             else
             {
                 <div class="tab-pane fade show" role="tabpanel" id=@("Page" + page.Id)>
-                    <partial name="Questions/Shared/_PageNameBlockPartial" model="page.Name"/>
+                    <partial name="Questions/Shared/_PageNameBlockPartial" model="page.Name" />
 
-                    <partial name="_QuestionsSelectionPartial" model="page"/>
+                    <partial name="_QuestionsSelectionPartial" model="page" />
                 </div>
             }
         }
@@ -40,7 +45,7 @@
 
             <div class="progress-block">
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
@@ -57,7 +62,7 @@
             </div>
         </div>
     }
-    
+
     <div class="save-passing-survey-block"></div>
 </div>
 
@@ -67,7 +72,7 @@
     surveyPassing.updateProgress();
 
     const fileInputs = document.getElementsByClassName("form-control-file");
-    for (let i = 0; i < fileInputs.length; i++){
+    for (let i = 0; i < fileInputs.length; i++) {
         fileInputs[i].addEventListener("change", e => {
             e.preventDefault();
             surveyPassing.updateProgress();
@@ -97,7 +102,6 @@
             surveyPassing.updateProgress();
         });
     }
-
 
     if (document.getElementById("prevPageButton")) {
         document.getElementById("prevPageButton").addEventListener("click", e => {

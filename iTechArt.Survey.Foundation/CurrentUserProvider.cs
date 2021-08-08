@@ -22,5 +22,10 @@ namespace iTechArt.Survey.Foundation
 
             return Guid.TryParse(stringGuid, out var guid) ? guid : null;
         }
+
+        public bool? IsAuthenticated()
+        {
+            return _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated;
+        }
     }
 }

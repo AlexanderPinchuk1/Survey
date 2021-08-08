@@ -4,29 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using iTechArt.Repositories.UnitOfWork;
 using iTechArt.Survey.Domain;
-using iTechArt.Survey.Domain.Identity;
 using iTechArt.Survey.Domain.Surveys;
 using iTechArt.Survey.Repositories;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace iTechArt.Survey.Foundation
 {
     public class SurveyPassingService : ISurveyPassingService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly ICurrentUserProvider _currentUserProvider;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISurveyUnitOfWork _surveyUnitOfWork;
         
 
-        public SurveyPassingService(UserManager<User> userManager,
-                                    SignInManager<User> signInManager, 
+        public SurveyPassingService(ICurrentUserProvider currentUserProvider,
                                     IUnitOfWork unitOfWork, 
                                     ISurveyUnitOfWork surveyUnitOfWork)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _currentUserProvider = currentUserProvider;
             _unitOfWork = unitOfWork;
             _surveyUnitOfWork = surveyUnitOfWork;
         }
@@ -68,14 +62,11 @@ namespace iTechArt.Survey.Foundation
 
         public async Task SaveOrUpdateIfExistUserAnswers(Guid surveyId, List<UserAnswer> userAnswers)
         {
-            var userId = await _userManager.Users
-                .Where(user => user.UserName == _signInManager.Context.User.Identity.Name)
-                .Select(user => user.Id)
-                .FirstOrDefaultAsync();
+            var userId = _currentUserProvider.GetUserId();
 
             var userAnswerRepository = _unitOfWork.GetRepository<UserAnswer>();
 
-            if (userId != Guid.Empty)
+            if (userId != Guid.Empty && userId != null)
             {
                 var existAnswers = userAnswerRepository
                     .GetAll()
@@ -109,7 +100,7 @@ namespace iTechArt.Survey.Foundation
                     _unitOfWork.GetRepository<SurveyResult>().Create(new SurveyResult()
                     {
                         SurveyId = surveyId,
-                        UserId = userId,
+                        UserId = (Guid) userId,
                         CompletionDate = DateTime.Now
                     });
                 }
@@ -127,12 +118,9 @@ namespace iTechArt.Survey.Foundation
 
         public List<UserAnswer> GetExistingUserAnswers(Guid surveyId)
         {
-            var userId = _userManager.Users
-                .Where(user => user.UserName == _signInManager.Context.User.Identity.Name)
-                .Select(user => user.Id)
-                .FirstOrDefault();
+            var userId = _currentUserProvider.GetUserId();
 
-            if (userId == Guid.Empty)
+            if (userId == Guid.Empty || userId == null)
             {
                 return new List<UserAnswer>();
             }
@@ -146,7 +134,9 @@ namespace iTechArt.Survey.Foundation
 
         public bool UserIsAuthenticated()
         {
-            return _signInManager.Context.User.Identity is {IsAuthenticated: true};
+            var isAuthenticated = _currentUserProvider.IsAuthenticated();
+
+            return isAuthenticated ?? false;
         }
 
 
