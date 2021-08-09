@@ -6,6 +6,6 @@ namespace iTechArt.Survey.Foundation
     {
         public Guid? GetUserId();
 
-        public bool? IsAuthenticated();
+        public bool IsAuthenticated();
     }
 }

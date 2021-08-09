@@ -16,7 +16,7 @@ namespace iTechArt.Survey.Repositories
         }
 
 
-        public SurveyRepository GetSurveyRepository()
+        public ISurveyRepository GetSurveyRepository()
         {
             return _surveyRepository ??= new SurveyRepository(_surveyDbContext);
         }

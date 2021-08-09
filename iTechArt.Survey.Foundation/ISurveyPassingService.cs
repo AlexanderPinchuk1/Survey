@@ -9,9 +9,7 @@ namespace iTechArt.Survey.Foundation
     {
         public Domain.Surveys.Survey FindSurveyOrReturnNull(Guid id);
 
-        public List<AnswerError> GetErrorsIfNotAllRequiredQuestionsIsAnswered(Guid surveyId, List<UserAnswer> userAnswers);
-
-        public Task SaveOrUpdateIfExistUserAnswers(Guid surveyId, List<UserAnswer> userAnswers);
+        public Task<List<AnswerError>> SaveOrUpdateIfExistUserAnswers(Guid surveyId, List<UserAnswer> userAnswers);
 
         public List<UserAnswer> GetExistingUserAnswers(Guid surveyId);
 

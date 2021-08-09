@@ -28,7 +28,7 @@ namespace iTechArt.Survey.Foundation
 
         public Domain.Surveys.Survey FindSurveyOrReturnNull(Guid id)
         {
-            var survey = _surveyUnitOfWork.GetSurveyRepository().Get(id);
+            var survey = _surveyUnitOfWork.GetSurveyRepository().GetSurveyIncludePagesAndQuestions(id);
 
             if (survey == null || (survey.Options & SurveyOptions.RandomOrderOfQuestions) == 0)
             {
@@ -47,26 +47,42 @@ namespace iTechArt.Survey.Foundation
             return survey;
         }
 
-        public List<AnswerError> GetErrorsIfNotAllRequiredQuestionsIsAnswered(Guid surveyId, List<UserAnswer> userAnswers)
+        public async Task<List<AnswerError>> SaveOrUpdateIfExistUserAnswers(Guid surveyId, List<UserAnswer> userAnswers)
         {
-            var requiredAnswers = _surveyUnitOfWork.GetSurveyRepository().Get(surveyId).Pages
+            var errors = GetErrorsIfNotAllRequiredQuestionsIsAnswered(surveyId, userAnswers);
+            if (errors.Count != 0)
+            {
+                return errors;
+            }
+
+            CreateOrUpdateExistingAnswers(surveyId, userAnswers);
+
+            await _unitOfWork.CommitAsync();
+
+            return null;
+        }
+
+        private List<AnswerError> GetErrorsIfNotAllRequiredQuestionsIsAnswered(Guid surveyId, List<UserAnswer> userAnswers)
+        {
+            var requiredAnswers = _surveyUnitOfWork.GetSurveyRepository().GetSurveyIncludePagesAndQuestions(surveyId).Pages
                 .SelectMany(page => page.Questions)
                 .Where(question => question.IsRequired)
                 .ToList();
 
-            return (from requiredAnswer in requiredAnswers where !userAnswers
-                .Exists(userAnswer => userAnswer.QuestionId == requiredAnswer.Id) 
-                select new AnswerError() {QuestionId = requiredAnswer.Id, ErrorMessage = "Require answer!"})
+            return (from requiredAnswer in requiredAnswers
+                    where !userAnswers
+                        .Exists(userAnswer => userAnswer.QuestionId == requiredAnswer.Id)
+                    select new AnswerError() { QuestionId = requiredAnswer.Id, ErrorMessage = "Require answer!" })
                 .ToList();
         }
 
-        public async Task SaveOrUpdateIfExistUserAnswers(Guid surveyId, List<UserAnswer> userAnswers)
+        private void CreateOrUpdateExistingAnswers(Guid surveyId, IEnumerable<UserAnswer> userAnswers)
         {
             var userId = _currentUserProvider.GetUserId();
 
             var userAnswerRepository = _unitOfWork.GetRepository<UserAnswer>();
 
-            if (userId != Guid.Empty && userId != null)
+            if (userId != null)
             {
                 var existAnswers = userAnswerRepository
                     .GetAll()
@@ -93,7 +109,7 @@ namespace iTechArt.Survey.Foundation
 
                 if (surveyResult != null)
                 {
-                   surveyResult.CompletionDate = DateTime.Now;
+                    surveyResult.CompletionDate = DateTime.Now;
                 }
                 else
                 {
@@ -112,15 +128,13 @@ namespace iTechArt.Survey.Foundation
                     userAnswerRepository.Create(userAnswer);
                 }
             }
-
-            await _unitOfWork.CommitAsync();
         }
 
         public List<UserAnswer> GetExistingUserAnswers(Guid surveyId)
         {
             var userId = _currentUserProvider.GetUserId();
 
-            if (userId == Guid.Empty || userId == null)
+            if (userId == null)
             {
                 return new List<UserAnswer>();
             }
@@ -134,9 +148,7 @@ namespace iTechArt.Survey.Foundation
 
         public bool UserIsAuthenticated()
         {
-            var isAuthenticated = _currentUserProvider.IsAuthenticated();
-
-            return isAuthenticated ?? false;
+            return _currentUserProvider.IsAuthenticated();
         }
 
 

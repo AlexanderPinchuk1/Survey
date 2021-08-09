@@ -32,7 +32,7 @@ namespace iTechArt.Survey.WebApp.Controllers
 
             if (survey == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             if ((survey.Options & SurveyOptions.Anonymity) != 0 &&  !_surveyPassingService.UserIsAuthenticated())
@@ -75,17 +75,13 @@ namespace iTechArt.Survey.WebApp.Controllers
                 return BadRequest();
             }
 
-            var answersErrors = _surveyPassingService.GetErrorsIfNotAllRequiredQuestionsIsAnswered(surveyId, userAnswers);
-            if (answersErrors.Count != 0)
+            var answersErrors= await _surveyPassingService.SaveOrUpdateIfExistUserAnswers(surveyId, userAnswers);
+            if (answersErrors == null)
             {
-                return BadRequest(
-                    answersErrors
-                );
+                return Ok();
             }
 
-            await _surveyPassingService.SaveOrUpdateIfExistUserAnswers(surveyId, userAnswers);
-
-            return Ok();
+            return BadRequest(answersErrors);
         }
     }
 }
