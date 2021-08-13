@@ -9,14 +9,14 @@ using iTechArt.Survey.Repositories;
 
 namespace iTechArt.Survey.Foundation
 {
-    public class SurveyPassingService : ISurveyPassingService
+    public class SurveyService : ISurveyService
     {
         private readonly ICurrentUserProvider _currentUserProvider;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISurveyUnitOfWork _surveyUnitOfWork;
         
 
-        public SurveyPassingService(ICurrentUserProvider currentUserProvider,
+        public SurveyService(ICurrentUserProvider currentUserProvider,
                                     IUnitOfWork unitOfWork, 
                                     ISurveyUnitOfWork surveyUnitOfWork)
         {
@@ -151,6 +151,20 @@ namespace iTechArt.Survey.Foundation
             return _currentUserProvider.IsAuthenticated();
         }
 
+        public async Task AddSurvey(Domain.Surveys.Survey survey)
+        {
+            var userId = _currentUserProvider.GetUserId();
+            if (userId == null || userId == Guid.Empty)
+            {
+                throw new InvalidOperationException("Error getting user id!");
+            }
+
+            survey.CreatedById = (Guid)userId;
+
+            _unitOfWork.GetRepository<Domain.Surveys.Survey>().Create(survey);
+
+            await _unitOfWork.CommitAsync();
+        }
 
         private static void Shuffle<T>(IList<T> list)
         {

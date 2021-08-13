@@ -6,44 +6,45 @@ using iTechArt.Survey.Domain;
 using iTechArt.Survey.Domain.Surveys;
 using iTechArt.Survey.Foundation;
 using iTechArt.Survey.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace iTechArt.Survey.WebApp.Controllers
 {
-    public class SurveyPassingController : Controller
+    public class SurveyController : Controller
     {
-        private readonly ISurveyPassingService _surveyPassingService;
+        private readonly ISurveyService _surveyService;
 
 
-        public SurveyPassingController(ISurveyPassingService surveyPassingService)
+        public SurveyController(ISurveyService surveyService)
         {
-            _surveyPassingService = surveyPassingService;
+            _surveyService = surveyService;
         }
 
 
-        public IActionResult Index(Guid surveyId)
+        public IActionResult SurveyPassing(Guid surveyId)
         {
             if (surveyId == Guid.Empty)
             {
                 return BadRequest();
             }
 
-            var survey = _surveyPassingService.FindSurveyOrReturnNull(surveyId);
+            var survey = _surveyService.FindSurveyOrReturnNull(surveyId);
 
             if (survey == null)
             {
                 return NotFound();
             }
 
-            if ((survey.Options & SurveyOptions.Anonymity) != 0 &&  !_surveyPassingService.UserIsAuthenticated())
+            if ((survey.Options & SurveyOptions.Anonymity) != 0 &&  !_surveyService.UserIsAuthenticated())
             {
                 return RedirectToAction("Login", "Account", new
                 {
-                    returnUrl = "/SurveyPassing/Index?surveyId=" + surveyId
+                    returnUrl = "/Survey/SurveyPassing?surveyId=" + surveyId
                 });
             }
 
-            var existingAnswers = _surveyPassingService.GetExistingUserAnswers(surveyId) ;
+            var existingAnswers = _surveyService.GetExistingUserAnswers(surveyId) ;
 
             var model = new SurveyViewModel()
             {
@@ -75,13 +76,32 @@ namespace iTechArt.Survey.WebApp.Controllers
                 return BadRequest();
             }
 
-            var answersErrors= await _surveyPassingService.SaveOrUpdateIfExistUserAnswers(surveyId, userAnswers);
+            var answersErrors= await _surveyService.SaveOrUpdateIfExistUserAnswers(surveyId, userAnswers);
             if (answersErrors == null)
             {
                 return Ok();
             }
 
             return BadRequest(answersErrors);
+        }
+
+        [Authorize]
+        public IActionResult SurveyCreation()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AddSurvey(Domain.Surveys.Survey survey)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _surveyService.AddSurvey(survey);
+
+            return Json(new { success = true });
         }
     }
 }

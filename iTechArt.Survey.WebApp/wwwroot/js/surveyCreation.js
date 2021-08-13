@@ -1005,7 +1005,7 @@ function getPageCount() {
 
 async function addSurvey(isTemplate) {
     try {
-        await $.post("/SurveyCreation/AddSurvey", $.param(getSurveyInfo(isTemplate)));
+        await $.post("/Survey/AddSurvey", $.param(getSurveyInfo(isTemplate)));
 
         window.location.href = "/";
     } catch (e) {

@@ -5,7 +5,7 @@ using iTechArt.Survey.Domain;
 
 namespace iTechArt.Survey.Foundation
 {
-    public interface ISurveyPassingService
+    public interface ISurveyService
     {
         public Domain.Surveys.Survey FindSurveyOrReturnNull(Guid id);
 
@@ -14,5 +14,7 @@ namespace iTechArt.Survey.Foundation
         public List<UserAnswer> GetExistingUserAnswers(Guid surveyId);
 
         public bool UserIsAuthenticated();
+
+        public Task AddSurvey(Domain.Surveys.Survey survey);
     }
 }

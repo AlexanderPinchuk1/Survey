@@ -50,7 +50,7 @@ namespace iTechArt.Survey.WebApp.Controllers
             {
                 ModelState.AddModelError(string.Empty, "User with entered email and password was not found!");
 
-                return View();
+                return View(model);
             }
        
             _logger.LogInformation("User logged in.");

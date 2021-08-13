@@ -47,8 +47,7 @@ namespace iTechArt.Survey.WebApp
             services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
             services.AddScoped<IUnitOfWork, SurveyUnitOfWork>();
             services.AddScoped<ISurveyUnitOfWork, SurveyUnitOfWork>();
-            services.AddScoped<ISurveyCreationService, SurveyCreationService>();
-            services.AddScoped<ISurveyPassingService, SurveyPassingService>();
+            services.AddScoped<ISurveyService, SurveyService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

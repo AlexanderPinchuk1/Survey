@@ -25,14 +25,7 @@ namespace iTechArt.Survey.Foundation
 
         public bool IsAuthenticated()
         {
-            var isAuthenticated = _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated;
-
-            if (isAuthenticated == null)
-            {
-                return false;
-            }
-            
-            return (bool)isAuthenticated;
+            return _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
         }
     }
 }

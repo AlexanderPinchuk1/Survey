@@ -72,13 +72,13 @@ async function saveResults() {
         userAnswers: getQuestionAnswers(getQuestionsId(), surveyId)
     };
 
-    await $.post("/SurveyPassing/SaveAnswers", $.param(data))
-        .then(function () {
-            window.location.href = "/";
-        })
-        .catch(function (response) {
-            outputErrors(response.responseJSON);
-        });
+    try {
+        await $.post("/Survey/SaveAnswers", $.param(data));
+
+        window.location.href = "/";
+    } catch (e) {
+        outputErrors(response.responseJSON);
+    }
 }
 
 function getQuestionAnswers(questionsId, surveyId) {
@@ -249,4 +249,4 @@ function updateProgressBarBlock(passedPagesCount, totalPagesCount) {
     }
 }
 
-export { changeActivePage, updateProgress, saveResults };
+export { changeActivePage, updateProgress, saveResults, updateFinishButton };
