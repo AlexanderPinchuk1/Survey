@@ -82,6 +82,8 @@ namespace iTechArt.Survey.Foundation
 
             var userAnswerRepository = _unitOfWork.GetRepository<UserAnswer>();
 
+            var userAnswersId = Guid.NewGuid();
+
             if (userId != null)
             {
                 var existAnswers = userAnswerRepository
@@ -89,9 +91,13 @@ namespace iTechArt.Survey.Foundation
                     .Where(answer => answer.SurveyId == surveyId && answer.UserId == userId)
                     .ToList();
 
+                if (existAnswers.Count == 0)
+                {
+                    userAnswers = SetUserAnswersId(userAnswers, userAnswersId, userId);
+                }
+
                 foreach (var userAnswer in userAnswers)
                 {
-                    userAnswer.UserId = userId;
                     var existAnswer = existAnswers.FirstOrDefault(answer => answer.QuestionId == userAnswer.QuestionId);
 
                     if (existAnswer != null)
@@ -123,11 +129,25 @@ namespace iTechArt.Survey.Foundation
             }
             else
             {
+                userAnswers = SetUserAnswersId(userAnswers, userAnswersId, null);
+            
                 foreach (var userAnswer in userAnswers)
                 {
                     userAnswerRepository.Create(userAnswer);
                 }
             }
+        }
+
+        private static IEnumerable<UserAnswer> SetUserAnswersId(IEnumerable<UserAnswer> userAnswers, Guid id, Guid? userId)
+        {
+            return userAnswers.Select(userAnswer => new UserAnswer()
+            {
+                Answer = userAnswer.Answer,
+                Id = id,
+                QuestionId = userAnswer.QuestionId,
+                SurveyId = userAnswer.SurveyId,
+                UserId = userId
+            });
         }
 
         public List<UserAnswer> GetExistingUserAnswers(Guid surveyId)

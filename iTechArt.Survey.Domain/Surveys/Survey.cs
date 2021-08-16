@@ -39,7 +39,7 @@ namespace iTechArt.Survey.Domain.Surveys
             builder.Property(survey => survey.IsTemplate).IsRequired();
             builder.Property(survey => survey.Name).IsRequired().HasMaxLength(50);
             builder.Property(survey => survey.Options).IsRequired();
-            builder.HasOne(survey => survey.CreatedBy);
+            builder.HasOne(survey => survey.CreatedBy).WithMany().OnDelete(DeleteBehavior.Restrict); ;
             builder.HasMany(survey => survey.Pages).WithOne(page => page.Survey).IsRequired();
         }
     }

@@ -36,7 +36,7 @@ namespace iTechArt.Survey.Domain
             builder.Property<Guid>("SurveyId");
             builder.Property<Guid?>("UserId");
             builder.Property<Guid>("QuestionId");
-            builder.HasKey("Id");
+            builder.HasKey(userAnswer => new { userAnswer.Id , userAnswer.SurveyId, userAnswer.QuestionId});
             builder.Property(userAnswer => userAnswer.Id).HasDefaultValueSql("newsequentialid()");
         }
     }
