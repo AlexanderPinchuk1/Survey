@@ -91,10 +91,7 @@ namespace iTechArt.Survey.Foundation
                     .Where(answer => answer.SurveyId == surveyId && answer.UserId == userId)
                     .ToList();
 
-                if (existAnswers.Count == 0)
-                {
-                    userAnswers = SetUserAnswersId(userAnswers, userAnswersId, userId);
-                }
+                userAnswers = SetUserAnswersId(userAnswers, existAnswers.Count == 0 ? userAnswersId : existAnswers.First().Id, userId);
 
                 foreach (var userAnswer in userAnswers)
                 {
