@@ -7,7 +7,11 @@ namespace iTechArt.Survey.Domain.Surveys
 {
     public class SurveyResult
     {
+        public Guid UserId { get; set; }
+
         public User User { get; set; }
+
+        public Guid SurveyId { get; set; }
 
         public Survey Survey { get; set; }
 

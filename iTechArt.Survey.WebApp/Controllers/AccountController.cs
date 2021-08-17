@@ -26,11 +26,14 @@ namespace iTechArt.Survey.WebApp.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            return View();
+            return View(new LoginViewModel()
+            {
+                ReturnUrl = returnUrl
+            });
         }
 
         [HttpPost]
@@ -47,10 +50,15 @@ namespace iTechArt.Survey.WebApp.Controllers
             {
                 ModelState.AddModelError(string.Empty, "User with entered email and password was not found!");
 
-                return View();
+                return View(model);
             }
        
             _logger.LogInformation("User logged in.");
+
+            if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+            {
+                return Redirect(model.ReturnUrl);
+            }
 
             return RedirectToAction("Index", "Home");
         }

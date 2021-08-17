@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iTechArt.Survey.Repositories;
 
 namespace iTechArt.Survey.Repositories.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    partial class SurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210801162111_UpdateUserAnswer")]
+    partial class UpdateUserAnswer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,14 +182,14 @@ namespace iTechArt.Survey.Repositories.Migrations
                         new
                         {
                             Id = new Guid("11ac23da-a8aa-47b4-a2a8-d32457760489"),
-                            ConcurrencyStamp = "af7902cb-13f6-4f53-999c-c62289e5113c",
+                            ConcurrencyStamp = "8e8ebb5d-8f8a-445c-9860-7f6e1fc0ff65",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("aed7daac-9ce0-496f-a606-7b79d37dcbc1"),
-                            ConcurrencyStamp = "a38b53b5-33a5-49dd-a234-4f5f994feb99",
+                            ConcurrencyStamp = "30106184-e1d0-42f0-a51e-cc1e4d487055",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -274,16 +276,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("1f363ed7-59b2-460c-91a6-fcd30a2c3872"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "04eb4112-2528-417d-ac9a-9949b992a8e3",
+                            ConcurrencyStamp = "fc07e74f-4c59-436d-9a1b-6e91c193944f",
                             DisplayName = "Admin",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHGY6mBzpH7T9H+fKaMabg2JPG1rx/gQnT2MsXTYMCCWmzibvz+2prWyjlNN45S0jg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELVqKQG8RJ5J35/w2+dzFQGKzu8TZ0adjYeYyl7gpcd5WxK4LFqFUbeLFFC1kAizdg==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 8, 16, 13, 24, 14, 716, DateTimeKind.Local).AddTicks(5937),
+                            RegistrationDateTime = new DateTime(2021, 8, 1, 19, 21, 10, 814, DateTimeKind.Local).AddTicks(5207),
                             SecurityStamp = "7d90869b-19c6-4cb0-8c74-790e8352fabe",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -292,16 +294,16 @@ namespace iTechArt.Survey.Repositories.Migrations
                         {
                             Id = new Guid("7ba77241-b5d6-4490-aa85-0493c6acdbf3"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d0ee0ea6-f700-4d6f-814c-fd837772c591",
+                            ConcurrencyStamp = "8b2e125f-aaa2-45ca-9363-81505ad2ac67",
                             DisplayName = "User",
                             Email = "User@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENDoJRGwf3qR2TxM7mp7VbTpfBvNx5VZtIGuDM0OHamILe2j/e1j6FAr1B0YWoAqlg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJwN5bkgoL9S6OGStFKCWAHKf/U3Ai96/QlLpP2WEf6OplslAfRE0Ypp+Z+2gCQfKg==",
                             PhoneNumberConfirmed = false,
-                            RegistrationDateTime = new DateTime(2021, 8, 16, 13, 24, 14, 717, DateTimeKind.Local).AddTicks(3220),
+                            RegistrationDateTime = new DateTime(2021, 8, 1, 19, 21, 10, 815, DateTimeKind.Local).AddTicks(2485),
                             SecurityStamp = "4010b6f9-59e8-42b9-bf76-97c41907189b",
                             TwoFactorEnabled = false,
                             UserName = "User@gmail.com"
@@ -317,8 +319,7 @@ namespace iTechArt.Survey.Repositories.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
@@ -345,8 +346,7 @@ namespace iTechArt.Survey.Repositories.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsRequired")
                         .HasColumnType("bit");
@@ -426,7 +426,7 @@ namespace iTechArt.Survey.Repositories.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("newsequentialid()");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsTemplate")
@@ -472,19 +472,19 @@ namespace iTechArt.Survey.Repositories.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("newsequentialid()");
 
-                    b.Property<Guid>("SurveyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("QuestionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Answer")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("SurveyId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id", "SurveyId", "QuestionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
 
@@ -578,9 +578,7 @@ namespace iTechArt.Survey.Repositories.Migrations
                 {
                     b.HasOne("iTechArt.Survey.Domain.Identity.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("CreatedById");
 
                     b.Navigation("CreatedBy");
                 });

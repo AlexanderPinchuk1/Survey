@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace iTechArt.Repositories.Repository
@@ -21,7 +22,7 @@ namespace iTechArt.Repositories.Repository
             return _dbSet;
         }
 
-        public T Get(int id)
+        public T Get(Guid id)
         {
             return _dbSet.Find(id);
         }
@@ -36,7 +37,7 @@ namespace iTechArt.Repositories.Repository
             _context.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var item = _dbSet.Find(id);
             if (item == null)

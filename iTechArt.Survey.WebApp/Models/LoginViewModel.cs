@@ -14,5 +14,8 @@ namespace iTechArt.Survey.WebApp.Models
 
         [Display(Name = "Remember me?")] 
         public bool RememberMe { get; set; } = false;
+
+        [DataType(DataType.Url)]
+        public string ReturnUrl { get; set; }
     }
 }

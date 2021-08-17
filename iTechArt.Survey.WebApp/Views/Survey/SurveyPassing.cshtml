@@ -1,0 +1,120 @@
+﻿@using iTechArt.Survey.Domain.Surveys
+@using iTechArt.Survey.WebApp.Models
+@model SurveyViewModel
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/surveyPassing.css" />
+}
+
+<div class="passing-survey-block" id="@Model.Id">
+    <div class="passing-survey-name-block">
+        <h4>@Model.Name</h4>
+    </div>
+
+    <div class="tab-content" style="border: 1px solid #dfe3e7;">
+        @foreach (var page in Model.Pages)
+        {
+            if (Model.Pages[0] == page)
+            {
+                <div class="tab-pane fade show active" role="tabpanel" id=@("Page" + page.Id)>
+                    <partial name="Questions/Shared/_PageNameBlockPartial" model="page.Name" />
+
+                    <partial name="_QuestionsSelectionPartial" model="page" />
+                </div>
+            }
+            else
+            {
+                <div class="tab-pane fade show" role="tabpanel" id=@("Page" + page.Id)>
+                    <partial name="Questions/Shared/_PageNameBlockPartial" model="page.Name" />
+
+                    <partial name="_QuestionsSelectionPartial" model="page" />
+                </div>
+            }
+        }
+    </div>
+
+    @if ((Model.Options & SurveyOptions.ProgressBar) != 0)
+    {
+        <div class="progress-bar-block">
+
+            @if ((Model.Options & SurveyOptions.NumberedPages) != 0)
+            {
+                <div class="pages-near-progress-bar">0/1</div>
+            }
+
+            <div class="progress-block">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Model.Pages.Count >= 2)
+    {
+        <div class="pages-contollers-block">
+            <div class="page-controller-block">
+                <button type="button" id="prevPageButton" class="btn btn-primary btn-block" disabled="disabled">Previous</button>
+            </div>
+            <div class="page-controller-block">
+                <button type="button" id="nextPageButton" class="btn btn-primary btn-block">Next</button>
+            </div>
+        </div>
+    }
+
+    <div class="save-passing-survey-block"></div>
+</div>
+
+<script type="module">
+    import * as surveyPassing from '../js/surveyPassing.js';
+
+    surveyPassing.updateProgress();
+    surveyPassing.updateFinishButton();
+
+    const fileInputs = document.getElementsByClassName("form-control-file");
+    for (let i = 0; i < fileInputs.length; i++) {
+        fileInputs[i].addEventListener("change", e => {
+            e.preventDefault();
+            surveyPassing.updateProgress();
+        });
+    }
+
+    const checkAndRadioInputs = document.getElementsByClassName("form-check-input");
+    for (let i = 0; i < checkAndRadioInputs.length; i++) {
+        checkAndRadioInputs[i].addEventListener("change", e => {
+            e.preventDefault();
+            surveyPassing.updateProgress();
+        });
+    }
+
+    const scaleInputs = document.getElementsByClassName("scale-block");
+    for (let i = 0; i < scaleInputs.length; i++) {
+        scaleInputs[i].addEventListener("change", e => {
+            e.preventDefault();
+            surveyPassing.updateProgress();
+        });
+    }
+
+    const textareaInputs = document.getElementsByClassName("textarea-input");
+    for (let i = 0; i < textareaInputs.length; i++) {
+        textareaInputs[i].addEventListener("change", e => {
+            e.preventDefault();
+            surveyPassing.updateProgress();
+        });
+    }
+
+    if (document.getElementById("prevPageButton")) {
+        document.getElementById("prevPageButton").addEventListener("click", e => {
+            e.preventDefault();
+            surveyPassing.changeActivePage(false);
+        });
+    }
+
+    if (document.getElementById("nextPageButton")) {
+        document.getElementById("nextPageButton").addEventListener("click", e => {
+            e.preventDefault();
+            surveyPassing.changeActivePage(true);
+        });
+    }
+</script>
