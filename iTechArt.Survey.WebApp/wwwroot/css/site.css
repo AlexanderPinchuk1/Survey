@@ -144,19 +144,18 @@ body {
     padding-bottom: 0;
 }
 
-.users-table-block {
+.items-table-block {
     margin: 0px 0px 0px 280px;
     padding: 20px 0px;
 }
 
-.total-users-block {
+.total-items-block {
     float: left;
     width: 83%;
 }
 
 .pages-block {
     width: 17%;
-    margin:
 }
 
 .table-footer {
@@ -185,7 +184,7 @@ ul.pagination li a:focus {
     box-shadow: #b6bbbf 0px 0px 0px 3px;
 }
 
-.add-user-block {
+.add-item-block {
     margin: 20px 20px 0px 260px;
     padding: 20px 0px 10px 20px;
     width: 200px
@@ -205,4 +204,8 @@ ul.pagination li a:focus {
     float: left;
     padding: 5px 0 0 0;
     width: 160px;
+}
+
+.central-content {
+    text-align: center;
 }

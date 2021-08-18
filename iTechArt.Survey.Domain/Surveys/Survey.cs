@@ -25,6 +25,8 @@ namespace iTechArt.Survey.Domain.Surveys
 
         public User CreatedBy { get; set; }
 
+        public DateTime CreationDateTime { get; set; }
+
         [Required(ErrorMessage = "The survey must contain at least one page.")]
         public List<Page> Pages { get; set; }
     }
@@ -36,10 +38,11 @@ namespace iTechArt.Survey.Domain.Surveys
             builder.ToTable("Survey");
             builder.HasKey(survey => survey.Id);
             builder.Property(survey => survey.Id).HasDefaultValueSql("newsequentialid()");
+            builder.Property(survey => survey.CreationDateTime).HasDefaultValueSql("getdate()");
             builder.Property(survey => survey.IsTemplate).IsRequired();
             builder.Property(survey => survey.Name).IsRequired().HasMaxLength(50);
             builder.Property(survey => survey.Options).IsRequired();
-            builder.HasOne(survey => survey.CreatedBy).WithMany().OnDelete(DeleteBehavior.Restrict); ;
+            builder.HasOne(survey => survey.CreatedBy).WithMany().OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(survey => survey.Pages).WithOne(page => page.Survey).IsRequired();
         }
     }

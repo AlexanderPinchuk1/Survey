@@ -1,0 +1,81 @@
+﻿@model iTechArt.Survey.Domain.PagedEntities<iTechArt.Survey.Domain.Surveys.SurveyInfo>
+
+<partial name="_MenuPartial" />
+
+<div class="add-item-block">
+    <a asp-action="SurveyCreation" asp-controller="Survey" class="btn btn-secondary btn-block">New Survey</a>
+</div>
+
+<div class="items-table-block">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col" class="central-content">Creation date</th>
+                <th scope="col" class="central-content">Answers</th>
+                <th scope="col" class="central-content">Link</th>
+                <th scope="col" class="central-content">Results</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        @foreach (var surveyInfo in Model.Entities)
+        {
+            <tr>
+                <td style="width: 30%" >
+                    @surveyInfo.Name
+                </td>
+                <td style="width: 15%" class="central-content">
+                    @surveyInfo.CreationDateTime.ToShortDateString()
+                </td>
+                <td style="width: 12%" class="central-content">
+                    @surveyInfo.AnswersCount
+                </td>
+                <td style="width: 20%" class="central-content">
+                    <a href="@surveyInfo.Link">Link to the survey</a>
+                </td>
+                <td style="width: 13%" class="central-content">
+                    <a>Results</a>
+                </td>
+                <td style="width: 10%" class="central-content">
+                    <a class="btn btn-danger" asp-action="DeleteSurvey" asp-controller="Survey" asp-route-surveyId="@surveyInfo.Id">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+    <div class="table-footer">
+        @if (Model.TotalCount != 0)
+        {
+            <p>
+                Showing @(((Model.PageIndex) * Model.ItemCountPerPage) + 1) to
+                @if ((Model.PageIndex + 1) * Model.ItemCountPerPage < Model.TotalCount)
+                {
+                    @((Model.PageIndex + 1) * Model.ItemCountPerPage)
+                }
+                else
+                {
+                    @Model.TotalCount
+                }
+                of @Model.TotalCount users
+            </p>
+            <p>Page @(Model.PageIndex + 1) of @(Math.Ceiling((double) Model.TotalCount / Model.ItemCountPerPage))</p>
+
+            <form asp-action="SurveyList" asp-controller="Survey">
+                <div class="num-items-per-page-main-block">
+                    <label class="num-items-per-page-label" asp-for="ItemCountPerPage"></label>
+                    <div class="num-items-per-page-block">
+                        <div class="col-sm-10">
+                            <input type="number" name="itemCountPerPage" class="form-control" min="1" max="100" asp-for="ItemCountPerPage"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="pages-block">
+                    <input asp-for="PageIndex" name="pageIndex" id="NumPage" type="hidden" value="@Model.PageIndex"/>
+
+                    <partial name="_PaginationPartial"/>
+                </div>
+            </form>
+        }
+    </div>
+</div>

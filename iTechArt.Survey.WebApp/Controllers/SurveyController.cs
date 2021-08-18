@@ -103,5 +103,40 @@ namespace iTechArt.Survey.WebApp.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpGet]
+        public IActionResult SurveyList(Pagination pagination)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var model = _surveyService.GetSurveyInfoPerPage(pagination.PageIndex, pagination.ItemCountPerPage);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult SurveyList(int pageIndex, int itemCountPerPage)
+        {
+            return RedirectToAction("SurveyList", new Pagination()
+            {
+                PageIndex = pageIndex,
+                ItemCountPerPage = itemCountPerPage
+            });
+        }
+
+        public async Task<IActionResult> DeleteSurvey(Guid surveyId)
+        {
+            if (surveyId == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            await _surveyService.DeleteSurvey(surveyId);
+
+            return RedirectToAction("SurveyList");
+        }
     }
 }

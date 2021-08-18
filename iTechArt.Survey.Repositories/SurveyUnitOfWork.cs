@@ -6,6 +6,8 @@ namespace iTechArt.Survey.Repositories
     {
         private SurveyRepository _surveyRepository;
 
+        private UserAnswerRepository _userAnswerRepository;
+
         private readonly SurveyDbContext _surveyDbContext;
         
 
@@ -19,6 +21,11 @@ namespace iTechArt.Survey.Repositories
         public ISurveyRepository GetSurveyRepository()
         {
             return _surveyRepository ??= new SurveyRepository(_surveyDbContext);
+        }
+
+        public IUserAnswerRepository GetUserAnswerRepository()
+        {
+            return _userAnswerRepository ??= new UserAnswerRepository(_surveyDbContext);
         }
     }
 }

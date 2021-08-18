@@ -6,6 +6,7 @@
         @if (User.IsInRole("Admin"))
         {
             <li><a asp-controller="Survey" asp-action="SurveyCreation" class="btn btn-secondary btn-block">New Survey</a></li>
+            <li><a asp-controller="Survey" asp-action="SurveyList" class="btn btn-secondary btn-block">My Surveys</a></li>
             <li><a asp-controller="Administration" asp-action="DisplayUsers" class="btn btn-secondary btn-block">Users</a></li>
         }
     </ul>
