@@ -183,6 +183,52 @@ namespace iTechArt.Survey.Foundation
             await _unitOfWork.CommitAsync();
         }
 
+        public PagedEntities<SurveyInfo> GetSurveyInfoPerPage(int pageIndex, int itemCountPerPage)
+        {
+            var userId = _currentUserProvider.GetUserId();
+            if (userId == null || userId == Guid.Empty)
+            {
+                throw new InvalidOperationException("Error getting user id!");
+            }
+
+            var userSurveys = _unitOfWork.GetRepository<Domain.Surveys.Survey>().GetAll()
+                .Where(survey => survey.CreatedById == userId).ToList();
+
+            itemCountPerPage = PaginationValidator.ValidateNumberOfItemsPerPage(itemCountPerPage);
+            var totalCount = userSurveys.Count;
+            pageIndex = PaginationValidator.ValidateNumberOfPages(pageIndex, itemCountPerPage, totalCount);
+
+            return new PagedEntities<SurveyInfo>(pageIndex, itemCountPerPage, userSurveys.Count(), userSurveys.Skip(itemCountPerPage * pageIndex)
+                .Take(itemCountPerPage).Select(survey => new SurveyInfo()
+                {
+                    Id = survey.Id,
+                    CreationDateTime = survey.CreationDateTime,
+                    Link = "SurveyPassing/Index?surveyId=" + survey.Id,
+                    Name = survey.Name,
+                    AnswersCount = _unitOfWork.GetRepository<UserAnswer>().GetAll()
+                        .Where(userAnswer => userAnswer.SurveyId == survey.Id)
+                        .GroupBy(answer => answer.Id)
+                        .Select(group => group.Key)
+                        .Distinct().Count()
+                }));
+        }
+
+        public async Task DeleteSurvey(Guid surveyId)
+        {
+            var userAnswers = _unitOfWork.GetRepository<UserAnswer>().GetAll()
+                .Where(userAnswer => userAnswer.SurveyId == surveyId);
+
+            foreach (var userAnswer in userAnswers)
+            {
+                _surveyUnitOfWork.GetUserAnswerRepository()
+                    .DeleteUserAnswerUsingThreePartKey(userAnswer.Id, userAnswer.SurveyId, userAnswer.QuestionId);
+            }
+
+            _unitOfWork.GetRepository<Domain.Surveys.Survey>().Delete(surveyId);
+
+            await _unitOfWork.CommitAsync();
+        }
+
         private static void Shuffle<T>(IList<T> list)
         {
             var rand = new Random();

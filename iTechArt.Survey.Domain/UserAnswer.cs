@@ -30,12 +30,15 @@ namespace iTechArt.Survey.Domain
         public void Configure(EntityTypeBuilder<UserAnswer> builder)
         {
             builder.ToTable("UsersAnswer");
-            builder.HasOne(usersAnswer => usersAnswer.Survey).WithMany().OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(usersAnswer => usersAnswer.User).WithMany().OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(usersAnswer => usersAnswer.Question).WithMany().OnDelete(DeleteBehavior.Restrict);
-            builder.Property<Guid>("SurveyId");
-            builder.Property<Guid?>("UserId");
-            builder.Property<Guid>("QuestionId");
+            builder.HasOne(userAnswer => userAnswer.Survey).WithMany()
+                .HasForeignKey(userAnswer => userAnswer.SurveyId)
+                .IsRequired().OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(userAnswer => userAnswer.User).WithMany()
+                .HasForeignKey(userAnswer => userAnswer.UserId)
+                .IsRequired(false).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(userAnswer => userAnswer.Question).WithMany()
+                .HasForeignKey(userAnswer => userAnswer.QuestionId)
+                .IsRequired().OnDelete(DeleteBehavior.Restrict);
             builder.HasKey(userAnswer => new { userAnswer.Id , userAnswer.SurveyId, userAnswer.QuestionId});
             builder.Property(userAnswer => userAnswer.Id).HasDefaultValueSql("newsequentialid()");
         }

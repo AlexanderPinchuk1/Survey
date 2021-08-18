@@ -1,36 +1,36 @@
 ﻿@model iTechArt.Survey.Domain.PagedEntities<iTechArt.Survey.Domain.UserInfo>
 
 <partial name="_MenuPartial" />
-<div class="add-user-block">
+<div class="add-item-block">
     <a asp-action="AddUser" asp-controller="Administration" class="btn btn-secondary btn-block">Add User</a>
 </div>
-<div class="users-table-block">
+<div class="items-table-block">
     <table class="table">
         <thead class="thead-light">
         <tr>
             <th scope="col">Name</th>
-            <th scope="col">Role</th>
-            <th scope="col">Registered</th>
-            <th scope="col">Surveys (➕/✔)</th>
-            <th scope="col">Actions</th>
+            <th scope="col" class="central-content">Role</th>
+            <th scope="col" class="central-content">Registered</th>
+            <th scope="col" class="central-content">Surveys (➕/✔)</th>
+            <th scope="col" class="central-content">Actions</th>
         </tr>
         </thead>
         @foreach (var user in Model.Entities)
         {
-            <tr class="users-columns">
+            <tr>
                 <td style="width: 35%">
                     @user.DisplayName
                 </td>
-                <td style="width: 15%">
+                <td style="width: 15%" class="central-content">
                     @user.Role
                 </td>
-                <td style="width: 20%">
+                <td style="width: 20%" class="central-content">
                     @user.RegistrationDateTime.ToShortDateString()
                 </td>
-                <td style="width: 15%">
+                <td style="width: 15%" class="central-content">
                     @user.CreatedSurveys / @user.CompletedSurveys
                 </td>
-                <td style="width: 15%">
+                <td style="width: 15%" class="central-content">
                     <a class="btn btn-success" asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id">
                         <i class="bi bi-pencil"></i>
                     </a>
@@ -63,28 +63,9 @@
             </div>
             <div class="pages-block">
                 <input asp-for="PageIndex" name="pageIndex" id="NumPage" type="hidden" value="@Model.PageIndex"/>
-                <ul class="pagination">
-                    <li class="page-item">
-                        <button class="page-link" onclick="changePage(-2)"><<</button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" onclick="changePage(-1)"><</button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" onclick="changePage(1)">></button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" onclick="changePage(2)">>></button>
-                    </li>
-                </ul>
+
+                <partial name="_PaginationPartial" />
             </div>
         </form>
     </div>
 </div>
-
-<script>
-     function changePage(num) {
-         var res = +document.getElementById("NumPage").value;
-         document.getElementById("NumPage").value = res + num;
-     }
- </script>
