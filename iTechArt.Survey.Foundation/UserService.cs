@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -82,9 +81,9 @@ namespace iTechArt.Survey.Foundation
 
         public async Task<PagedEntities<UserInfo>> GetUsersInfoForPageAsync(int pageIndex, int itemCountPerPage)
         {
-            itemCountPerPage = ValidateNumberOfItemsPerPage(itemCountPerPage);
+            itemCountPerPage = PaginationValidator.ValidateNumberOfItemsPerPage(itemCountPerPage);
             var totalCount = await GetUsersTotalCountAsync();
-            pageIndex = ValidateNumberOfPages(pageIndex,  itemCountPerPage,  totalCount);
+            pageIndex = PaginationValidator.ValidateNumberOfPages(pageIndex,  itemCountPerPage,  totalCount);
 
             var users = await _surveyDbContext.Users
                 .Skip(itemCountPerPage * pageIndex)
@@ -116,32 +115,6 @@ namespace iTechArt.Survey.Foundation
                 CreatedSurveys = 0,
                 CompletedSurveys = 0,
             }).ToList());
-        }
-
-        private static int ValidateNumberOfItemsPerPage(int numItemsPerPage)
-        {
-            numItemsPerPage = numItemsPerPage switch
-            {
-                < 1 => 1,
-                > 100 => 100,
-                _ => numItemsPerPage
-            };
-
-            return numItemsPerPage;
-        }
-
-        private static int ValidateNumberOfPages(int pageIndex, int itemCountPerPage, int totalCount)
-        {
-            if (pageIndex < 0)
-            {
-                pageIndex = 0;
-            }
-            else if (pageIndex > Math.Ceiling((double)totalCount / itemCountPerPage) - 1)
-            {
-                pageIndex = (int)Math.Ceiling((double)totalCount / itemCountPerPage) - 1;
-            }
-
-            return pageIndex;
         }
     }
 }
